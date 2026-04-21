@@ -1,0 +1,2211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>AUREA Enterprises - Digital Office</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F0F2F5;
+  --surface: #FFFFFF;
+  --surface2: #F7F8FA;
+  --border: #DDE1E8;
+  --border2: #C8CDD8;
+  --text: #1A2233;
+  --text2: #4A5568;
+  --text3: #8A95A8;
+  --accent: #0052CC;
+  --accent-bg: #E6F0FF;
+  --green: #006644;
+  --green-bg: #E3FCEF;
+  --amber: #FF8B00;
+  --amber-bg: #FFF4E5;
+  --red: #BF2600;
+  --red-bg: #FFEBE6;
+  --gold: #C49A1A;
+  --gold-bg: #FFF8E1;
+  --gold-border: rgba(196,154,26,0.3);
+  --sidebar-w: 260px;
+  --topbar-h: 52px;
+  --radius: 6px;
+  --radius-lg: 10px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.10), 0 2px 4px rgba(0,0,0,0.06);
+  --gap: 20px;
+  --vh: 1vh;
+  --trans: 0.15s ease;
+}
+ 
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+ 
+html { height: 100%; }
+ 
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.5;
+  height: 100%;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -webkit-overflow-scrolling: touch;
+}
+ 
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+a { text-decoration: none; color: inherit; }
+input, textarea { font-family: inherit; }
+ 
+.app {
+  display: flex;
+  flex-direction: column;
+  height: calc(var(--vh, 1vh) * 100);
+}
+ 
+/* TOPBAR */
+.topbar {
+  height: var(--topbar-h);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 300;
+  flex-shrink: 0;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+ 
+.topbar-hamburger {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius);
+  color: var(--text2);
+  transition: background var(--trans);
+  flex-shrink: 0;
+}
+.topbar-hamburger:hover, .topbar-hamburger:active { background: var(--surface2); }
+.topbar-hamburger svg { width: 20px; height: 20px; }
+ 
+.topbar-brand { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.brand-logo {
+  width: 32px; height: 32px;
+  background: #1D293F;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: #C49A1A;
+  letter-spacing: 0.5px;
+}
+.brand-name { font-size: 15px; font-weight: 600; color: var(--text); }
+.brand-sub { font-size: 11px; color: var(--text3); }
+ 
+.topbar-stats { display: flex; align-items: center; gap: 16px; margin-left: auto; }
+.tstat { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text2); }
+.tstat-val { font-weight: 600; color: var(--text); }
+.tstat-bar { width: 72px; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.tstat-fill { height: 100%; background: linear-gradient(90deg, var(--accent), #36B37E); border-radius: 2px; transition: width 0.4s ease; }
+ 
+.topbar-right { display: flex; align-items: center; gap: 8px; margin-left: 16px; }
+.topbar-date { font-size: 11px; color: var(--text3); white-space: nowrap; }
+ 
+.sync-badge {
+  font-size: 10px; font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 20px;
+  background: var(--green-bg);
+  color: var(--green);
+  white-space: nowrap;
+  transition: all var(--trans);
+}
+.sync-badge.syncing { background: var(--amber-bg); color: var(--amber); }
+.sync-badge.error { background: var(--red-bg); color: var(--red); }
+ 
+.btn-topbar {
+  height: 32px;
+  padding: 0 12px;
+  border-radius: var(--radius);
+  font-size: 12px;
+  font-weight: 500;
+  display: flex; align-items: center; gap: 6px;
+  transition: all var(--trans);
+  white-space: nowrap;
+  min-width: 44px;
+}
+.btn-topbar-ghost { border: 1px solid var(--border); color: var(--text2); }
+.btn-topbar-ghost:hover { background: var(--surface2); color: var(--text); }
+.btn-topbar-accent { background: var(--accent); color: #fff; }
+.btn-topbar-accent:hover { background: #0055D4; }
+ 
+/* BODY */
+.body-wrap { display: flex; flex: 1; overflow: hidden; position: relative; }
+ 
+/* SIDEBAR OVERLAY */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.3);
+  z-index: 400;
+}
+.sidebar-overlay.visible { display: block; }
+ 
+/* SIDEBAR */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow: hidden;
+  transition: transform var(--trans);
+  height: 100%;
+  z-index: 450;
+}
+ 
+.sidebar-header { padding: 16px 16px 8px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.sidebar-section-label {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--text3);
+  padding: 0 8px; margin-bottom: 4px;
+}
+ 
+.sidebar-scroll {
+  flex: 1; overflow-y: auto; padding: 8px 0 24px;
+  -webkit-overflow-scrolling: touch;
+}
+.sidebar-scroll::-webkit-scrollbar { width: 3px; }
+.sidebar-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+ 
+.sidebar-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background var(--trans);
+  min-height: 44px;
+  touch-action: manipulation;
+  position: relative;
+  border: none; background: none;
+  width: 100%; text-align: left;
+}
+.sidebar-item:hover { background: var(--surface2); }
+.sidebar-item.active { background: var(--accent-bg); }
+.sidebar-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 4px; bottom: 4px;
+  width: 3px;
+  background: var(--accent);
+  border-radius: 0 2px 2px 0;
+}
+ 
+.si-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.si-info { flex: 1; min-width: 0; }
+.si-name { font-size: 13px; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sidebar-item.active .si-name { color: var(--accent); }
+.si-meta { font-size: 11px; color: var(--text3); margin-top: 1px; }
+.si-progress { width: 32px; height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; flex-shrink: 0; }
+.si-progress-fill { height: 100%; border-radius: 2px; transition: width 0.3s; }
+ 
+.sidebar-divider { height: 1px; background: var(--border); margin: 8px 16px; }
+ 
+.sidebar-tip {
+  margin: 0 12px;
+  padding: 10px 12px;
+  background: var(--gold-bg);
+  border: 1px solid rgba(196,154,26,0.25);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 11px; color: var(--text2); font-style: italic; line-height: 1.5;
+}
+ 
+/* MAIN */
+.main { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; background: var(--bg); }
+.panel { display: none; }
+.panel.active { display: block; }
+ 
+/* BLOCKS */
+.block-section-title {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--text3);
+  margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.block-section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+ 
+.block {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 16px 20px;
+  transition: box-shadow var(--trans), border-color var(--trans);
+}
+.block:hover { box-shadow: var(--shadow); border-color: var(--border2); }
+ 
+.grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+ 
+/* KPI BLOCK */
+.kpi-block {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 16px 20px;
+  cursor: pointer; transition: all var(--trans);
+  position: relative; overflow: hidden; min-height: 120px;
+  touch-action: manipulation;
+}
+.kpi-block:hover { box-shadow: var(--shadow-md); border-color: var(--border2); transform: translateY(-1px); }
+.kpi-block:active { transform: scale(0.98); }
+ 
+.kpi-label { font-size: 11px; font-weight: 500; color: var(--text3); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+.kpi-value { font-size: 26px; font-weight: 700; line-height: 1; margin-bottom: 6px; }
+.kpi-target { font-size: 11px; color: var(--text3); margin-bottom: 10px; }
+.kpi-bar { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; margin-bottom: 4px; }
+.kpi-bar-fill { height: 100%; border-radius: 2px; transition: width 0.5s ease; }
+.kpi-pct { font-size: 10px; color: var(--text3); }
+.kpi-edit-btn {
+  position: absolute; top: 12px; right: 12px;
+  width: 28px; height: 28px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; color: var(--text3);
+  opacity: 0; transition: opacity var(--trans), background var(--trans);
+  background: none; border: none; cursor: pointer;
+}
+.kpi-block:hover .kpi-edit-btn { opacity: 1; }
+.kpi-edit-btn:hover { background: var(--surface2); }
+ 
+/* COMPANY PROGRESS */
+.company-progress {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 16px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); cursor: pointer;
+  transition: all var(--trans); min-height: 56px; touch-action: manipulation;
+}
+.company-progress:hover { box-shadow: var(--shadow); border-color: var(--border2); }
+.company-progress:active { transform: scale(0.99); }
+.cp-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.cp-info { flex: 1; min-width: 0; }
+.cp-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.cp-sub { font-size: 11px; color: var(--text3); margin-top: 2px; }
+.cp-bar { width: 64px; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; flex-shrink: 0; }
+.cp-fill { height: 100%; border-radius: 2px; transition: width 0.3s; }
+.cp-pct { font-size: 11px; font-weight: 600; color: var(--text2); min-width: 28px; text-align: right; }
+.cp-arrow { color: var(--text3); font-size: 13px; }
+ 
+/* CHIPS */
+.page-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.chip {
+  font-size: 11px; font-weight: 500; padding: 3px 10px;
+  border-radius: 20px; border: 1px solid var(--border);
+  color: var(--text2); background: var(--surface);
+}
+.chip.accent { background: var(--accent-bg); color: var(--accent); border-color: transparent; }
+.chip.green { background: var(--green-bg); color: var(--green); border-color: transparent; }
+.chip.amber { background: var(--amber-bg); color: var(--amber); border-color: transparent; }
+.chip.gold { background: var(--gold-bg); color: var(--gold); border-color: transparent; }
+ 
+/* EMPRESA PANEL */
+.empresa-header {
+  padding: 24px var(--gap) 16px;
+  background: var(--surface); border-bottom: 1px solid var(--border);
+}
+.empresa-title-row {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap;
+}
+.empresa-title { font-size: 24px; font-weight: 700; line-height: 1.2; }
+.empresa-tagline { font-size: 13px; color: var(--text2); margin-top: 4px; }
+.empresa-pct-circle { text-align: right; flex-shrink: 0; }
+.epc-num { font-size: 32px; font-weight: 700; line-height: 1; }
+.epc-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.05em; }
+.empresa-progress-bar { height: 4px; background: var(--border); border-radius: 2px; margin-top: 16px; overflow: hidden; }
+.empresa-progress-fill { height: 100%; border-radius: 2px; transition: width 0.5s; }
+ 
+/* TABS */
+.empresa-tabs {
+  display: flex; border-bottom: 1px solid var(--border);
+  background: var(--surface); overflow-x: auto; -webkit-overflow-scrolling: touch;
+}
+.empresa-tab {
+  padding: 12px 20px; font-size: 13px; font-weight: 500; color: var(--text3);
+  border-bottom: 2px solid transparent; white-space: nowrap; min-height: 44px;
+  touch-action: manipulation; transition: all var(--trans);
+  border-top: none; border-left: none; border-right: none;
+  background: none; cursor: pointer;
+}
+.empresa-tab:hover { color: var(--text); }
+.empresa-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab-panel { display: none; padding: var(--gap); }
+.tab-panel.active { display: block; }
+ 
+/* CONSEJO */
+.consejo {
+  display: flex; gap: 12px; padding: 14px 16px;
+  background: var(--gold-bg);
+  border: 1px solid rgba(196,154,26,0.2);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  margin-bottom: var(--gap);
+}
+.consejo-icon { font-size: 16px; flex-shrink: 0; }
+.consejo-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gold); margin-bottom: 3px; }
+.consejo-text { font-size: 13px; color: var(--text2); line-height: 1.5; }
+ 
+/* FASE */
+.fase { border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 10px; background: var(--surface); }
+.fase-header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 18px; cursor: pointer;
+  transition: background var(--trans); min-height: 52px;
+  touch-action: manipulation; border: none; background: none; width: 100%; text-align: left;
+}
+.fase-header:hover { background: var(--surface2); }
+.fase-chevron { font-size: 12px; color: var(--text3); transition: transform var(--trans); flex-shrink: 0; }
+.fase.collapsed .fase-chevron { transform: rotate(-90deg); }
+.fase.collapsed .fase-body { display: none; }
+.fase-title { font-size: 14px; font-weight: 600; color: var(--text); flex: 1; }
+.fase-period { font-size: 11px; color: var(--text3); }
+.fase-badge { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 20px; white-space: nowrap; }
+.fase-badge-urgente { background: var(--amber-bg); color: var(--amber); }
+.fase-badge-madrid { background: var(--gold-bg); color: var(--gold); }
+.fase-progress { font-size: 11px; font-weight: 600; color: var(--text3); white-space: nowrap; }
+ 
+/* TAREA */
+.tarea {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 18px; border-top: 1px solid var(--border);
+  cursor: pointer; transition: background var(--trans);
+  touch-action: manipulation; position: relative;
+}
+.tarea:hover { background: var(--surface2); }
+.tarea:active { background: var(--border); }
+.tarea.completada { opacity: 0.5; }
+.tarea.completada .tarea-text { text-decoration: line-through; }
+.tarea.urgente { border-left: 3px solid var(--amber); }
+.tarea.hoy-task { border-left: 3px solid var(--accent); }
+ 
+.tarea-check {
+  width: 20px; height: 20px; border: 2px solid var(--border2);
+  border-radius: 4px; flex-shrink: 0; margin-top: 1px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all var(--trans); background: var(--surface);
+}
+.tarea.completada .tarea-check { background: var(--green); border-color: var(--green); }
+.tarea-check-icon { color: #fff; font-size: 11px; display: none; font-weight: 700; }
+.tarea.completada .tarea-check-icon { display: block; }
+ 
+@keyframes checkPop {
+  0% { transform: scale(0.5); opacity: 0; }
+  60% { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+.tarea.just-checked .tarea-check { animation: checkPop 0.3s ease forwards; }
+ 
+.tarea-content { flex: 1; min-width: 0; }
+.tarea-text { font-size: 13px; color: var(--text); line-height: 1.4; }
+.tarea-nota { font-size: 11px; color: var(--text3); margin-top: 3px; line-height: 1.4; }
+ 
+.tarea-badges { display: flex; align-items: flex-start; gap: 4px; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
+.tbadge { font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 4px; white-space: nowrap; line-height: 1.4; }
+.tbadge-hoy { background: var(--accent-bg); color: var(--accent); }
+.tbadge-urgente { background: var(--amber-bg); color: var(--amber); }
+.tbadge-madrid { background: var(--gold-bg); color: var(--gold); }
+ 
+.btn-guia {
+  font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 4px;
+  border: 1px solid var(--border2); color: var(--text3); background: var(--surface);
+  transition: all var(--trans); white-space: nowrap; min-height: 28px;
+  display: inline-flex; align-items: center; touch-action: manipulation;
+}
+.btn-guia:hover, .btn-guia.open { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
+ 
+/* GUIA */
+.guia-wrap { display: none; background: #F0F4FF; border-top: 1px solid #C9D8FF; padding: 16px 18px 16px 50px; }
+.guia-wrap.visible { display: block; }
+.guia-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); margin-bottom: 10px; }
+.guia-step { display: flex; gap: 10px; margin-bottom: 8px; align-items: flex-start; }
+.guia-num {
+  width: 20px; height: 20px; border-radius: 50%; background: var(--accent); color: #fff;
+  font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 1px;
+}
+.guia-step-text { font-size: 12px; color: var(--text2); line-height: 1.5; }
+.guia-step-text strong { color: var(--text); font-weight: 600; }
+.guia-step-text code {
+  background: #fff; border: 1px solid #C9D8FF; padding: 1px 5px;
+  border-radius: 3px; font-size: 11px; color: var(--accent);
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
+.guia-note { margin-top: 8px; padding: 8px 12px; background: var(--gold-bg); border-left: 2px solid var(--gold); font-size: 11px; color: var(--text2); font-style: italic; }
+ 
+/* KPI EMPRESA */
+.empresa-kpi-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-bottom: var(--gap); }
+.ek-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; }
+.ek-label { font-size: 10px; font-weight: 500; color: var(--text3); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+.ek-value { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+.ek-desc { font-size: 11px; color: var(--text3); }
+ 
+.goals-list { display: flex; flex-direction: column; gap: 8px; }
+.goal-item {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 10px 14px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: var(--radius);
+}
+.goal-num {
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--accent-bg); color: var(--accent);
+  font-size: 10px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.goal-text { font-size: 12px; color: var(--text2); line-height: 1.5; }
+ 
+/* CUADERNO */
+.cuaderno-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+.cuaderno-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid var(--border); }
+.cuaderno-title { font-size: 12px; font-weight: 600; color: var(--text); }
+.cuaderno-saved { font-size: 11px; color: var(--green); display: none; }
+.cuaderno-saved.show { display: block; }
+.cuaderno-ta {
+  width: 100%; min-height: 200px; background: transparent; border: none; outline: none;
+  padding: 16px; color: var(--text); line-height: 1.7; resize: none; font-size: 16px;
+}
+.cuaderno-ta::placeholder { color: var(--text3); }
+.cuaderno-footer { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; border-top: 1px solid var(--border); }
+.cuaderno-chars { font-size: 11px; color: var(--text3); }
+.cuaderno-actions { display: flex; gap: 6px; }
+.btn-sm {
+  height: 32px; padding: 0 12px; border-radius: var(--radius);
+  font-size: 12px; font-weight: 500; border: 1px solid var(--border);
+  color: var(--text2); background: var(--surface); transition: all var(--trans);
+  min-width: 44px; touch-action: manipulation;
+}
+.btn-sm:hover { background: var(--surface2); color: var(--text); }
+.btn-sm-primary { background: var(--accent-bg); color: var(--accent); border-color: transparent; }
+.btn-sm-primary:hover { background: #D4E4FF; }
+ 
+/* BIENVENIDA */
+.welcome-wrap { max-width: 640px; margin: 0 auto; padding: 40px var(--gap); }
+.welcome-logo { font-size: 48px; font-weight: 800; color: var(--text); letter-spacing: -2px; margin-bottom: 4px; }
+.welcome-logo span { color: var(--gold); }
+.welcome-sub { font-size: 13px; color: var(--text3); margin-bottom: 32px; }
+.welcome-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 32px; }
+.welcome-block { padding: 16px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); border-top: 3px solid var(--accent); }
+.wb-top { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); margin-bottom: 6px; }
+.wb-text { font-size: 12px; color: var(--text2); line-height: 1.5; }
+.welcome-note { font-size: 12px; color: var(--text3); text-align: center; }
+ 
+/* LIBERTAD */
+.libertad-banner {
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  padding: 12px var(--gap); display: flex; align-items: center;
+  justify-content: space-between; flex-wrap: wrap; gap: 12px; flex-shrink: 0;
+}
+.lb-left { display: flex; align-items: center; gap: 10px; }
+.lb-icon { font-size: 20px; }
+.lb-title { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gold); margin-bottom: 2px; }
+.lb-sub { font-size: 12px; color: var(--text2); }
+.lb-sub strong { color: var(--text); font-weight: 600; }
+.countdown { display: flex; gap: 6px; }
+.countdown-unit {
+  text-align: center; min-width: 52px;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 6px 8px;
+}
+.cu-num { font-size: 18px; font-weight: 700; color: var(--text); line-height: 1; font-variant-numeric: tabular-nums; }
+.cu-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text3); }
+ 
+/* ALERT */
+.alert-bar {
+  display: none; align-items: center; gap: 10px;
+  padding: 10px var(--gap); background: var(--amber-bg);
+  border-bottom: 1px solid rgba(255,139,0,0.2); flex-shrink: 0;
+}
+.alert-bar.visible { display: flex; }
+.alert-text { flex: 1; font-size: 12px; color: var(--amber); font-weight: 500; }
+.alert-dismiss {
+  width: 32px; height: 32px; border-radius: var(--radius); color: var(--amber);
+  font-size: 16px; display: flex; align-items: center; justify-content: center;
+  transition: background var(--trans); touch-action: manipulation;
+}
+.alert-dismiss:hover { background: rgba(255,139,0,0.15); }
+ 
+/* MODAL */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.4);
+  display: none; align-items: center; justify-content: center;
+  z-index: 1000; padding: 16px;
+  -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+}
+.modal-overlay.visible { display: flex; }
+.modal { background: var(--surface); border-radius: var(--radius-lg); width: 400px; max-width: 100%; box-shadow: var(--shadow-md); overflow: hidden; }
+.modal-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--border); }
+.modal-title { font-size: 15px; font-weight: 600; color: var(--text); }
+.modal-close { width: 32px; height: 32px; border-radius: var(--radius); color: var(--text3); font-size: 18px; display: flex; align-items: center; justify-content: center; transition: background var(--trans); touch-action: manipulation; }
+.modal-close:hover { background: var(--surface2); }
+.modal-body { padding: 20px; }
+.modal-label { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+.modal-input {
+  width: 100%; height: 44px; padding: 0 14px;
+  border: 1px solid var(--border2); border-radius: var(--radius);
+  font-size: 16px; color: var(--text); background: var(--surface);
+  outline: none; transition: border-color var(--trans); font-family: inherit;
+}
+.modal-input:focus { border-color: var(--accent); }
+.modal-note { font-size: 11px; color: var(--text3); margin-top: 6px; }
+.modal-footer { display: flex; justify-content: flex-end; gap: 8px; padding: 12px 20px; border-top: 1px solid var(--border); }
+.btn-modal { height: 36px; padding: 0 16px; border-radius: var(--radius); font-size: 13px; font-weight: 500; transition: all var(--trans); touch-action: manipulation; min-width: 80px; font-family: inherit; }
+.btn-modal-ghost { border: 1px solid var(--border); color: var(--text2); background: none; }
+.btn-modal-ghost:hover { background: var(--surface2); }
+.btn-modal-primary { background: var(--accent); color: #fff; border: none; }
+.btn-modal-primary:hover { background: #0055D4; }
+ 
+/* VIAJE */
+.viaje-check-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 16px; border-bottom: 1px solid var(--border);
+  cursor: pointer; transition: background var(--trans); min-height: 52px; touch-action: manipulation;
+}
+.viaje-check-item:last-child { border-bottom: none; }
+.viaje-check-item:hover { background: var(--surface2); }
+.viaje-check-item.done { opacity: 0.5; }
+.viaje-check-item.done .vi-text { text-decoration: line-through; }
+.vi-box {
+  width: 20px; height: 20px; border: 2px solid var(--border2); border-radius: 4px;
+  flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+  transition: all var(--trans); margin-top: 1px;
+}
+.viaje-check-item.done .vi-box { background: var(--green); border-color: var(--green); color: #fff; font-size: 11px; font-weight: 700; }
+.vi-content { flex: 1; }
+.vi-text { font-size: 13px; color: var(--text); }
+.vi-sub { font-size: 11px; color: var(--text3); margin-top: 2px; }
+ 
+.agenda-item {
+  padding: 12px 16px; border-left: 3px solid var(--border2);
+  margin-bottom: 8px; background: var(--surface); border-radius: 0 var(--radius) var(--radius) 0;
+}
+.ai-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.ai-day { font-size: 13px; font-weight: 600; color: var(--text); }
+.ai-type { font-size: 11px; font-weight: 500; }
+.ai-task { font-size: 12px; color: var(--text2); padding: 2px 0; border-bottom: 1px solid var(--border); }
+.ai-task:last-child { border-bottom: none; }
+ 
+/* VENEZUELA */
+.venezuela-block {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 14px 16px; background: #FFF5F5;
+  border: 1px solid rgba(222,53,11,0.15);
+  border-left: 3px solid var(--red);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  margin-bottom: var(--gap);
+}
+.vb-icon { font-size: 20px; flex-shrink: 0; }
+.vb-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--red); margin-bottom: 3px; }
+.vb-text { font-size: 12px; color: var(--text2); line-height: 1.5; }
+.vb-text strong { color: var(--text); }
+ 
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+ 
+/* RESPONSIVE */
+@media (max-width: 767px) {
+  :root { --gap: 16px; }
+  .topbar-hamburger { display: flex; }
+  .topbar-stats { display: none; }
+  .topbar-date { display: none; }
+  .sync-badge { display: none; }
+  .brand-sub { display: none; }
+ 
+  .sidebar {
+    position: fixed; top: 0; left: 0;
+    height: 100%; height: calc(var(--vh, 1vh) * 100);
+    z-index: 450;
+    transform: translateX(-100%);
+    -webkit-transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    -webkit-transition: -webkit-transform 0.25s ease;
+    will-change: transform;
+    -webkit-backface-visibility: hidden; backface-visibility: hidden;
+  }
+  .sidebar.open { transform: translateX(0); -webkit-transform: translateX(0); }
+ 
+  .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .grid-2 { grid-template-columns: 1fr; }
+  .empresa-kpi-grid { grid-template-columns: 1fr; }
+  .welcome-grid { grid-template-columns: 1fr; }
+  .page-title { font-size: 22px; }
+  .empresa-title { font-size: 20px; }
+  .kpi-value { font-size: 22px; }
+  .empresa-tab { padding: 10px 14px; font-size: 12px; }
+  .topbar { padding: 0 12px; }
+  .countdown-unit { min-width: 44px; }
+  input, textarea, select { font-size: 16px !important; }
+}
+ 
+@media (min-width: 768px) and (max-width: 1023px) {
+  .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+ 
+/* ── VIEW TABS ── */
+.view-tabs{display:flex;gap:2px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:2px;margin-left:8px;}
+.view-tab{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:4px;font-size:11px;font-weight:500;color:var(--text3);transition:all var(--trans);cursor:pointer;white-space:nowrap;min-height:28px;touch-action:manipulation;border:none;background:none;}
+.view-tab:hover{color:var(--text);}
+.view-tab.active{background:var(--surface);color:var(--gold);box-shadow:var(--shadow);font-weight:600;}
+.view-tab svg{width:13px;height:13px;flex-shrink:0;}
+/* ── COMPANY STRIP ── */
+.company-strip{display:flex;gap:6px;padding:0 var(--gap) 10px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.company-strip::-webkit-scrollbar{display:none;}
+.co-chip{display:flex;align-items:center;gap:5px;padding:4px 10px 4px 7px;background:var(--surface);border:1px solid var(--border);border-radius:20px;cursor:pointer;white-space:nowrap;transition:all var(--trans);touch-action:manipulation;flex-shrink:0;}
+.co-chip:hover{border-color:var(--border2);box-shadow:var(--shadow);}
+.co-chip.active{border-color:var(--gold);background:var(--gold-bg);}
+.co-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.co-name{font-size:11px;font-weight:500;color:var(--text);}
+.co-chip.active .co-name{color:var(--gold);}
+.co-pct{font-size:10px;color:var(--text3);}
+/* ── KANBAN ── */
+.kanban-board{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:var(--gap);}
+.kanban-col{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;min-height:180px;}
+.kanban-col-header{padding:10px 12px;display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--border);background:var(--surface);}
+.kanban-col-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.kanban-col-name{font-size:11px;font-weight:600;color:var(--text);flex:1;}
+.kanban-col-count{font-size:10px;font-weight:600;padding:1px 7px;border-radius:20px;background:var(--border);color:var(--text2);}
+.kanban-col-tasks{padding:8px;display:flex;flex-direction:column;gap:6px;}
+.kanban-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;cursor:pointer;transition:all var(--trans);touch-action:manipulation;}
+.kanban-card:hover{box-shadow:var(--shadow-md);border-color:var(--border2);transform:translateY(-1px);}
+.kanban-card.done{opacity:0.5;}
+.kanban-card.done .kc-task-text{text-decoration:line-through;}
+.kc-task-empresa{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;}
+.kc-task-text{font-size:12px;color:var(--text);line-height:1.4;margin-bottom:6px;}
+.kc-task-meta{display:flex;align-items:center;justify-content:space-between;}
+.kc-task-badge{font-size:9px;font-weight:600;padding:2px 6px;border-radius:4px;}
+.kbadge-urgente{background:var(--amber-bg);color:var(--amber);}
+.kbadge-hoy{background:var(--accent-bg);color:var(--accent);}
+.kbadge-madrid{background:var(--gold-bg);color:var(--gold);}
+.kbadge-ok{background:var(--green-bg);color:var(--green);}
+.kc-task-check{width:16px;height:16px;border:2px solid var(--border2);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;transition:all var(--trans);flex-shrink:0;}
+.kanban-card.done .kc-task-check{background:var(--green);border-color:var(--green);}
+@keyframes cardPop{0%{transform:scale(0.96);opacity:0.7;}60%{transform:scale(1.02);}100%{transform:scale(1);opacity:1;}}
+.kanban-card.just-done{animation:cardPop 0.3s ease forwards;}
+/* ── CALENDAR ── */
+.calendar-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:var(--gap);}
+.cal-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px;}
+.cal-nav{display:flex;align-items:center;gap:8px;}
+.cal-nav-btn{width:28px;height:28px;border-radius:var(--radius);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text2);font-size:14px;transition:all var(--trans);cursor:pointer;touch-action:manipulation;}
+.cal-nav-btn:hover{background:var(--surface2);border-color:var(--border2);}
+.cal-month-title{font-size:14px;font-weight:600;color:var(--text);min-width:140px;text-align:center;}
+.cal-legend{display:flex;gap:8px;flex-wrap:wrap;}
+.cal-legend-item{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--text3);}
+.cal-legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);}
+.cal-day-header{padding:8px 4px;text-align:center;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:var(--text3);background:var(--surface2);border-bottom:1px solid var(--border);}
+.cal-cell{min-height:76px;padding:4px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);vertical-align:top;}
+.cal-cell:nth-child(7n){border-right:none;}
+.cal-cell.other-month{background:var(--surface2);}
+.cal-cell.today{background:var(--gold-bg);}
+.cal-cell.today .cal-day-num{color:var(--gold);font-weight:700;}
+.cal-day-num{font-size:11px;font-weight:500;color:var(--text2);margin-bottom:3px;display:block;}
+.cal-event{display:block;font-size:9px;font-weight:500;padding:1px 4px;border-radius:3px;margin-bottom:2px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cal-more{font-size:9px;color:var(--text3);padding:1px 3px;}
+/* ── RESPONSIVE KANBAN/CAL ── */
+@media (max-width:767px){.kanban-board{grid-template-columns:repeat(2,minmax(0,1fr));}.view-tabs{display:none;}}
+@media (min-width:768px) and (max-width:1100px){.kanban-board{grid-template-columns:repeat(2,minmax(0,1fr));}}
+ 
+</style>
+</head>
+<body>
+ 
+<div class="app">
+ 
+<header class="topbar">
+  <button class="topbar-hamburger" id="hamburger" aria-label="Menu">
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+      <line x1="3" y1="6" x2="17" y2="6"/>
+      <line x1="3" y1="10" x2="17" y2="10"/>
+      <line x1="3" y1="14" x2="17" y2="14"/>
+    </svg>
+  </button>
+  <div class="topbar-brand">
+    <div class="brand-logo">AE</div>
+    <div>
+      <div class="brand-name">AUREA Enterprises</div>
+      <div class="brand-sub">Digital Office - Geraldo Meneses</div>
+    </div>
+  </div>
+  <div class="view-tabs" id="home-view-tabs" style="display:none">
+    <button class="view-tab active" data-view="kanban">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="3" width="4" height="10" rx="1"/><rect x="6" y="3" width="4" height="7" rx="1"/><rect x="11" y="3" width="4" height="12" rx="1"/></svg>
+      Kanban
+    </button>
+    <button class="view-tab" data-view="calendar">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="3" width="14" height="12" rx="1"/><line x1="5" y1="1" x2="5" y2="5"/><line x1="11" y1="1" x2="11" y2="5"/><line x1="1" y1="7" x2="15" y2="7"/></svg>
+      Calendario
+    </button>
+  </div>
+  <div class="topbar-stats">
+    <div class="tstat">
+      <span>Completadas</span>
+      <span class="tstat-val" id="stat-comp">0</span>
+    </div>
+    <div class="tstat">
+      <div class="tstat-bar"><div class="tstat-fill" id="prog-fill" style="width:0%"></div></div>
+      <span id="prog-pct">0%</span>
+    </div>
+    <div class="tstat">
+      <span>Pendientes</span>
+      <span class="tstat-val" id="stat-pend">0</span>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <span class="topbar-date" id="fecha-hoy"></span>
+    <span class="sync-badge" id="sync-badge">Supabase</span>
+    <button class="btn-topbar btn-topbar-ghost" id="btn-guardar" title="Guardar HTML">Guardar</button>
+    <a class="btn-topbar btn-topbar-accent" href="https://gemini.google.com" target="_blank" rel="noopener">AION</a>
+  </div>
+</header>
+ 
+<div class="libertad-banner">
+  <div class="lb-left">
+    <div class="lb-icon">&#128275;</div>
+    <div>
+      <div class="lb-title">Cuenta atras - Libertad financiera</div>
+      <div class="lb-sub">Meta: <strong>$1,200/mes sostenidos</strong> - Sin fecha fija</div>
+    </div>
+  </div>
+  <div class="countdown">
+    <div class="countdown-unit"><div class="cu-num" id="lc-dias">--</div><div class="cu-label">dias</div></div>
+    <div class="countdown-unit"><div class="cu-num" id="lc-horas">--</div><div class="cu-label">horas</div></div>
+    <div class="countdown-unit"><div class="cu-num" id="lc-min">--</div><div class="cu-label">min</div></div>
+    <div class="countdown-unit"><div class="cu-num" id="stat-madrid" style="font-size:14px">--</div><div class="cu-label">a Madrid</div></div>
+  </div>
+</div>
+ 
+<div class="alert-bar" id="alert-bar">
+  <span>&#9888;</span>
+  <span class="alert-text" id="alert-text"></span>
+  <button class="alert-dismiss" id="alert-dismiss">&#10005;</button>
+</div>
+ 
+<div class="body-wrap">
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+ 
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-section-label">Empresas AUREA</div>
+    </div>
+    <div class="sidebar-scroll">
+      <div id="sidebar-items"></div>
+      <div class="sidebar-divider"></div>
+      <button class="sidebar-item" id="btn-viaje" tabindex="0">
+        <div class="si-dot" style="background:var(--gold)"></div>
+        <div class="si-info">
+          <div class="si-name" style="color:var(--gold)">Madrid Jul 2026</div>
+          <div class="si-meta">22-31 Julio - Mision ejecutiva</div>
+        </div>
+      </button>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-tip" id="frase-dia"></div>
+    </div>
+  </nav>
+ 
+  <main class="main" id="main">
+ 
+    <div class="panel active" id="panel-home">
+      <div style="padding:var(--gap) var(--gap) 0">
+        <div class="block-section-title" style="margin-top:0">KPIs Innegociables</div>
+        <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:10px">
+          <div class="kpi-card" style="border-top:3px solid var(--gold);cursor:pointer" data-kpi="ag"><button class="kpi-edit-btn">&#9998;</button><div class="kc-label">Atlantico Growth Ano 1</div><div class="kc-val" id="kpi-ag-val" style="color:var(--gold)">EUR 0</div><div class="kc-target">Meta: EUR 72,000 / ano</div><div class="kc-bar"><div class="kc-bar-fill" id="kpi-ag-bar" style="background:var(--gold);width:0%"></div></div><div class="kc-pct" id="kpi-ag-pct">0%</div></div>
+          <div class="kpi-card" style="border-top:3px solid var(--accent);cursor:pointer" data-kpi="mae"><button class="kpi-edit-btn">&#9998;</button><div class="kc-label">Aterrizaje en Europa</div><div class="kc-val" id="kpi-mae-val" style="color:var(--accent)">EUR 0</div><div class="kc-target">Meta: EUR 12,000 atraidos</div><div class="kc-bar"><div class="kc-bar-fill" id="kpi-mae-bar" style="background:var(--accent);width:0%"></div></div><div class="kc-pct" id="kpi-mae-pct">0%</div></div>
+          <div class="kpi-card" style="border-top:3px solid var(--green);cursor:pointer" data-kpi="efic"><button class="kpi-edit-btn">&#9998;</button><div class="kc-label">Eficiencia IA Produccion</div><div class="kc-val" id="kpi-efic-val" style="color:var(--green)">--</div><div class="kc-target">Meta: menos de 120 min</div><div class="kc-bar"><div class="kc-bar-fill" id="kpi-efic-bar" style="background:var(--green);width:0%"></div></div><div class="kc-pct" id="kpi-efic-pct">Sin datos</div></div>
+          <div class="kpi-card" style="border-top:3px solid #5243AA;cursor:pointer" data-kpi="mady"><button class="kpi-edit-btn">&#9998;</button><div class="kc-label">MADY Comisiones</div><div class="kc-val" id="kpi-mady-val" style="color:#5243AA">EUR 0</div><div class="kc-target">Meta mes 3: EUR 1,400/mes</div><div class="kc-bar"><div class="kc-bar-fill" id="kpi-mady-bar" style="background:#5243AA;width:0%"></div></div><div class="kc-pct" id="kpi-mady-pct">0%</div></div>
+        </div>
+        <div class="block-section-title">Filtrar por empresa</div>
+      </div>
+      <div class="company-strip" id="company-strip"></div>
+      <div style="padding:0 var(--gap) var(--gap)">
+        <div id="kanban-section-label" class="block-section-title">Tareas por estado</div>
+        <div class="kanban-board" id="kanban-board"></div>
+        <div id="calendar-section" style="display:none">
+          <div class="block-section-title">Calendario de tareas y deadlines</div>
+          <div class="calendar-wrap">
+            <div class="cal-header">
+              <div class="cal-nav">
+                <button class="cal-nav-btn" id="cal-prev">&#8249;</button>
+                <div class="cal-month-title" id="cal-month-title">Cargando...</div>
+                <button class="cal-nav-btn" id="cal-next">&#8250;</button>
+              </div>
+              <div class="cal-legend">
+                <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#C49A1A"></div>AG</div>
+                <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#DC2626"></div>MADY</div>
+                <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#0891B2"></div>GLACE</div>
+                <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#059669"></div>LATAM</div>
+                <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#7C3AED"></div>CONCLART</div>
+                <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#D97706"></div>E-com</div>
+              </div>
+            </div>
+            <div class="cal-grid" id="cal-grid"></div>
+          </div>
+        </div>
+        <div class="vz-block" style="display:flex;gap:10px;align-items:flex-start;padding:10px 14px;background:#FFF5F5;border:1px solid rgba(191,38,0,0.12);border-left:3px solid var(--red);border-radius:0 var(--radius) var(--radius) 0;margin-top:8px">
+          <div style="font-size:18px;flex-shrink:0">&#127757;</div>
+          <div>
+            <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--red);margin-bottom:3px">Ventaja Competitiva Venezuela</div>
+            <div style="font-size:11px;color:var(--text2);line-height:1.5"><strong>Inteligencia nativa unica para corporaciones espanolas.</strong> Ninguna agencia en Espana tiene el acceso, la red y la comprension cultural del mercado venezolano que tu tienes.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel" id="panel-viaje">
+      <div class="empresa-header">
+        <div class="empresa-title-row">
+          <div>
+            <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:4px">MISION EJECUTIVA - BONVOY - IBERIA PLUS</div>
+            <div class="empresa-title" style="color:var(--gold)">Madrid 22-31 Jul 2026</div>
+            <div class="empresa-tagline">Four Points Flex Sheraton Atocha - aprox 98 EUR/noche - Socios Bonvoy</div>
+          </div>
+          <div class="empresa-pct-circle">
+            <div class="epc-num" id="viaje-pct" style="color:var(--gold)">0%</div>
+            <div class="epc-label">Preparado</div>
+          </div>
+        </div>
+        <div class="empresa-progress-bar"><div class="empresa-progress-fill" id="viaje-bar" style="background:var(--gold);width:0%"></div></div>
+      </div>
+      <div style="padding:var(--gap)">
+        <div class="consejo">
+          <div class="consejo-icon">&#9992;</div>
+          <div>
+            <div class="consejo-label">Por que el Four Points Flex Sheraton Atocha</div>
+            <div class="consejo-text">Aprox 98 EUR/noche con desayuno para socios Bonvoy. Acumulas puntos Marriott, ubicacion perfecta a 200m de Atocha. El sistema financia el viaje con ingresos de junio-julio. Llegas con track record real de 3 meses.</div>
+          </div>
+        </div>
+        <div class="block-section-title">Checklist pre-viaje</div>
+        <div class="block" style="padding:0;overflow:hidden;margin-bottom:var(--gap)" id="viaje-checklist"></div>
+        <div class="block-section-title">Agenda ejecutiva dia a dia</div>
+        <div id="agenda-wrap"></div>
+      </div>
+    </div>
+ 
+  </main>
+</div>
+</div>
+ 
+<div class="modal-overlay" id="modal-kpi">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-kpi-title">Actualizar KPI</div>
+      <button class="modal-close" id="modal-close">&#10005;</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-label" id="modal-kpi-label">Valor actual</div>
+      <input class="modal-input" type="number" id="modal-kpi-input" placeholder="Ej: 3500" inputmode="numeric">
+      <div class="modal-note" id="modal-kpi-note"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-modal btn-modal-ghost" id="modal-cancel">Cancelar</button>
+      <button class="btn-modal btn-modal-primary" id="modal-save">Guardar</button>
+    </div>
+  </div>
+</div>
+ 
+<script>
+(function() {
+"use strict";
+ 
+/* VH FIX iOS */
+function setVH() {
+  document.documentElement.style.setProperty("--vh", (window.innerHeight * 0.01) + "px");
+}
+setVH();
+window.addEventListener("resize", setVH);
+window.addEventListener("orientationchange", function() { setTimeout(setVH, 100); });
+ 
+/* GUIAS */
+var G = {
+  ag1: { t: "Optimizar LinkedIn como fundador de AG", p: [
+    { n: 1, t: "<strong>Foto profesional:</strong> Fondo liso, ropa formal. Usa <code>photoroom.com</code> desde el movil." },
+    { n: 2, t: "<strong>Banner Canva:</strong> 1584x396px. 'Atlantico Growth - Comunicaciones Espana-America Latina'." },
+    { n: 3, t: "<strong>Titular:</strong> 'Fundador @ Atlantico Growth - Comunicaciones estrategicas Espana-Latam - IA aplicada al contenido'." },
+    { n: 4, t: "<strong>About:</strong> 'Las empresas que crecen entre Espana y America Latina necesitan a alguien que hable ambos idiomas: el corporativo y el cultural. Eso soy yo.'." },
+    { n: 5, t: "<strong>Servicios:</strong> Atlas de Entrada, Puente Continuo, Inteligencia Atlantica, Aterrizaje en Europa." },
+    { n: 6, t: "<strong>URL:</strong> Editar perfil a URL publica <code>linkedin.com/in/geraldomeneses</code>" }
+  ], nota: "El perfil optimizado genera 3-5x mas visitas organicas." },
+  ag2: { t: "Activar atlanticogrowth.com", p: [
+    { n: 1, t: "<strong>Dominio:</strong> <code>namecheap.com</code> a atlanticogrowth.com aprox $12/ano." },
+    { n: 2, t: "<strong>Hosting:</strong> <code>carrd.co</code> Pro $19/ano para landing sin codigo." },
+    { n: 3, t: "<strong>DNS:</strong> Carrd Settings Custom domain configurar en Namecheap." },
+    { n: 4, t: "<strong>Contenido minimo:</strong> Que es AG, 4 servicios con precio, quien eres, contacto." },
+    { n: 5, t: "<strong>Email:</strong> <code>hola@atlanticogrowth.com</code> por $1/mes en Namecheap." }
+  ], nota: "La landing no tiene que ser perfecta. Tiene que existir." },
+  ag3: { t: "Deck de 1 pagina de AG", p: [
+    { n: 1, t: "<strong>Canva:</strong> Formato A4 apaisado. Paleta oscura mas oro." },
+    { n: 2, t: "<strong>Estructura:</strong> Logo, quien eres, el problema, 4 servicios con precio, por que tu, contacto." },
+    { n: 3, t: "<strong>Servicios:</strong> Atlas $1500-3000, Puente $800-2000/mes, Inteligencia $500-1500, Aterrizaje $1000-2500." },
+    { n: 4, t: "<strong>Exporta PDF:</strong> Canva Descargar PDF. Comparte desde Files por WhatsApp." },
+    { n: 5, t: "<strong>Una version, buena.</strong> No hagas 10 versiones." }
+  ], nota: "La propuesta personalizada cierra 4x mejor que el deck generico." },
+  ag6: { t: "10 mensajes de outreach en LinkedIn", p: [
+    { n: 1, t: "<strong>Estructura:</strong> Observacion especifica, lo que aportas, CTA 20 min." },
+    { n: 2, t: "<strong>Ejemplo:</strong> 'Hola [Nombre], vi que [empresa] acaba de abrir en Colombia. Llevo 6 anos en comunicaciones iberoamericanas. Tienes 20 min?'" },
+    { n: 3, t: "<strong>Segmento:</strong> Directores Comunicacion/Marketing/Internacional en empresas espanolas con Latam." },
+    { n: 4, t: "<strong>Volumen:</strong> 10 mensajes/semana. Personaliza la primera linea." },
+    { n: 5, t: "<strong>Follow-up a 5 dias:</strong> 'Hola [Nombre], seguimiento. Es posible hablar esta semana?'" }
+  ], nota: "El 80% de los cierres vienen del follow-up." },
+  m1: { t: "Activar numero virtual +34 en Zadarma", p: [
+    { n: 1, t: "<strong>zadarma.com:</strong> Registrate, Mis Numeros, Comprar, Espana +34, aprox 3-5 EUR/mes." },
+    { n: 2, t: "<strong>Verificacion:</strong> Zadarma acepta pasaporte venezolano escaneado." },
+    { n: 3, t: "<strong>Recarga:</strong> Minimo 5 EUR. Activo en menos de 24h." },
+    { n: 4, t: "<strong>Alternativa CallHippo:</strong> callhippo.com Starter $16/mes." },
+    { n: 5, t: "<strong>Desvio:</strong> Zadarma Ajustes Desvio a tu numero venezolano." }
+  ], nota: "El numero +34 es el requisito #1 para WhatsApp Business." },
+  m2: { t: "Configurar WhatsApp Business con +34", p: [
+    { n: 1, t: "<strong>Descarga WhatsApp Business App</strong> (no la normal). Introduce el +34 de Zadarma." },
+    { n: 2, t: "<strong>Verificacion:</strong> App Zadarma Mensajes codigo SMS de WhatsApp." },
+    { n: 3, t: "<strong>Perfil:</strong> MADY Gestion Habitaciones Madrid. Descripcion con IA." },
+    { n: 4, t: "<strong>Respuesta automatica:</strong> Hola! Soy MADY. Respuesta en menos de 24h." },
+    { n: 5, t: "<strong>Catalogo:</strong> Gestion completa, Matching, Suscripcion propietario." }
+  ], nota: "WhatsApp Business App (no API) es la solucion correcta para el inicio." },
+  m3: { t: "Typeform de captura de inquilinos", p: [
+    { n: 1, t: "<strong>typeform.com:</strong> Plan gratuito 10 respuestas/mes. Basico $25/mes para escalar." },
+    { n: 2, t: "<strong>Preguntas:</strong> Nombre, Trabajo, Ingresos, Horarios, Mascotas, Zona, Presupuesto, Fecha entrada." },
+    { n: 3, t: "<strong>Personalidad:</strong> 'Describete en 3 palabras' y 'Que buscas en un piso compartido?'" },
+    { n: 4, t: "<strong>Al final:</strong> 'Recibiras analisis en 24h. Guarda: [tu +34 Zadarma]'" },
+    { n: 5, t: "<strong>Link corto:</strong> Typeform genera link que compartes con propietarios." }
+  ], nota: "Cada candidato que completa el Typeform ya esta cualificado." },
+  m4: { t: "Claude API para analisis de compatibilidad", p: [
+    { n: 1, t: "<strong>console.anthropic.com:</strong> Crea cuenta. Primeros $5 gratis aprox 200 analisis." },
+    { n: 2, t: "<strong>API key:</strong> Dashboard API Keys Create Key." },
+    { n: 3, t: "<strong>Prompt:</strong> 'Analiza compatibilidad propietario/candidato. Score 1-10 mas 3 razones.'" },
+    { n: 4, t: "<strong>Sin codigo:</strong> Usa Claude.ai directamente. Pega prompt mas datos Typeform." },
+    { n: 5, t: "<strong>PDF Canva:</strong> Logo MADY, Score, Razones, Recomendacion. Envia en 24h." }
+  ], nota: "El informe en 24h es el diferenciador absoluto de MADY." },
+  m6: { t: "Escribir a 20 propietarios en Idealista", p: [
+    { n: 1, t: "<strong>idealista.com:</strong> Habitaciones Madrid, Filtro mas 15 dias publicados." },
+    { n: 2, t: "<strong>Mensaje:</strong> 'Hola, soy gestor con IA. Traigo inquilinos pre-filtrados. No cobro hasta que la habitacion este alquilada. Te interesa?'" },
+    { n: 3, t: "<strong>Contacto:</strong> Formulario de cada anuncio. Algunos tienen WhatsApp directo." },
+    { n: 4, t: "<strong>Airtable:</strong> Tabla Propietarios: Nombre, Zona, Precio, Fecha, Estado." },
+    { n: 5, t: "<strong>Meta:</strong> 20 mensajes a 4-6 respuestas a 1 propietario activo semana 1." }
+  ], nota: "Solo pagas si funciona elimina el riesgo para el propietario." },
+  g1: { t: "Investigar distribuidores agua premium", p: [
+    { n: 1, t: "<strong>Amazon Espana:</strong> Voss aprox 3.5 EUR, Fiji aprox 4.8 EUR, Acqua Panna aprox 2.8 EUR, Hildon aprox 4.2 EUR." },
+    { n: 2, t: "<strong>Margen:</strong> Voss a 6-10 EUR en restaurante. Tu margen distribucion 60-80%." },
+    { n: 3, t: "<strong>Distribuidores:</strong> Busca 'distribuidor agua mineral premium Espana' a Aquaservice." },
+    { n: 4, t: "<strong>Dropshipping:</strong> Sin stock. Compras al distribuidor cuando tienes pedido." },
+    { n: 5, t: "<strong>Fichas:</strong> Origen, mineralogia sodio calcio pH, sabor, maridaje." }
+  ], nota: "La curaduria narrativa es el diferencial de GLACE, no el precio." },
+  g5: { t: "Shopify para GLACE", p: [
+    { n: 1, t: "<strong>shopify.com:</strong> Basic $29/mes. Trial 3 dias." },
+    { n: 2, t: "<strong>Tema:</strong> Dawn o Sense gratis. Color blanco/negro, acento azul glacial." },
+    { n: 3, t: "<strong>Dominio:</strong> Conectar glace.es desde Namecheap." },
+    { n: 4, t: "<strong>Suscripciones:</strong> Bold Subscriptions o Recharge. Essenziale 49 EUR, Prestige 69 EUR, Collector 89 EUR." },
+    { n: 5, t: "<strong>Stripe:</strong> Shopify Ajustes Pagos. Abre cuenta con pasaporte." }
+  ], nota: "El tema visual es lo mas importante de GLACE." },
+  g9: { t: "Lanzar La Caja GLACE", p: [
+    { n: 1, t: "<strong>Tiers:</strong> Essenziale 4 botellas 49 EUR/mes, Prestige 6 botellas 69 EUR/mes, Collector 8 botellas 89 EUR/mes." },
+    { n: 2, t: "<strong>Carta de cata:</strong> Escrita por ti: origen, mineralogia, maridaje del mes." },
+    { n: 3, t: "<strong>Packaging:</strong> Caja negra mas logo oro. Canva mas imprenta local. 3-5 EUR/caja." },
+    { n: 4, t: "<strong>Primera suscriptora:</strong> Tu entorno. El primer testimonio vale mas que 10 posts." },
+    { n: 5, t: "<strong>TikTok:</strong> 'Asi cure este mes de La Caja GLACE'. Unboxing premium." }
+  ], nota: "LTV estimado por suscriptor: 400-600 EUR." },
+  l1: { t: "Identidad visual LATAM SOUL", p: [
+    { n: 1, t: "<strong>Canva Pro:</strong> Logo. Concepto: identidad premium, no souvenir." },
+    { n: 2, t: "<strong>Paleta:</strong> Terracota #C1440E mas dorado #D4AF37 mas verde selva #2D5A27 mas crema." },
+    { n: 3, t: "<strong>Logo:</strong> Mapa Sudamerica linea fina mas LATAM SOUL bold. O colibri geometrico." },
+    { n: 4, t: "<strong>Disenos:</strong> Mapa topografico mas lema. Venezuela: SOMOS VENEZUELA." },
+    { n: 5, t: "<strong>Printful:</strong> printful.com mockup generator, sube diseno, descarga para IG." }
+  ], nota: "Sin buen diseno no hay viralidad." },
+  l2: { t: "Printful mas Shopify para LATAM SOUL", p: [
+    { n: 1, t: "<strong>printful.com:</strong> Cuenta gratis. Sin coste hasta vender." },
+    { n: 2, t: "<strong>Conectar Shopify:</strong> Printful Tiendas Shopify URL Autorizar." },
+    { n: 3, t: "<strong>Productos:</strong> Bella+Canvas 3001 mejor calidad, sube diseno, colores." },
+    { n: 4, t: "<strong>Precios:</strong> Coste base aprox $13.50 a PVP Shopify $32-42. Margen $18-28." },
+    { n: 5, t: "<strong>Prueba:</strong> Pide una unidad antes de lanzar. Verifica calidad y tiempo." }
+  ], nota: "Sin stock, sin riesgo. Printful envia a Espana, EEUU, Mexico y mas de 20 paises." },
+  l7: { t: "Video emocional de lanzamiento", p: [
+    { n: 1, t: "<strong>Concepto:</strong> Para los que viven lejos pero nunca se van. Inicio: Cuando te sentiste 100% venezolano?" },
+    { n: 2, t: "<strong>Estructura 60s:</strong> 0-10s emocion, 10-40s problema, 40-55s solucion, 55-60s CTA." },
+    { n: 3, t: "<strong>iPhone 13:</strong> Modo retrato, ventana lateral, AirPods como microfono." },
+    { n: 4, t: "<strong>CapCut:</strong> Subtitulos mas 38% retencion. Musica latino instrumental suave." },
+    { n: 5, t: "<strong>Publicar:</strong> TikTok primero. Luego Reels. Grupos venezolanos Madrid Facebook." }
+  ], nota: "Sin emocion no hay viralidad." },
+  e1: { t: "Validar nicho de dropshipping", p: [
+    { n: 1, t: "<strong>mercadolibre.com.ve:</strong> Mascotas Mas vendidos. Top 10 con reviews." },
+    { n: 2, t: "<strong>Criterios:</strong> mas de 50 ventas, precio $15-80, no marca conocida, facil enviar." },
+    { n: 3, t: "<strong>AliExpress:</strong> Mismo producto envio Venezuela/Panama menos de 20 dias. Margen 2.5x." },
+    { n: 4, t: "<strong>Top nichos:</strong> Ropa perros, Camas ortopedicas, Comederos automaticos, Juguetes gatos." },
+    { n: 5, t: "<strong>Un solo nicho:</strong> 5 productos, 3 semanas de datos, luego escala o pivota." }
+  ], nota: "Mascotas premium LATAM: $5.5B en 2025." },
+  e6: { t: "Kit IA para PYMEs", p: [
+    { n: 1, t: "<strong>Estructura Canva 30-40 pgs:</strong> Portada, Intro, 5 modulos: Atencion, Redes, Email, Ventas, Productividad." },
+    { n: 2, t: "<strong>50 prompts:</strong> 10 por modulo. Contexto mas instruccion mas output. Copy-paste directo." },
+    { n: 3, t: "<strong>10 templates:</strong> Post IG semanal, email venta, propuesta, respuesta review, script video." },
+    { n: 4, t: "<strong>Hotmart:</strong> hotmart.com Ebook PDF $39 con 10% comision Hotmart." },
+    { n: 5, t: "<strong>Lanzamiento:</strong> Pase 3 meses usando IA en PYMEs hispanas. Aqui lo que funciona. mas link." }
+  ], nota: "Margen 100% en cada venta adicional. Se crea una vez." },
+  c1: { t: "Comunidad digital CONCLART", p: [
+    { n: 1, t: "<strong>Manifiesto:</strong> 1000 palabras sobre por que Madrid necesita un club cultural iberoamericano privado." },
+    { n: 2, t: "<strong>Substack:</strong> Newsletter mensual. Ensayos culturales iberoamericanos." },
+    { n: 3, t: "<strong>@conclart Instagram:</strong> Frases escritores, fragmentos ensayos, fotos culturales Madrid." },
+    { n: 4, t: "<strong>Meta 2026:</strong> 1000 suscriptores newsletter mas 3000 seguidores IG." },
+    { n: 5, t: "<strong>Julio Madrid:</strong> Barrio de las Letras, Malasana, Lavapies. Espacios 100-200 m2." }
+  ], nota: "CONCLART se construye en 2026. Se inaugura en 2028." },
+  c2: { t: "Primeros 20 socios fundadores", p: [
+    { n: 1, t: "<strong>Perfil:</strong> Latinoamericanos en Espana con poder adquisitivo mas pasion cultural." },
+    { n: 2, t: "<strong>Donde:</strong> LinkedIn, Galerias iberoamericanas, Casa de America Madrid, Presentaciones libros." },
+    { n: 3, t: "<strong>Pitch:</strong> CONCLART: primer club cultural privado iberoamericano Madrid. 20 socios fundadores. 2000 EUR/ano. Acceso vitalicio mas voto curaduria." },
+    { n: 4, t: "<strong>Capital:</strong> 20 socios x 2000 EUR = 40000 EUR. Sin deuda, sin inversores." },
+    { n: 5, t: "<strong>Airtable:</strong> Nombre, Profesion, Pais, Canal, Estado." }
+  ], nota: "La admision es el producto mas importante de CONCLART." }
+};
+ 
+/* EMPRESAS */
+var EMPRESAS = [
+  { id: "ag", nombre: "Atlantico Growth", color: "#C49A1A",
+    tag: "El activo premium - Agencia ancla AUREA",
+    tagline: "Agencia boutique de inteligencia comunicacional - Espana-America Latina",
+    capital: "$80", m3: "$1,000/mes", m6: "$2,000/mes",
+    kpis: [
+      { l: "Meta Ano 1", v: "EUR 72,000", d: "Facturacion anual" },
+      { l: "Ticket retainer", v: "$2K-$8K", d: "Por cliente/mes" },
+      { l: "Clientes M6", v: "2-3", d: "Retainers activos" },
+      { l: "Ticket proyecto", v: "$1.5K-$3K", d: "Atlas / Aterrizaje" }
+    ],
+    goals: [
+      "1er cliente firmado antes de julio 2026",
+      "Cerrar 2do cliente presencial en Madrid 22-31 Jul",
+      "Expediente Ley 14/2013 listo septiembre 2026",
+      "LinkedIn con 3+ posts de posicionamiento/semana"
+    ],
+    tips: [
+      "El primer cliente de AG no tiene que ser el ideal. Tiene que existir.",
+      "Cada post de LinkedIn es un prospecto que te encuentra solo.",
+      "La propuesta personalizada cierra 4x mejor que el deck generico.",
+      "4 servicios: Atlas, Puente Continuo, Inteligencia Atlantica, Aterrizaje."
+    ],
+    fases: [
+      { t: "Semana 1-2 - Presencia", p: "Abr 7-20", urgente: true, tareas: [
+        { id: "ag1", t: "LinkedIn optimizado como fundador de AG", n: "Foto, banner, about section, 4 servicios destacados.", urgente: true, hoy: true, g: "ag1" },
+        { id: "ag2", t: "Dominio atlanticogrowth.com registrado y activo", n: "$12/ano en Namecheap. Landing basica en Carrd.", urgente: true, g: "ag2" },
+        { id: "ag3", t: "Deck de 1 pagina listo para enviar", n: "PDF en Canva: AG, 4 servicios, precios, contacto.", urgente: true, g: "ag3" },
+        { id: "ag4", t: "Lista de 20 prospectos ideales en Espana", n: "Empresas espanolas que operan o quieren operar en Latam." },
+        { id: "ag5", t: "Definir las 4 lineas de servicio con precios reales", n: "Atlas, Puente Continuo, Inteligencia Atlantica, Aterrizaje en Europa." }
+      ]},
+      { t: "Semana 3-4 - Outreach", p: "Abr 21 - May 4", tareas: [
+        { id: "ag6", t: "10 mensajes de outreach enviados en LinkedIn", n: "Corto: quien eres, que observas, proponer 30 min.", g: "ag6" },
+        { id: "ag7", t: "3 posts de posicionamiento publicados en LinkedIn", n: "Temas: corredor Espana-Latam, IA en comunicaciones, ventaja venezolana." },
+        { id: "ag8", t: "2 llamadas de prospecto agendadas", n: "Calendly gratis. Facilita coordinacion desde Venezuela." },
+        { id: "ag9", t: "1 propuesta personalizada enviada a lead calificado", n: "Una propuesta real. Demuestra que conoces su negocio." }
+      ]},
+      { t: "Mayo - Primer cliente", p: "Mayo 2026", tareas: [
+        { id: "ag10", t: "Follow-up a todos los contactos de abril", n: "El 80% de cierres vienen del follow-up." },
+        { id: "ag11", t: "10 nuevos outreach con propuesta refinada", n: "Refina con lo aprendido en las llamadas de abril." },
+        { id: "ag12", t: "Auditoria gratuita de 45 min a lead caliente", n: "La auditoria demuestra valor antes de cobrar." },
+        { id: "ag13", t: "Primer contrato firmado minimo $500/mes", n: "No rechaces un cliente por precio bajo." }
+      ]},
+      { t: "Jun-Jul - Madrid presencial", p: "Jun-Jul 2026", madrid: true, tareas: [
+        { id: "ag14", t: "Reuniones presenciales en Madrid 22-31 Jul", n: "Confirmar desde Venezuela semana del 14-18 julio." },
+        { id: "ag15", t: "Cerrar 2do cliente en persona en Madrid", n: "Presencial = ticket 2-3x mayor." },
+        { id: "ag16", t: "Expediente Ley 14/2013 en preparacion", n: "Todo documentado: contratos, emails, propuestas." }
+      ]}
+    ]
+  },
+  { id: "mady", nombre: "MADY", color: "#DC2626",
+    tag: "Super App Madrid - Activacion AUREA - Maquina de caja",
+    tagline: "Vivienda - Movilidad - Salud - Tres fases, un ecosistema",
+    capital: "$120", m3: "EUR 1,400/mes", m6: "EUR 3,500/mes",
+    kpis: [
+      { l: "Comision colocacion", v: "EUR 150-300", d: "Por habitacion alquilada" },
+      { l: "Suscripcion propietario", v: "EUR 29-49/mes", d: "Gestion mensual" },
+      { l: "B2B movilidad", v: "EUR 299-799/mes", d: "Por empresa fase 2" },
+      { l: "Propietarios activos M3", v: "10+", d: "En el sistema" }
+    ],
+    goals: [
+      "Numero +34 activo y WhatsApp Business configurado",
+      "1a comision cobrada antes de semana 3",
+      "10 propietarios activos para mayo",
+      "Primer contrato B2B coliving en Madrid julio"
+    ],
+    tips: [
+      "Tu primer mensaje a un propietario en Idealista puede salir hoy.",
+      "El informe de compatibilidad IA es tu diferenciador total.",
+      "Para WhatsApp +34: Zadarma con pasaporte venezolano.",
+      "3 propietarios activos = primeras comisiones."
+    ],
+    fases: [
+      { t: "Esta semana - Setup urgente", p: "Abr 7-13", urgente: true, tareas: [
+        { id: "m1", t: "Numero +34 virtual en Zadarma o CallHippo", n: "zadarma.com acepta pasaporte venezolano aprox 5 EUR/mes", urgente: true, hoy: true, g: "m1" },
+        { id: "m2", t: "WhatsApp Business configurado con numero +34", n: "MADY Gestion habitaciones Madrid.", urgente: true, hoy: true, g: "m2" },
+        { id: "m3", t: "Typeform para captura de datos de inquilinos", n: "Nombre, trabajo, ingresos, horarios, mascotas, zona, presupuesto.", urgente: true, g: "m3" },
+        { id: "m4", t: "Claude API activa para analisis de compatibilidad", n: "console.anthropic.com primeros $5 gratis.", g: "m4" },
+        { id: "m5", t: "Airtable configurado para propietarios e inquilinos", n: "Dos tablas con estado de cada prospecto." },
+        { id: "m6", t: "Escribir a 20 propietarios en Idealista mas 15 dias", n: "Solo cobro si funciona.", urgente: true, g: "m6" }
+      ]},
+      { t: "Semana 2-3 - Primera comision", p: "Abr 14-27", tareas: [
+        { id: "m7", t: "Gestionar primera habitacion de propietario activo", n: "Fotos, descripcion, precio, condiciones." },
+        { id: "m8", t: "Analizar compatibilidad de candidatos con Claude API", n: "Score 1-10 y 3 razones." },
+        { id: "m9", t: "Enviar informe de compatibilidad en 24h", n: "PDF Canva: analisis, score, recomendacion." },
+        { id: "m10", t: "Cobrar primera comision 150-300 EUR", n: "Stripe para cobro online." },
+        { id: "m11", t: "Lanzar @mady.app en Instagram", n: "Post 1: el problema. Post 2: como funciona MADY." }
+      ]},
+      { t: "Mayo - Escala y automatizacion", p: "Mayo 2026", tareas: [
+        { id: "m12", t: "10 propietarios activos en el sistema", n: "Siguiente batch de 30 contactos." },
+        { id: "m13", t: "Suscripcion mensual a los 3 mejores propietarios", n: "Nunca mas busques inquilinos. 29-49 EUR/mes." },
+        { id: "m14", t: "Automatizar flujo con Make no-code", n: "Typeform a Claude API a Airtable a WhatsApp. aprox 9 EUR/mes." },
+        { id: "m15", t: "Landing page en Carrd con CTA WhatsApp", n: "mady.es problema, solucion, prueba gratis." },
+        { id: "m16", t: "Contactar 10 operadores de coliving en Madrid", n: "Google coliving Madrid mas LinkedIn." }
+      ]},
+      { t: "Jul - Madrid B2B presencial", p: "Jul 22-31", madrid: true, tareas: [
+        { id: "m17", t: "Reuniones con 3-5 operadores de coliving presenciales", n: "Confirmar desde Venezuela 14-18 julio." },
+        { id: "m18", t: "Visitar empresas en Las Tablas / Nuevos Ministerios", n: "Contactar RRHH en LinkedIn antes de ir." },
+        { id: "m19", t: "Cerrar primer contrato B2B movilidad 299-799 EUR/mes", n: "Transforma MADY de servicio manual a SaaS." }
+      ]}
+    ]
+  },
+  { id: "glace", nombre: "GLACE", color: "#0891B2",
+    tag: "Boutique agua de lujo - Global",
+    tagline: "Curaduria - Suscripcion - Marca propia - La narrativa es el producto",
+    capital: "$200", m3: "$500/mes", m6: "$950/mes",
+    kpis: [
+      { l: "Margen bruto", v: "60-80%", d: "Por botella curada" },
+      { l: "La Caja GLACE", v: "EUR 49-89/mes", d: "Suscripcion 3 tiers" },
+      { l: "LTV suscriptor", v: "EUR 400-600", d: "Valor de vida" },
+      { l: "B2B hotel", v: "EUR 150-300/mes", d: "Por cliente hosteleria" }
+    ],
+    goals: [
+      "Identidad visual y Shopify antes de mayo",
+      "10+ suscriptores La Caja GLACE en junio",
+      "3 contratos B2B activos en mes 6",
+      "Visitar distribuidores Voss y Fiji en Madrid"
+    ],
+    tips: [
+      "La narrativa vale mas que el producto. Voss es famosa por su forma, no su agua.",
+      "El primer cliente de La Caja puede ser tu entorno.",
+      "Instagram de GLACE debe parecer revista de lujo."
+    ],
+    fases: [
+      { t: "Semana 1-2 - Investigacion y marca", p: "Abr 7-20", urgente: true, tareas: [
+        { id: "g1", t: "Investigar distribuidores: Voss, Fiji, Acqua Panna, Hildon", n: "Amazon Espana. Precios compra vs venta.", urgente: true, g: "g1" },
+        { id: "g2", t: "Disenar identidad visual GLACE en Canva Pro", n: "Paleta: blanco mas azul glacial mas oro suave. Logo serif." },
+        { id: "g3", t: "Registrar dominio glace.es o glaceshop.com", n: "Namecheap." },
+        { id: "g4", t: "Crear perfil Instagram @glace.water", n: "Agua de autor. Cada botella cuenta una historia." }
+      ]},
+      { t: "Semana 3-4 - Tienda online", p: "Abr 21 - May 4", tareas: [
+        { id: "g5", t: "Shopify con tema minimalista de lujo", n: "Basic $29/mes. Tema Dawn o Sense.", g: "g5" },
+        { id: "g6", t: "Fotografiar 8-10 botellas con estetica editorial", n: "Fondo blanco o negro. Iluminacion natural." },
+        { id: "g7", t: "Fichas de producto con narrativa de origen y mineralogia", n: "Voss: glaciar noruego, mineralizacion, maridaje." },
+        { id: "g8", t: "6 posts en Instagram estetica editorial pura", n: "Alternar: botella sola, texto, cata visual." }
+      ]},
+      { t: "Mayo - Suscripcion y B2B", p: "Mayo 2026", tareas: [
+        { id: "g9", t: "Lanzar La Caja GLACE: 6 botellas 49-69 EUR/mes", n: "Suscripcion Shopify con Recharge o Bold.", g: "g9" },
+        { id: "g10", t: "TikTok: videos de apertura de cajas y catas visuales", n: "Unboxing agua premium = millones de vistas." },
+        { id: "g11", t: "Contactar 5 hoteles boutique y restaurantes de lujo", n: "Propuesta B2B: distribucion exclusiva." }
+      ]},
+      { t: "Jul - Madrid distribuidores", p: "Jul 22-31", madrid: true, tareas: [
+        { id: "g12", t: "Visitar distribuidores agua premium en Madrid", n: "Google Maps distribuidor agua mineral Madrid." },
+        { id: "g13", t: "Reunion con hotel de lujo para acuerdo B2B", n: "Llevar muestras y propuesta." },
+        { id: "g14", t: "Explorar fuentes de agua espanola para marca propia", n: "Solan de Cabras, Cabreiroa." }
+      ]}
+    ]
+  },
+  { id: "latam", nombre: "LATAM SOUL", color: "#059669",
+    tag: "Identidad latina - Diaspora global",
+    tagline: "Print on Demand - Sin inventario - 60M+ latinos fuera de casa",
+    capital: "$150", m3: "$500/mes", m6: "$800/mes",
+    kpis: [
+      { l: "Inventario propio", v: "$0", d: "Print on Demand Printful" },
+      { l: "Margen por producto", v: "40-55%", d: "Sobre PVP" },
+      { l: "Mercado diaspora", v: "60M+", d: "Latinos fuera de LATAM" },
+      { l: "Ticket medio", v: "mas de $40", d: "Por pedido Shopify" }
+    ],
+    goals: [
+      "Tienda Shopify mas Printful antes de lanzar",
+      "Video emocional en TikTok",
+      "50 unidades en preventa semana 1",
+      "Collab con 3 cuentas latinas 100K+"
+    ],
+    tips: [
+      "El contenido de LATAM SOUL tiene que hacer sentir algo. Sin emocion no hay viralidad.",
+      "Un collab puede triplicar ventas en un dia.",
+      "Printful no cobra hasta que vendes. Riesgo de inventario: $0."
+    ],
+    fases: [
+      { t: "Esta semana - Setup y marca", p: "Abr 7-13", urgente: true, tareas: [
+        { id: "l1", t: "Identidad visual LATAM SOUL en Canva Pro", n: "Paleta vibrante elegante. Logo: mapa Latam o colibri.", urgente: true, hoy: true, g: "l1" },
+        { id: "l2", t: "Cuenta Printful conectada a Shopify", n: "printful.com sin coste hasta vender.", urgente: true, g: "l2" },
+        { id: "l3", t: "Dominio latamsoul.com o latamsoul.shop", n: "$12/ano Namecheap." },
+        { id: "l4", t: "@latamsoul en Instagram y TikTok", n: "El orgullo latino, donde sea que estes." },
+        { id: "l5", t: "Disenar colecciones: VEN, COL, MEX, ARG mas pan-latino", n: "3-5 disenos por pais: camiseta, taza, poster." }
+      ]},
+      { t: "Semana 2-3 - Lanzamiento viral", p: "Abr 14-27", tareas: [
+        { id: "l6", t: "Shopify conectado con Printful tienda activa", n: "Basic $29/mes." },
+        { id: "l7", t: "Video emocional de lanzamiento en TikTok e IG", n: "Para los que estamos lejos pero nunca olvidamos.", g: "l7" },
+        { id: "l8", t: "Contactar 10 cuentas latinas en Espana para collabs", n: "5K-50K seguidores. Producto o porcentaje ventas." },
+        { id: "l9", t: "Preventa fundadores: 20% off primeros 50 compradores", n: "48 horas, 20% off." }
+      ]},
+      { t: "Mayo - Catalogo completo", p: "Mayo 2026", tareas: [
+        { id: "l10", t: "Expandir catalogo: Peru, Chile, Uruguay, Ecuador, Bolivia", n: "Pregunta a grupos de Facebook de cada comunidad." },
+        { id: "l11", t: "Coleccion Fechas Patrias edicion limitada", n: "Coincidir con fechas de independencia." },
+        { id: "l12", t: "Collab con influencer latino 50K-200K seguidores", n: "venezolano en Espana o colombiano en Madrid." }
+      ]},
+      { t: "Jul - Madrid y escala", p: "Jul 22-31", madrid: true, tareas: [
+        { id: "l13", t: "Visitar Colores de Madrid estudiar el modelo", n: "Como cliente. Diseno, precios, ticket promedio." },
+        { id: "l14", t: "Explorar tiendas latinas para distribucion fisica", n: "Google Maps tienda venezolana Madrid." },
+        { id: "l15", t: "Grabar El latino en Madrid usa LATAM SOUL", n: "Puerta del Sol, Retiro, Gran Via." }
+      ]}
+    ]
+  },
+  { id: "conclart", nombre: "CONCLART", color: "#7C3AED",
+    tag: "Club cultural privado - Madrid 2028",
+    tagline: "Arte - Literatura - Conversacion iberoamericana - Horizonte 2028",
+    capital: "$0 2026", m3: "--", m6: "--",
+    kpis: [
+      { l: "Membresia anual", v: "EUR 800-2000", d: "Cultural, Mecenas, Fundador" },
+      { l: "100 socios =", v: "EUR 120K/ano", d: "Solo membresias base" },
+      { l: "Proyeccion Ano 1", v: "EUR 240K+", d: "Membresias mas eventos mas arte" },
+      { l: "Apertura", v: "Madrid 2028", d: "BCN y VLC desde 2029" }
+    ],
+    goals: [
+      "1000 suscriptores newsletter Substack dic 2026",
+      "3000 seguidores Instagram editorial @conclart",
+      "20 socios fundadores comprometidos 2027",
+      "Espacio fisico en Madrid identificado julio 2026"
+    ],
+    tips: [
+      "CONCLART se construye en 2026. Se inaugura en 2028. La paciencia es la estrategia.",
+      "El socio fundador no compra una membresia. Co-crea el espacio.",
+      "La newsletter iberoamericana es la semilla de la comunidad."
+    ],
+    fases: [
+      { t: "2026 - Construccion conceptual", p: "Abr-Dic 2026", tareas: [
+        { id: "c1", t: "Manifiesto CONCLART y newsletter en Substack", n: "1000 palabras. Base de todo el contenido.", g: "c1" },
+        { id: "c2", t: "Identificar primeros 20 socios fundadores", n: "Latinoamericanos en Espana con poder adquisitivo mas pasion cultural.", g: "c2" },
+        { id: "c3", t: "Crear Instagram editorial @conclart", n: "Frases escritores, critica de arte, fotos culturales Madrid." },
+        { id: "c4", t: "Meta: 1000 suscriptores Substack dic 2026", n: "Mensual. Calidad sobre cantidad." }
+      ]},
+      { t: "Jul 2026 - Exploracion Madrid", p: "Jul 22-31", madrid: true, tareas: [
+        { id: "c5", t: "Visitar Barrio de las Letras, Malasana y Lavapies", n: "Espacios 100-200 m2 con alquiler flexible." },
+        { id: "c6", t: "Visitar 3 galerias de arte emergente iberoamericano", n: "Alianzas y artistas para temporada inaugural." },
+        { id: "c7", t: "Evento cultural nocturno networking de elite", n: "Galeria nocturna o vernissage. Primeros socios potenciales." }
+      ]},
+      { t: "2027 - Pre-apertura", p: "2027", tareas: [
+        { id: "c8", t: "Cerrar 20 socios fundadores 2000 EUR c/u = 40000 EUR", n: "Capital pre-apertura sin deuda." },
+        { id: "c9", t: "Seleccionar espacio 100-200 m2 en Madrid centro", n: "Barrio de las Letras o Malasana." },
+        { id: "c10", t: "Contratar comisario artistico residente", n: "Iberoamericano con red de artistas emergentes." }
+      ]},
+      { t: "2028 - Apertura", p: "2028", tareas: [
+        { id: "c11", t: "Apertura oficial CONCLART con 50+ socios", n: "12 veladas literarias mas 8 exposiciones de arte." },
+        { id: "c12", t: "Meta ano 1: EUR 240000", n: "100 socios en Q3. Waitlist publica." }
+      ]}
+    ]
+  },
+  { id: "ecom", nombre: "E-com y IA", color: "#D97706",
+    tag: "Ingresos diversificados - Escalable",
+    tagline: "Dropshipping mas Productos digitales IA mas Consultoria - Latam dolarizado",
+    capital: "$130", m3: "$600/mes", m6: "$1,200/mes",
+    kpis: [
+      { l: "Margen prod digital", v: "100%", d: "Cada venta adicional = puro beneficio" },
+      { l: "Consultoria IA", v: "$150-500", d: "Por hora / proyecto" },
+      { l: "Dropshipping ML", v: "25-40%", d: "Margen neto" },
+      { l: "Afiliados IA", v: "$50-200/mes", d: "Ingreso pasivo" }
+    ],
+    goals: [
+      "5 productos en ML Venezuela y Panama",
+      "Kit IA para PYMEs en Hotmart antes de mayo",
+      "2 clientes consultoria IA antes de fin de abril",
+      "Primer producto digital con 10+ ventas en mes 2"
+    ],
+    tips: [
+      "El primer producto digital se crea en un fin de semana.",
+      "En consultoria IA cobra por proyecto, no por hora.",
+      "Amazon FBA desde Espana en 2027 = mayor generador del eje."
+    ],
+    fases: [
+      { t: "Semana 1 - Nicho y setup", p: "Abr 7-13", urgente: true, tareas: [
+        { id: "e1", t: "Elegir UN nicho y validar en Mercado Libre", n: "Mascotas premium: alta demanda, margen bueno.", urgente: true, g: "e1" },
+        { id: "e2", t: "Investigar top 10 productos en ML Venezuela y Panama", n: "mercadolibre.com.ve mas vendidos." },
+        { id: "e3", t: "Identificar proveedor en AliExpress con envio a Latam", n: "Filtrar envio Venezuela/Panama menos de 20 dias." },
+        { id: "e4", t: "Abrir cuenta ML Venezuela y Panama", n: "Email y datos venezolanos." },
+        { id: "e5", t: "Publicar primeros 5 productos como prueba", n: "Fotos mejoradas en Canva. Margen 40-60%." }
+      ]},
+      { t: "Semana 2-3 - Producto digital IA", p: "Abr 14-27", tareas: [
+        { id: "e6", t: "Kit IA para PYMEs: guia mas 50 prompts mas templates", n: "20-30 pgs en Canva. 5 modulos.", g: "e6" },
+        { id: "e7", t: "Publicar en Hotmart o Gumroad $29-49", n: "Hotmart mas fuerte en Latam." },
+        { id: "e8", t: "Anunciar en LinkedIn y grupos Facebook emprendedores", n: "Pase 3 meses usando IA en PYMEs hispanas." },
+        { id: "e9", t: "Cerrar 2 clientes consultoria IA $150-200/hora", n: "En 1h implemento IA en tu negocio." }
+      ]},
+      { t: "Mayo - Optimizacion", p: "Mayo 2026", tareas: [
+        { id: "e10", t: "Analizar ventas ML y duplicar los que funcionan", n: "3 semanas de datos. Escala." },
+        { id: "e11", t: "Segundo nicho complementario: hogar o salud", n: "Solo cuando el primero este estable." },
+        { id: "e12", t: "2do producto digital: templates IA redes $19-39", n: "50 templates IG/LinkedIn." }
+      ]},
+      { t: "Jun-Dic - Amazon FBA", p: "Jun-Dic 2026", tareas: [
+        { id: "e13", t: "Completar curso Amazon FBA Jungle Scout", n: "$100-200. Modelo que escala desde Espana." },
+        { id: "e14", t: "Identificar producto marca propia Amazon EU", n: "Lifestyle/bienestar. Reviews menos de 200. Margen mas de 40%." },
+        { id: "e15", t: "Subir ticket consultoria IA a $300-500/proyecto", n: "Con casos de exito el ticket puede triplicarse." }
+      ]}
+    ]
+  }
+];
+ 
+var VIAJE_ITEMS = [
+  { id: "v1", t: "Investigar vuelos Iberia CCS-MAD para el 22 julio", n: "iberia.com Socio Clasico = maxima acumulacion avios" },
+  { id: "v2", t: "Reservar Four Points Flex Sheraton Atocha", n: "marriott.com aprox 98 EUR/noche con desayuno 9 noches Bonvoy" },
+  { id: "v3", t: "Verificar vigencia del pasaporte venezolano", n: "Minimo 6 meses de vigencia despues del 31 julio 2026" },
+  { id: "v4", t: "Contratar seguro medico de viaje", n: "iHi Bupa o Chapka aprox 40-60 EUR para 10 dias obligatorio Espana" },
+  { id: "v5", t: "Conseguir euros o tarjeta sin comisiones", n: "Wally card aprox 200 EUR efectivo para primeros dias" },
+  { id: "v6", t: "Agendar 8 reuniones minimo desde Venezuela", n: "LinkedIn mas email a prospectos AG, MADY, GLACE y CONCLART" },
+  { id: "v7", t: "Preparar materiales: decks, propuestas, muestras", n: "AG: deck, MADY: demo, GLACE: 3-4 botellas" },
+  { id: "v8", t: "Plan de contenido Madrid: 4 semanas YT/Reels", n: "Sol, Retiro, Gran Via, Atocha, Barrio de las Letras" }
+];
+ 
+var AGENDA = [
+  { d: "22 Jul Mie", tipo: "Llegada", c: "#64748B", items: ["Vuelo CCS-MAD llegada tarde", "Check-in Four Points Flex Sheraton Atocha", "Comprar SIM espanola Lebara o Movistar", "Recorrido a pie: Atocha, Retiro", "Descanso recuperar horario"] },
+  { d: "23 Jul Jue", tipo: "Marca personal", c: "#2563EB", items: ["Grabar Llegue a Madrid para YT/Reels", "Recorrer Barrio de las Letras y Malasana", "Visitar espacios potenciales para CONCLART", "Fotografia editorial para GLACE"] },
+  { d: "24 Jul Vie", tipo: "MADY Vivienda", c: "#DC2626", items: ["Reunion operador coliving #1", "Visita zonas de alta densidad habitaciones", "Demo MADY a propietario premium", "Grabar: Asi funciona MADY desde Madrid"] },
+  { d: "25 Jul Sab", tipo: "CONCLART mas Cultura", c: "#7C3AED", items: ["Visita Reina Sofia o Thyssen", "Galerias Barrio de las Letras", "Explorar locales para CONCLART", "Noche: galeria nocturna o vernissage"] },
+  { d: "26 Jul Dom", tipo: "Investigacion", c: "#059669", items: ["Mercado del Rastro merchandise", "Visitar Colores de Madrid", "Escribir reflexiones para Substack"] },
+  { d: "27 Jul Lun", tipo: "Atlantico Growth", c: "#C49A1A", items: ["Reunion presencial prospecto AG #1", "Presentacion servicios mas propuesta", "Visita coworking WeWork o Utopicus", "Reunion AG #2 si disponible"] },
+  { d: "28 Jul Mar", tipo: "MADY Empresas", c: "#DC2626", items: ["Visita Las Tablas o Nuevos Ministerios", "Reunion RRHH empresa movilidad", "Reunion operador coliving #2", "Follow-up llamadas de cierre"] },
+  { d: "29 Jul Mie", tipo: "GLACE mas Agua", c: "#0891B2", items: ["Visitar distribuidores agua premium", "Reunion hotel de lujo B2B", "Investigar fuentes: Solan, Cabreiroa", "Fotografia editorial avanzada"] },
+  { d: "30 Jul Jue", tipo: "AG Cierre", c: "#C49A1A", items: ["Reunion cierre AG mas avanzado", "Firmar 1er contrato AG en Madrid", "Grabar: Lo que logre en 10 dias", "Cena de celebracion"] },
+  { d: "31 Jul Vie", tipo: "Salida", c: "#64748B", items: ["Manana libre cafe fotos", "Check-out antes del mediodia", "Vuelo de regreso Venezuela", "En vuelo: informe mas proximos pasos"] }
+];
+ 
+var FRASES = [
+  "El sistema solo funciona si tu lo activas.",
+  "Una tarea ejecutada hoy vale mas que un plan perfecto en el cajon.",
+  "MADY necesita un mensaje tuyo en Idealista ahora mismo.",
+  "El primer cliente de AG no tiene que ser el ideal. Tiene que existir.",
+  "LATAM SOUL puede lanzar esta semana. Sin excusas.",
+  "Madrid en julio es el punto de inflexion. Ejecuta hoy.",
+  "GLACE empieza con una botella fotografiada esta tarde.",
+  "Tu ventaja venezolana es unica en el mundo. Usala."
+];
+ 
+/* SUPABASE */
+var SB_URL = "https://pxwjwldrskiovcmgysjj.supabase.co";
+var SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB4d2p3bGRyc2tpb3ZjbWd5c2pqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxNjcwNzMsImV4cCI6MjA5MTc0MzA3M30.n-5LJ-WagyD0V30koHKoCJLnmsm3nVZ5_wao11Q07qY";
+ 
+function sbGet(key) {
+  return fetch(SB_URL + "/rest/v1/aurea_state?key=eq." + key + "&select=value", {
+    headers: { "apikey": SB_KEY, "Authorization": "Bearer " + SB_KEY }
+  }).then(function(r) {
+    return r.json();
+  }).then(function(d) {
+    if (d && d[0]) { return JSON.parse(d[0].value); }
+    return null;
+  }).catch(function() { return null; });
+}
+ 
+function sbSet(key, value) {
+  return fetch(SB_URL + "/rest/v1/aurea_state", {
+    method: "POST",
+    headers: {
+      "apikey": SB_KEY,
+      "Authorization": "Bearer " + SB_KEY,
+      "Content-Type": "application/json",
+      "Prefer": "resolution=merge-duplicates"
+    },
+    body: JSON.stringify({ key: key, value: JSON.stringify(value), updated_at: new Date().toISOString() })
+  }).catch(function(e) { console.warn("SB error", e); });
+}
+ 
+/* STATE */
+var ST = {}, VJ = {}, KP = {}, CU = {}, GA = {};
+var activePanel = "home", kpiKey = null;
+ 
+function setBadge(s) {
+  var el = document.getElementById("sync-badge");
+  if (!el) return;
+  if (s === "syncing") {
+    el.className = "sync-badge syncing";
+    el.textContent = "Sync...";
+  } else if (s === "error") {
+    el.className = "sync-badge error";
+    el.textContent = "Offline";
+  } else {
+    el.className = "sync-badge";
+    el.textContent = "Supabase OK";
+  }
+}
+ 
+function loadState() {
+  setBadge("syncing");
+  return Promise.all([sbGet("tareas"), sbGet("viaje"), sbGet("kpis"), sbGet("cuadernos")])
+    .then(function(res) {
+      ST = res[0] || {};
+      VJ = res[1] || {};
+      KP = res[2] || {};
+      CU = res[3] || {};
+      setBadge("ok");
+    })
+    .catch(function() {
+      try {
+        ST = JSON.parse(localStorage.getItem("au_t") || "{}");
+        VJ = JSON.parse(localStorage.getItem("au_v") || "{}");
+        KP = JSON.parse(localStorage.getItem("au_k") || "{}");
+        CU = JSON.parse(localStorage.getItem("au_c") || "{}");
+      } catch(e2) {}
+      setBadge("error");
+    });
+}
+ 
+var saveTimer = null;
+function saveState() {
+  try {
+    localStorage.setItem("au_t", JSON.stringify(ST));
+    localStorage.setItem("au_v", JSON.stringify(VJ));
+    localStorage.setItem("au_k", JSON.stringify(KP));
+    localStorage.setItem("au_c", JSON.stringify(CU));
+  } catch(e) {}
+  clearTimeout(saveTimer);
+  setBadge("syncing");
+  saveTimer = setTimeout(function() {
+    Promise.all([
+      sbSet("tareas", ST),
+      sbSet("viaje", VJ),
+      sbSet("kpis", KP),
+      sbSet("cuadernos", CU)
+    ]).then(function() {
+      setBadge("ok");
+      setTimeout(function() { setBadge("ok"); }, 3000);
+    }).catch(function() { setBadge("error"); });
+  }, 900);
+}
+ 
+/* TIME */
+function tick() {
+  var now = new Date();
+  var el = document.getElementById("fecha-hoy");
+  if (el) el.textContent = now.toLocaleDateString("es-ES", { weekday: "short", day: "numeric", month: "short" }).toUpperCase();
+ 
+  var madrid = new Date("2026-07-22T00:00:00");
+  var dm = Math.ceil((madrid - now) / 86400000);
+  var sm = document.getElementById("stat-madrid");
+  if (sm) sm.textContent = dm > 0 ? dm + "d" : "ES";
+ 
+  var meta = new Date("2026-07-01T00:00:00");
+  var ms = meta - now;
+  if (ms > 0) {
+    var d = String(Math.floor(ms / 86400000)).padStart(2, "0");
+    var h = String(Math.floor((ms % 86400000) / 3600000)).padStart(2, "0");
+    var m = String(Math.floor((ms % 3600000) / 60000)).padStart(2, "0");
+    var ed = document.getElementById("lc-dias");
+    var eh = document.getElementById("lc-horas");
+    var em = document.getElementById("lc-min");
+    if (ed) ed.textContent = d;
+    if (eh) eh.textContent = h;
+    if (em) em.textContent = m;
+  } else {
+    ["lc-dias", "lc-horas", "lc-min"].forEach(function(id) {
+      var e = document.getElementById(id);
+      if (e) e.textContent = "00";
+    });
+  }
+}
+ 
+/* STATS */
+function updateStats() {
+  var all = [];
+  EMPRESAS.forEach(function(e) {
+    e.fases.forEach(function(f) {
+      f.tareas.forEach(function(t) { all.push(t); });
+    });
+  });
+  var done = all.filter(function(t) { return ST[t.id]; }).length;
+  var pct = all.length ? Math.round(done / all.length * 100) : 0;
+  var ec = document.getElementById("stat-comp");
+  var ep = document.getElementById("stat-pend");
+  var pf = document.getElementById("prog-fill");
+  var pp = document.getElementById("prog-pct");
+  if (ec) ec.textContent = done;
+  if (ep) ep.textContent = all.length - done;
+  if (pf) pf.style.width = pct + "%";
+  if (pp) pp.textContent = pct + "%";
+}
+ 
+/* KPIS */
+function updateKPIs() {
+  var ag = KP.ag || 0;
+  var ev = document.getElementById("kpi-ag-val");
+  var eb = document.getElementById("kpi-ag-bar");
+  var ep = document.getElementById("kpi-ag-pct");
+  var agP = Math.min(100, Math.round(ag / 72000 * 100));
+  if (ev) ev.textContent = "EUR " + ag.toLocaleString("es-ES");
+  if (eb) eb.style.width = agP + "%";
+  if (ep) ep.textContent = agP + "% Meta EUR 72,000";
+ 
+  var mae = KP.mae || 0;
+  var mv = document.getElementById("kpi-mae-val");
+  var mb = document.getElementById("kpi-mae-bar");
+  var mpp = document.getElementById("kpi-mae-pct");
+  var maeP = Math.min(100, Math.round(mae / 12000 * 100));
+  if (mv) mv.textContent = "EUR " + mae.toLocaleString("es-ES");
+  if (mb) mb.style.width = maeP + "%";
+  if (mpp) mpp.textContent = maeP + "% Meta EUR 12,000";
+ 
+  var ef = KP.efic;
+  var efv = document.getElementById("kpi-efic-val");
+  var efb = document.getElementById("kpi-efic-bar");
+  var efp = document.getElementById("kpi-efic-pct");
+  var efP = ef ? Math.min(100, Math.round((120 - Math.min(ef, 120)) / 120 * 100)) : 0;
+  if (efv) efv.textContent = ef ? ef + " min" : "--";
+  if (efb) efb.style.width = efP + "%";
+  if (efp) efp.textContent = ef ? (ef <= 120 ? "Meta cumplida" : "Sobre meta") : "Sin datos";
+ 
+  var ma = KP.mady || 0;
+  var mav = document.getElementById("kpi-mady-val");
+  var mab = document.getElementById("kpi-mady-bar");
+  var map2 = document.getElementById("kpi-mady-pct");
+  var maP = Math.min(100, Math.round(ma / 1400 * 100));
+  if (mav) mav.textContent = "EUR " + ma.toLocaleString("es-ES");
+  if (mab) mab.style.width = maP + "%";
+  if (map2) map2.textContent = maP + "% Meta EUR 1,400/mes";
+}
+ 
+var KPI_DEFS = {
+  ag:   { title: "Atlantico Growth Facturacion", label: "Importe en euros ej: 3500", note: "Meta: EUR 72,000 anuales." },
+  mae:  { title: "Aterrizaje en Europa Capital", label: "Importe en euros", note: "Meta: EUR 12,000." },
+  efic: { title: "Eficiencia IA Minutos/proyecto", label: "Minutos de produccion ej: 95", note: "Meta: menos de 120 minutos." },
+  mady: { title: "MADY Comisiones este mes", label: "Importe en euros cobrado", note: "Meta mensual: EUR 1,400." }
+};
+ 
+function editarKPI(key) {
+  kpiKey = key;
+  var d = KPI_DEFS[key];
+  var mt = document.getElementById("modal-kpi-title");
+  var ml = document.getElementById("modal-kpi-label");
+  var mn = document.getElementById("modal-kpi-note");
+  var mi = document.getElementById("modal-kpi-input");
+  if (mt) mt.textContent = d.title;
+  if (ml) ml.textContent = d.label;
+  if (mn) mn.textContent = d.note;
+  if (mi) mi.value = KP[key] || "";
+  var mo = document.getElementById("modal-kpi");
+  if (mo) mo.classList.add("visible");
+  setTimeout(function() { if (mi) mi.focus(); }, 150);
+}
+ 
+function saveKPI() {
+  var mi = document.getElementById("modal-kpi-input");
+  if (!mi) return;
+  var v = parseFloat(mi.value);
+  if (!isNaN(v)) {
+    KP[kpiKey] = v;
+    saveState();
+    updateKPIs();
+  }
+  closeModal();
+}
+ 
+function closeModal() {
+  var mo = document.getElementById("modal-kpi");
+  if (mo) mo.classList.remove("visible");
+}
+ 
+/* SIDEBAR */
+function renderSidebar() {
+  var c = document.getElementById("sidebar-items");
+  if (!c) return;
+  var html = "";
+  EMPRESAS.forEach(function(e) {
+    var all = [];
+    e.fases.forEach(function(f) { f.tareas.forEach(function(t) { all.push(t); }); });
+    var done = all.filter(function(t) { return ST[t.id]; }).length;
+    var pct = Math.round(done / all.length * 100);
+    var active = activePanel === e.id ? " active" : "";
+    html += '<button class="sidebar-item' + active + '" data-panel="' + e.id + '" tabindex="0">' +
+      '<div class="si-dot" style="background:' + e.color + '"></div>' +
+      '<div class="si-info">' +
+        '<div class="si-name">' + e.nombre + '</div>' +
+        '<div class="si-meta">' + done + '/' + all.length + ' - ' + pct + '%</div>' +
+      '</div>' +
+      '<div class="si-progress"><div class="si-progress-fill" style="background:' + e.color + ';width:' + pct + '%"></div></div>' +
+      '</button>';
+  });
+  c.innerHTML = html;
+  c.querySelectorAll("[data-panel]").forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      showPanel(btn.dataset.panel);
+      closeSidebar();
+    });
+  });
+  var bv = document.getElementById("btn-viaje");
+  if (bv) {
+    if (activePanel === "viaje") bv.classList.add("active");
+    else bv.classList.remove("active");
+  }
+}
+ 
+function renderHomeCompanies() {
+  var c = document.getElementById("home-companies");
+  if (!c) return;
+  var html = "";
+  EMPRESAS.forEach(function(e) {
+    var all = [];
+    e.fases.forEach(function(f) { f.tareas.forEach(function(t) { all.push(t); }); });
+    var done = all.filter(function(t) { return ST[t.id]; }).length;
+    var pct = Math.round(done / all.length * 100);
+    html += '<div class="company-progress" data-panel="' + e.id + '">' +
+      '<div class="cp-dot" style="background:' + e.color + '"></div>' +
+      '<div class="cp-info">' +
+        '<div class="cp-name">' + e.nombre + '</div>' +
+        '<div class="cp-sub">' + e.tag + '</div>' +
+      '</div>' +
+      '<div class="cp-bar"><div class="cp-fill" style="background:' + e.color + ';width:' + pct + '%"></div></div>' +
+      '<div class="cp-pct" style="color:' + e.color + '">' + pct + '%</div>' +
+      '<div class="cp-arrow">&#8594;</div>' +
+      '</div>';
+  });
+  c.innerHTML = html;
+  c.querySelectorAll("[data-panel]").forEach(function(el) {
+    el.addEventListener("click", function() { showPanel(el.dataset.panel); });
+  });
+}
+ 
+/* PANELS */
+function showPanel(id) {
+  document.querySelectorAll(".panel").forEach(function(p) { p.classList.remove("active"); });
+  activePanel = id;
+  var hvt = document.getElementById("home-view-tabs");
+  if (hvt) hvt.style.display = (id === "home") ? "flex" : "none";
+  if (id === "home") { renderCompanyStrip(); renderKanban(); }
+ 
+  if (id === "home") {
+    var ph = document.getElementById("panel-home");
+    if (ph) ph.classList.add("active");
+    renderHomeCompanies();
+    renderSidebar();
+    return;
+  }
+  if (id === "viaje") {
+    var pv = document.getElementById("panel-viaje");
+    if (pv) pv.classList.add("active");
+    renderSidebar();
+    renderViaje();
+    return;
+  }
+ 
+  var emp = null;
+  EMPRESAS.forEach(function(e) { if (e.id === id) emp = e; });
+  if (!emp) return;
+ 
+  var panel = document.getElementById("panel-" + id);
+  if (!panel) {
+    panel = document.createElement("div");
+    panel.className = "panel";
+    panel.id = "panel-" + id;
+    var main = document.getElementById("main");
+    if (main) main.appendChild(panel);
+  }
+  panel.innerHTML = renderEmpresa(emp);
+  panel.classList.add("active");
+  renderSidebar();
+  checkAlerts();
+ 
+  panel.querySelectorAll(".empresa-tab").forEach(function(tab) {
+    tab.addEventListener("click", function() {
+      panel.querySelectorAll(".empresa-tab").forEach(function(t) { t.classList.remove("active"); });
+      panel.querySelectorAll(".tab-panel").forEach(function(t) { t.classList.remove("active"); });
+      tab.classList.add("active");
+      var tp = panel.querySelector("#tp-" + tab.dataset.tab);
+      if (tp) tp.classList.add("active");
+    });
+  });
+ 
+  panel.querySelectorAll(".fase-header").forEach(function(h) {
+    h.addEventListener("click", function() {
+      h.closest(".fase").classList.toggle("collapsed");
+    });
+  });
+ 
+  panel.querySelectorAll(".tarea").forEach(function(el) {
+    el.addEventListener("click", function(ev) {
+      if (ev.target.closest(".btn-guia")) return;
+      var tid = el.dataset.tid;
+      var eid = el.dataset.eid;
+      if (tid && eid) toggleTask(tid, eid, el);
+    });
+  });
+ 
+  panel.querySelectorAll(".btn-guia").forEach(function(btn) {
+    btn.addEventListener("click", function(ev) {
+      ev.stopPropagation();
+      toggleGuia(btn.dataset.gid);
+    });
+  });
+ 
+  panel.querySelectorAll("[data-cid]").forEach(function(ta) {
+    ta.addEventListener("input", function() {
+      CU[ta.dataset.cid] = ta.value;
+      saveState();
+      var saved = panel.querySelector(".cuaderno-saved");
+      var chars = panel.querySelector(".cuaderno-chars");
+      if (saved) { saved.classList.add("show"); setTimeout(function() { saved.classList.remove("show"); }, 2000); }
+      if (chars) chars.textContent = ta.value.length + " caracteres";
+    });
+  });
+ 
+  panel.querySelectorAll("[data-clear]").forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      if (!confirm("Borrar el cuaderno?")) return;
+      CU[btn.dataset.clear] = "";
+      var ta = panel.querySelector('[data-cid="' + btn.dataset.clear + '"]');
+      if (ta) ta.value = "";
+      saveState();
+    });
+  });
+ 
+  panel.querySelectorAll("[data-export]").forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      var eid = btn.dataset.export;
+      var nombre = btn.dataset.nombre;
+      var blob = new Blob(["AUREA Cuaderno " + nombre + "\n" + new Date().toLocaleDateString("es-ES") + "\n\n" + (CU[eid] || "")], { type: "text/plain" });
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "AUREA_" + nombre + ".txt";
+      a.click();
+    });
+  });
+}
+ 
+function renderEmpresa(e) {
+  var all = [];
+  e.fases.forEach(function(f) { f.tareas.forEach(function(t) { all.push(t); }); });
+  var done = all.filter(function(t) { return ST[t.id]; }).length;
+  var pct = Math.round(done / all.length * 100);
+  var tip = e.tips[new Date().getDay() % e.tips.length];
+  var chipClass = done === all.length ? "green" : pct > 50 ? "accent" : "amber";
+ 
+  var html = '<div class="empresa-header">' +
+    '<div class="empresa-title-row">' +
+      '<div>' +
+        '<div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:4px">' + e.tag.toUpperCase() + '</div>' +
+        '<div class="empresa-title" style="color:' + e.color + '">' + e.nombre + '</div>' +
+        '<div class="empresa-tagline">' + e.tagline + '</div>' +
+        '<div class="page-chips" style="margin-top:10px">' +
+          '<span class="chip">Capital: ' + e.capital + '</span>' +
+          '<span class="chip">M3: ' + e.m3 + '</span>' +
+          '<span class="chip">M6: ' + e.m6 + '</span>' +
+          '<span class="chip ' + chipClass + '">' + done + '/' + all.length + ' tareas</span>' +
+        '</div>' +
+      '</div>' +
+      '<div class="empresa-pct-circle">' +
+        '<div class="epc-num" style="color:' + e.color + '">' + pct + '%</div>' +
+        '<div class="epc-label">Completado</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="empresa-progress-bar"><div class="empresa-progress-fill" style="background:' + e.color + ';width:' + pct + '%"></div></div>' +
+  '</div>' +
+ 
+  '<div class="empresa-tabs">' +
+    '<button class="empresa-tab active" data-tab="tareas">Tareas</button>' +
+    '<button class="empresa-tab" data-tab="kpis">KPIs</button>' +
+    '<button class="empresa-tab" data-tab="cuaderno">Cuaderno</button>' +
+  '</div>' +
+ 
+  '<div class="tab-panel active" id="tp-tareas">' +
+    '<div class="consejo"><div class="consejo-icon">&#128161;</div><div><div class="consejo-label">Consejo</div><div class="consejo-text">' + tip + '</div></div></div>';
+ 
+  e.fases.forEach(function(f) {
+    var fd = f.tareas.filter(function(t) { return ST[t.id]; }).length;
+    var fp = Math.round(fd / f.tareas.length * 100);
+    html += '<div class="fase">' +
+      '<button class="fase-header">' +
+        '<span class="fase-chevron">&#9660;</span>' +
+        '<span class="fase-title">' + (f.madrid ? "Madrid - " : "") + f.t + '</span>' +
+        '<span class="fase-period">' + f.p + '</span>' +
+        (f.urgente ? '<span class="fase-badge fase-badge-urgente">URGENTE</span>' : '') +
+        (f.madrid ? '<span class="fase-badge fase-badge-madrid">MADRID</span>' : '') +
+        '<span class="fase-progress">' + fd + '/' + f.tareas.length + ' - ' + fp + '%</span>' +
+      '</button>' +
+      '<div class="fase-body">';
+ 
+    f.tareas.forEach(function(t) {
+      var isDone = ST[t.id];
+      var cls = "tarea";
+      if (isDone) cls += " completada";
+      if (t.urgente && !isDone) cls += " urgente";
+      if (t.hoy && !isDone) cls += " hoy-task";
+      var guia = t.g && G[t.g];
+ 
+      html += '<div class="' + cls + '" data-tid="' + t.id + '" data-eid="' + e.id + '">' +
+        '<div class="tarea-check"><span class="tarea-check-icon">&#10003;</span></div>' +
+        '<div class="tarea-content">' +
+          '<div class="tarea-text">' + t.t + '</div>' +
+          '<div class="tarea-nota">' + (t.n || "") + '</div>' +
+        '</div>' +
+        '<div class="tarea-badges">' +
+          (t.hoy && !isDone ? '<span class="tbadge tbadge-hoy">HOY</span>' : '') +
+          (t.urgente && !isDone ? '<span class="tbadge tbadge-urgente">URGENTE</span>' : '') +
+          (f.madrid ? '<span class="tbadge tbadge-madrid">MADRID</span>' : '') +
+          (guia ? '<button class="btn-guia' + (GA[t.id] ? " open" : "") + '" data-gid="' + t.id + '">Guia</button>' : '') +
+        '</div>' +
+      '</div>';
+ 
+      if (guia) {
+        html += '<div class="guia-wrap' + (GA[t.id] ? " visible" : "") + '" id="guia-' + t.id + '">' +
+          '<div class="guia-title">' + guia.t + '</div>';
+        guia.p.forEach(function(p) {
+          html += '<div class="guia-step"><div class="guia-num">' + p.n + '</div><div class="guia-step-text">' + p.t + '</div></div>';
+        });
+        if (guia.nota) html += '<div class="guia-note">' + guia.nota + '</div>';
+        html += '</div>';
+      }
+    });
+ 
+    html += '</div></div>';
+  });
+ 
+  html += '</div>' +
+ 
+  '<div class="tab-panel" id="tp-kpis">' +
+    '<div class="empresa-kpi-grid">';
+  e.kpis.forEach(function(k) {
+    html += '<div class="ek-item"><div class="ek-label">' + k.l + '</div><div class="ek-value">' + k.v + '</div><div class="ek-desc">' + k.d + '</div></div>';
+  });
+  html += '</div>' +
+    '<div class="block-section-title">Objetivos estrategicos</div>' +
+    '<div class="goals-list">';
+  e.goals.forEach(function(g, i) {
+    html += '<div class="goal-item"><div class="goal-num">' + (i + 1) + '</div><div class="goal-text">' + g + '</div></div>';
+  });
+  html += '</div></div>' +
+ 
+  '<div class="tab-panel" id="tp-cuaderno">' +
+    '<div class="cuaderno-wrap">' +
+      '<div class="cuaderno-header">' +
+        '<div class="cuaderno-title">Cuaderno ' + e.nombre + '</div>' +
+        '<div class="cuaderno-saved">Guardado</div>' +
+      '</div>' +
+      '<textarea class="cuaderno-ta" data-cid="' + e.id + '" placeholder="Documenta avances, pega enlaces, borradores... Se guarda automaticamente.">' + (CU[e.id] || "") + '</textarea>' +
+      '<div class="cuaderno-footer">' +
+        '<div class="cuaderno-chars">' + (CU[e.id] || "").length + ' caracteres</div>' +
+        '<div class="cuaderno-actions">' +
+          '<button class="btn-sm" data-clear="' + e.id + '">Limpiar</button>' +
+          '<button class="btn-sm btn-sm-primary" data-export="' + e.id + '" data-nombre="' + e.nombre + '">Exportar</button>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
+ 
+  return html;
+}
+ 
+function toggleTask(tid, eid, el) {
+  ST[tid] = !ST[tid];
+  if (ST[tid]) {
+    el.classList.add("just-checked");
+    setTimeout(function() { el.classList.remove("just-checked"); }, 400);
+  }
+  saveState();
+  updateStats();
+  renderSidebar();
+  showPanel(eid);
+}
+ 
+function toggleGuia(tid) {
+  GA[tid] = !GA[tid];
+  var gw = document.getElementById("guia-" + tid);
+  var gb = document.querySelector('[data-gid="' + tid + '"]');
+  if (gw) gw.classList.toggle("visible", !!GA[tid]);
+  if (gb) gb.classList.toggle("open", !!GA[tid]);
+}
+ 
+/* VIAJE */
+function renderViaje() {
+  var done = VIAJE_ITEMS.filter(function(i) { return VJ[i.id]; }).length;
+  var pct = Math.round(done / VIAJE_ITEMS.length * 100);
+  var vp = document.getElementById("viaje-pct");
+  var vb = document.getElementById("viaje-bar");
+  if (vp) vp.textContent = pct + "%";
+  if (vb) vb.style.width = pct + "%";
+ 
+  var cl = document.getElementById("viaje-checklist");
+  if (cl) {
+    var html = "";
+    VIAJE_ITEMS.forEach(function(i) {
+      html += '<div class="viaje-check-item' + (VJ[i.id] ? " done" : "") + '" data-vid="' + i.id + '">' +
+        '<div class="vi-box">' + (VJ[i.id] ? "&#10003;" : "") + '</div>' +
+        '<div class="vi-content"><div class="vi-text">' + i.t + '</div><div class="vi-sub">' + i.n + '</div></div>' +
+        '</div>';
+    });
+    cl.innerHTML = html;
+    cl.querySelectorAll("[data-vid]").forEach(function(el) {
+      el.addEventListener("click", function() {
+        VJ[el.dataset.vid] = !VJ[el.dataset.vid];
+        saveState();
+        renderViaje();
+      });
+    });
+  }
+ 
+  var aw = document.getElementById("agenda-wrap");
+  if (aw) {
+    var ahtml = "";
+    AGENDA.forEach(function(a) {
+      ahtml += '<div class="agenda-item" style="border-left-color:' + a.c + '">' +
+        '<div class="ai-header"><div class="ai-day">' + a.d + '</div><div class="ai-type" style="color:' + a.c + '">' + a.tipo + '</div></div>';
+      a.items.forEach(function(item) { ahtml += '<div class="ai-task">- ' + item + '</div>'; });
+      ahtml += '</div>';
+    });
+    aw.innerHTML = ahtml;
+  }
+}
+ 
+/* ALERTS */
+function checkAlerts() {
+  var urgentes = [];
+  EMPRESAS.forEach(function(e) {
+    e.fases.forEach(function(f) {
+      f.tareas.forEach(function(t) {
+        if ((t.urgente || t.hoy) && !ST[t.id]) urgentes.push(t);
+      });
+    });
+  });
+  var bar = document.getElementById("alert-bar");
+  var atxt = document.getElementById("alert-text");
+  if (!bar || !atxt) return;
+  if (urgentes.length) {
+    var n = urgentes.length;
+    atxt.textContent = n + " tarea" + (n > 1 ? "s" : "") + " urgente" + (n > 1 ? "s" : "") + ": " +
+      urgentes.slice(0, 2).map(function(t) { return t.t.slice(0, 35) + "..."; }).join(" - ");
+    bar.classList.add("visible");
+  } else {
+    bar.classList.remove("visible");
+  }
+}
+ 
+/* SIDEBAR MOBILE */
+function openSidebar() {
+  var s = document.getElementById("sidebar");
+  var o = document.getElementById("sidebar-overlay");
+  if (s) s.classList.add("open");
+  if (o) o.classList.add("visible");
+}
+function closeSidebar() {
+  var s = document.getElementById("sidebar");
+  var o = document.getElementById("sidebar-overlay");
+  if (s) s.classList.remove("open");
+  if (o) o.classList.remove("visible");
+}
+ 
+/* DOWNLOAD */
+function descargarDashboard() {
+  var blob = new Blob([document.documentElement.outerHTML], { type: "text/html" });
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "index.html";
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+ 
+ 
+/* ======= KANBAN + CALENDAR ENGINE ======= */
+var activeView = "kanban";
+var filterEmpresa = "all";
+var calYear = new Date().getFullYear();
+var calMonth = new Date().getMonth();
+var MONTH_NAMES = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+var DAY_NAMES = ["Dom","Lun","Mar","Mie","Jue","Vie","Sab"];
+var TASK_DATES = {
+  "ag1":{m:3,d:7},"ag2":{m:3,d:10},"ag3":{m:3,d:12},"ag4":{m:3,d:14},"ag5":{m:3,d:15},
+  "ag6":{m:3,d:21},"ag7":{m:3,d:22},"ag8":{m:3,d:25},"ag9":{m:3,d:28},
+  "ag10":{m:4,d:5},"ag11":{m:4,d:10},"ag12":{m:4,d:15},"ag13":{m:4,d:28},
+  "ag14":{m:6,d:22},"ag15":{m:6,d:27},"ag16":{m:6,d:30},
+  "m1":{m:3,d:7},"m2":{m:3,d:7},"m3":{m:3,d:8},"m4":{m:3,d:9},"m5":{m:3,d:10},"m6":{m:3,d:11},
+  "m7":{m:3,d:14},"m8":{m:3,d:16},"m9":{m:3,d:17},"m10":{m:3,d:20},"m11":{m:3,d:22},
+  "m12":{m:4,d:5},"m13":{m:4,d:12},"m14":{m:4,d:18},"m15":{m:4,d:22},"m16":{m:4,d:28},
+  "m17":{m:6,d:24},"m18":{m:6,d:26},"m19":{m:6,d:29},
+  "g1":{m:3,d:7},"g2":{m:3,d:10},"g3":{m:3,d:12},"g4":{m:3,d:14},
+  "g5":{m:3,d:21},"g6":{m:3,d:24},"g7":{m:3,d:26},"g8":{m:3,d:28},
+  "g9":{m:4,d:5},"g10":{m:4,d:10},"g11":{m:4,d:20},
+  "g12":{m:6,d:29},"g13":{m:6,d:30},"g14":{m:6,d:30},
+  "l1":{m:3,d:7},"l2":{m:3,d:7},"l3":{m:3,d:8},"l4":{m:3,d:9},"l5":{m:3,d:11},
+  "l6":{m:3,d:14},"l7":{m:3,d:15},"l8":{m:3,d:18},"l9":{m:3,d:20},
+  "l10":{m:4,d:5},"l11":{m:4,d:15},"l12":{m:4,d:25},
+  "l13":{m:6,d:23},"l14":{m:6,d:25},"l15":{m:6,d:27},
+  "c1":{m:3,d:7},"c2":{m:3,d:14},"c3":{m:3,d:21},"c4":{m:11,d:30},
+  "c5":{m:6,d:23},"c6":{m:6,d:25},"c7":{m:6,d:27},
+  "e1":{m:3,d:7},"e2":{m:3,d:8},"e3":{m:3,d:9},"e4":{m:3,d:10},"e5":{m:3,d:12},
+  "e6":{m:3,d:14},"e7":{m:3,d:18},"e8":{m:3,d:20},"e9":{m:3,d:25},
+  "e10":{m:4,d:5},"e11":{m:4,d:20},"e12":{m:4,d:28}
+};
+var KANBAN_COLS = [
+  {id:"pendiente",name:"Pendiente",color:"#8A95A8",bg:"#F4F5F7"},
+  {id:"urgente",name:"Urgente",color:"#FF8B00",bg:"#FFF4E5"},
+  {id:"en-curso",name:"En curso",color:"#0052CC",bg:"#E6F0FF"},
+  {id:"completada",name:"Completada",color:"#006644",bg:"#E3FCEF"}
+];
+function getTaskStatus(t){if(ST[t.id]) return "completada"; if(t.urgente||t.hoy) return "urgente"; return "pendiente";}
+function renderCompanyStrip(){
+  var c=document.getElementById("company-strip"); if(!c) return;
+  var html='<div class="co-chip'+(filterEmpresa==="all"?" active":"")+'" data-filter="all"><div class="co-dot" style="background:#1A2233"></div><div class="co-name">Todas</div></div>';
+  EMPRESAS.forEach(function(e){
+    var all=[]; e.fases.forEach(function(f){f.tareas.forEach(function(t){all.push(t);});});
+    var done=all.filter(function(t){return ST[t.id];}).length;
+    var pct=Math.round(done/all.length*100);
+    html+='<div class="co-chip'+(filterEmpresa===e.id?" active":"")+'" data-filter="'+e.id+'"><div class="co-dot" style="background:'+e.color+'"></div><div class="co-name">'+e.nombre+'</div><div class="co-pct">'+pct+'%</div></div>';
+  });
+  c.innerHTML=html;
+  c.querySelectorAll("[data-filter]").forEach(function(el){
+    el.addEventListener("click",function(){filterEmpresa=el.dataset.filter; renderCompanyStrip(); if(activeView==="kanban") renderKanban(); else renderCalendar();});
+  });
+}
+function renderKanban(){
+  var board=document.getElementById("kanban-board"); if(!board) return;
+  var cols={"pendiente":[],"urgente":[],"en-curso":[],"completada":[]};
+  EMPRESAS.forEach(function(e){
+    if(filterEmpresa!=="all"&&filterEmpresa!==e.id) return;
+    e.fases.forEach(function(f){f.tareas.forEach(function(t){cols[getTaskStatus(t)].push({t:t,e:e,f:f});});});
+  });
+  var html="";
+  KANBAN_COLS.forEach(function(col){
+    var tasks=cols[col.id];
+    html+='<div class="kanban-col"><div class="kanban-col-header" style="background:'+col.bg+'"><div class="kanban-col-dot" style="background:'+col.color+'"></div><div class="kanban-col-name">'+col.name+'</div><div class="kanban-col-count">'+tasks.length+'</div></div><div class="kanban-col-tasks">';
+    tasks.slice(0,10).forEach(function(item){
+      var t=item.t,e=item.e,f=item.f,isDone=ST[t.id];
+      html+='<div class="kanban-card'+(isDone?" done":"")+'" data-tid="'+t.id+'" data-eid="'+e.id+'"><div class="kc-task-empresa" style="color:'+e.color+'">'+e.nombre+'</div><div class="kc-task-text">'+t.t+'</div><div class="kc-task-meta"><div>';
+      if(t.hoy&&!isDone) html+='<span class="kc-task-badge kbadge-hoy">HOY</span> ';
+      if(t.urgente&&!isDone) html+='<span class="kc-task-badge kbadge-urgente">URGENTE</span> ';
+      if(f.madrid) html+='<span class="kc-task-badge kbadge-madrid">MADRID</span>';
+      if(isDone) html+='<span class="kc-task-badge kbadge-ok">LISTO</span>';
+      html+='</div><div class="kc-task-check">'+(isDone?'&#10003;':'')+'</div></div></div>';
+    });
+    if(tasks.length>10) html+='<div style="font-size:10px;color:var(--text3);padding:6px 10px">+'+(tasks.length-10)+' mas...</div>';
+    html+='</div></div>';
+  });
+  board.innerHTML=html;
+  board.querySelectorAll(".kanban-card").forEach(function(card){
+    card.addEventListener("click",function(){
+      var tid=card.dataset.tid,eid=card.dataset.eid; if(!tid||!eid) return;
+      ST[tid]=!ST[tid]; card.classList.add("just-done");
+      saveState(); updateStats(); renderSidebar(); renderCompanyStrip(); renderKanban();
+    });
+  });
+}
+function renderCalendar(){
+  var title=document.getElementById("cal-month-title"); if(title) title.textContent=MONTH_NAMES[calMonth]+" "+calYear;
+  var grid=document.getElementById("cal-grid"); if(!grid) return;
+  var tasksByDay={};
+  EMPRESAS.forEach(function(e){
+    if(filterEmpresa!=="all"&&filterEmpresa!==e.id) return;
+    e.fases.forEach(function(f){f.tareas.forEach(function(t){
+      var dt=TASK_DATES[t.id]; if(!dt||dt.m!==calMonth) return;
+      if(!tasksByDay[dt.d]) tasksByDay[dt.d]=[];
+      tasksByDay[dt.d].push({t:t,e:e});
+    });});
+  });
+  if(calMonth===6&&calYear===2026){for(var dv=22;dv<=31;dv++){if(!tasksByDay[dv]) tasksByDay[dv]=[]; tasksByDay[dv].unshift({t:{id:"madrid-"+dv,t:"Madrid Mision ejecutiva"},e:{color:"#C49A1A",nombre:"Madrid"}});}}
+  var html="";
+  DAY_NAMES.forEach(function(d){html+='<div class="cal-day-header">'+d+'</div>';});
+  var firstDay=new Date(calYear,calMonth,1).getDay();
+  var daysInMonth=new Date(calYear,calMonth+1,0).getDate();
+  var daysInPrev=new Date(calYear,calMonth,0).getDate();
+  var today=new Date(),ty=today.getFullYear(),tm2=today.getMonth(),td=today.getDate();
+  for(var i=0;i<firstDay;i++){html+='<div class="cal-cell other-month"><span class="cal-day-num" style="opacity:0.4">'+(daysInPrev-firstDay+1+i)+'</span></div>';}
+  for(var day=1;day<=daysInMonth;day++){
+    var isToday=(calYear===ty&&calMonth===tm2&&day===td);
+    var events=tasksByDay[day]||[];
+    html+='<div class="cal-cell'+(isToday?" today":"")+'"><span class="cal-day-num">'+day+'</span>';
+    events.slice(0,3).forEach(function(ev){var isDone=ST[ev.t.id]; html+='<div class="cal-event" style="background:'+ev.e.color+'22;color:'+ev.e.color+';text-decoration:'+(isDone?"line-through":"none")+'">'+ev.t.t.slice(0,22)+'</div>';});
+    if(events.length>3) html+='<div class="cal-more">+'+(events.length-3)+' mas</div>';
+    html+='</div>';
+  }
+  var rem=(firstDay+daysInMonth)%7; if(rem>0){for(var n=1;n<=7-rem;n++){html+='<div class="cal-cell other-month"><span class="cal-day-num" style="opacity:0.4">'+n+'</span></div>';}}
+  grid.innerHTML=html;
+}
+function setView(v){
+  activeView=v;
+  document.querySelectorAll(".view-tab").forEach(function(t){t.classList.toggle("active",t.dataset.view===v);});
+  var kb=document.getElementById("kanban-board"),ksl=document.getElementById("kanban-section-label"),cs=document.getElementById("calendar-section");
+  if(v==="kanban"){if(kb)kb.style.display="";if(ksl)ksl.style.display="";if(cs)cs.style.display="none";renderKanban();}
+  else{if(kb)kb.style.display="none";if(ksl)ksl.style.display="none";if(cs)cs.style.display="";renderCalendar();}
+}
+/* INIT */
+function init() {
+  loadState().then(function() {
+    tick();
+    updateStats();
+    updateKPIs();
+    renderSidebar();
+    renderHomeCompanies();
+    checkAlerts();
+    var fd = document.getElementById("frase-dia");
+    if (fd) fd.textContent = FRASES[new Date().getDay() % FRASES.length];
+    renderCompanyStrip();
+    renderKanban();
+  });
+ 
+  setInterval(tick, 30000);
+  setInterval(saveState, 12000);
+ 
+  var ham = document.getElementById("hamburger");
+  if (ham) ham.addEventListener("click", openSidebar);
+ 
+  var ov = document.getElementById("sidebar-overlay");
+  if (ov) ov.addEventListener("click", closeSidebar);
+ 
+  var bv = document.getElementById("btn-viaje");
+  if (bv) bv.addEventListener("click", function() { showPanel("viaje"); closeSidebar(); });
+ 
+  var bg = document.getElementById("btn-guardar");
+  if (bg) bg.addEventListener("click", descargarDashboard);
+ 
+  var mc = document.getElementById("modal-close");
+  if (mc) mc.addEventListener("click", closeModal);
+ 
+  var mcan = document.getElementById("modal-cancel");
+  if (mcan) mcan.addEventListener("click", closeModal);
+ 
+  var msave = document.getElementById("modal-save");
+  if (msave) msave.addEventListener("click", saveKPI);
+ 
+  var mo = document.getElementById("modal-kpi");
+  if (mo) mo.addEventListener("click", function(e) { if (e.target === mo) closeModal(); });
+ 
+  document.addEventListener("keydown", function(e) { if (e.key === "Escape") closeModal(); });
+ 
+  var ad = document.getElementById("alert-dismiss");
+  if (ad) ad.addEventListener("click", function() {
+    var bar = document.getElementById("alert-bar");
+    if (bar) bar.classList.remove("visible");
+  });
+ 
+  document.querySelectorAll(".kpi-block").forEach(function(card) {
+    card.addEventListener("click", function() {
+      var key = card.dataset.kpi;
+      if (key) editarKPI(key);
+    });
+  });
+ 
+  var mi = document.getElementById("modal-kpi-input");
+  if (mi) mi.addEventListener("keydown", function(e) { if (e.key === "Enter") saveKPI(); });
+ 
+  document.querySelectorAll(".view-tab").forEach(function(tab) {
+    tab.addEventListener("click", function() { setView(tab.dataset.view); });
+  });
+  var cp = document.getElementById("cal-prev");
+  var cn = document.getElementById("cal-next");
+  if (cp) cp.addEventListener("click", function() { calMonth--; if(calMonth<0){calMonth=11;calYear--;} renderCalendar(); });
+  if (cn) cn.addEventListener("click", function() { calMonth++; if(calMonth>11){calMonth=0;calYear++;} renderCalendar(); });
+}
+ 
+init();
+ 
+})();
+</script>
+</body>
+</html>
