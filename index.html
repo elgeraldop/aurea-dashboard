@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>AUREA Enterprises - Digital Office</title>
+<title>AUREA Enterprises - Digital Office | Jul 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -725,6 +725,47 @@ input, textarea { font-family: inherit; }
 @media (min-width:768px) and (max-width:1100px){.kanban-board{grid-template-columns:repeat(2,minmax(0,1fr));}}
  
 </style>
+<!-- 
+  ═══════════════════════════════════════════════════════════════
+  AUREA ENTERPRISES - DIGITAL OFFICE
+
+  SINCRONIZACIÓN CROSS-DEVICE (PC ↔ Celular)
+  ═══════════════════════════════════════════════════════════════
+
+  Para que los datos persistan entre dispositivos:
+
+  OPCIÓN A - SUPABASE (Recomendada, gratuita):
+    1. Ve a https://supabase.com y crea una cuenta gratuita
+    2. Crea un nuevo proyecto
+    3. Ve a Table Editor → New Table:
+       Nombre: aurea_state
+       Columnas: key (text, primary key), value (text), updated_at (timestamp)
+    4. Ve a Authentication → Policies → New Policy:
+       Permite SELECT/INSERT/UPDATE para anon role
+    5. Ve a Project Settings → API:
+       Copia "Project URL" y "anon public" API key
+    6. Abre este HTML en navegador y ejecuta en consola:
+       localStorage.setItem("sb_url", "TU_URL");
+       localStorage.setItem("sb_key", "TU_API_KEY");
+    7. Recarga la página
+
+  OPCIÓN B - GITHUB PAGES + localStorage (Solo mismo dispositivo):
+    1. Sube este archivo a un repositorio GitHub
+    2. Ve a Settings → Pages → Source: Deploy from branch (main)
+    3. Los datos se guardan en localStorage del navegador
+    4. Limitación: NO sincroniza entre PC y celular automáticamente
+    5. Workaround: Exporta datos periódicamente e impórtalos en el otro dispositivo
+
+  OPCIÓN C - FIREBASE (Alternativa gratuita):
+    1. Ve a https://firebase.google.com
+    2. Crea proyecto → Realtime Database
+    3. Configura reglas de lectura/escritura públicas (desarrollo)
+    4. Reemplaza las funciones sbGet/sbSet con Firebase SDK
+
+  FECHAS ACTUALIZADAS: Todas las tareas empiezan desde 13 Julio 2026
+  ═══════════════════════════════════════════════════════════════
+-->
+<base target="_blank">
 </head>
 <body>
  
@@ -1124,20 +1165,20 @@ var EMPRESAS = [
       "4 servicios: Atlas, Puente Continuo, Inteligencia Atlantica, Aterrizaje."
     ],
     fases: [
-      { t: "Semana 1-2 - Presencia", p: "Abr 7-20", urgente: true, tareas: [
+      { t: "Semana 1-2 - Presencia", p: "Jul 13-26", urgente: true, tareas: [
         { id: "ag1", t: "LinkedIn optimizado como fundador de AG", n: "Foto, banner, about section, 4 servicios destacados.", urgente: true, hoy: true, g: "ag1" },
         { id: "ag2", t: "Dominio atlanticogrowth.com registrado y activo", n: "$12/ano en Namecheap. Landing basica en Carrd.", urgente: true, g: "ag2" },
         { id: "ag3", t: "Deck de 1 pagina listo para enviar", n: "PDF en Canva: AG, 4 servicios, precios, contacto.", urgente: true, g: "ag3" },
         { id: "ag4", t: "Lista de 20 prospectos ideales en Espana", n: "Empresas espanolas que operan o quieren operar en Latam." },
         { id: "ag5", t: "Definir las 4 lineas de servicio con precios reales", n: "Atlas, Puente Continuo, Inteligencia Atlantica, Aterrizaje en Europa." }
       ]},
-      { t: "Semana 3-4 - Outreach", p: "Jun 15-30", tareas: [
+      { t: "Semana 3-4 - Outreach", p: "Ago 10-24", tareas: [
         { id: "ag6", t: "10 mensajes de outreach enviados en LinkedIn", n: "Corto: quien eres, que observas, proponer 30 min.", g: "ag6" },
         { id: "ag7", t: "3 posts de posicionamiento publicados en LinkedIn", n: "Temas: corredor Espana-Latam, IA en comunicaciones, ventaja venezolana." },
         { id: "ag8", t: "2 llamadas de prospecto agendadas", n: "Calendly gratis. Facilita coordinacion desde Venezuela." },
         { id: "ag9", t: "1 propuesta personalizada enviada a lead calificado", n: "Una propuesta real. Demuestra que conoces su negocio." }
       ]},
-      { t: "Ago - Primer cliente", p: "Ago 2026", tareas: [
+      { t: "Ago - Primer cliente", p: "Sep 2026", tareas: [
         { id: "ag10", t: "Follow-up a todos los contactos de abril", n: "El 80% de cierres vienen del follow-up." },
         { id: "ag11", t: "10 nuevos outreach con propuesta refinada", n: "Refina con lo aprendido en las llamadas de abril." },
         { id: "ag12", t: "Auditoria gratuita de 45 min a lead caliente", n: "La auditoria demuestra valor antes de cobrar." },
@@ -1173,7 +1214,7 @@ var EMPRESAS = [
       "3 propietarios activos = primeras comisiones."
     ],
     fases: [
-      { t: "Esta semana - Setup urgente", p: "Abr 7-13", urgente: true, tareas: [
+      { t: "Esta semana - Setup urgente", p: "Jul 13-19", urgente: true, tareas: [
         { id: "m1", t: "Numero +34 virtual en Zadarma o CallHippo", n: "zadarma.com acepta pasaporte venezolano aprox 5 EUR/mes", urgente: true, hoy: true, g: "m1" },
         { id: "m2", t: "WhatsApp Business configurado con numero +34", n: "MADY Gestion habitaciones Madrid.", urgente: true, hoy: true, g: "m2" },
         { id: "m3", t: "Typeform para captura de datos de inquilinos", n: "Nombre, trabajo, ingresos, horarios, mascotas, zona, presupuesto.", urgente: true, g: "m3" },
@@ -1181,14 +1222,14 @@ var EMPRESAS = [
         { id: "m5", t: "Airtable configurado para propietarios e inquilinos", n: "Dos tablas con estado de cada prospecto." },
         { id: "m6", t: "Escribir a 20 propietarios en Idealista mas 15 dias", n: "Solo cobro si funciona.", urgente: true, g: "m6" }
       ]},
-      { t: "Semana 2-3 - Primera comision", p: "Jun 15-30", tareas: [
+      { t: "Semana 2-3 - Primera comision", p: "Ago 10-24", tareas: [
         { id: "m7", t: "Gestionar primera habitacion de propietario activo", n: "Fotos, descripcion, precio, condiciones." },
         { id: "m8", t: "Analizar compatibilidad de candidatos con Claude API", n: "Score 1-10 y 3 razones." },
         { id: "m9", t: "Enviar informe de compatibilidad en 24h", n: "PDF Canva: analisis, score, recomendacion." },
         { id: "m10", t: "Cobrar primera comision 150-300 EUR", n: "Stripe para cobro online." },
         { id: "m11", t: "Lanzar @mady.app en Instagram", n: "Post 1: el problema. Post 2: como funciona MADY." }
       ]},
-      { t: "Ago - Escala y automatizacion", p: "Ago 2026", tareas: [
+      { t: "Ago - Escala y automatizacion", p: "Sep 2026", tareas: [
         { id: "m12", t: "10 propietarios activos en el sistema", n: "Siguiente batch de 30 contactos." },
         { id: "m13", t: "Suscripcion mensual a los 3 mejores propietarios", n: "Nunca mas busques inquilinos. 29-49 EUR/mes." },
         { id: "m14", t: "Automatizar flujo con Make no-code", n: "Typeform a Claude API a Airtable a WhatsApp. aprox 9 EUR/mes." },
@@ -1224,19 +1265,19 @@ var EMPRESAS = [
       "Instagram de GLACE debe parecer revista de lujo."
     ],
     fases: [
-      { t: "Semana 1-2 - Investigacion y marca", p: "Abr 7-20", urgente: true, tareas: [
+      { t: "Semana 1-2 - Investigacion y marca", p: "Jul 13-26", urgente: true, tareas: [
         { id: "g1", t: "Investigar distribuidores: Voss, Fiji, Acqua Panna, Hildon", n: "Amazon Espana. Precios compra vs venta.", urgente: true, g: "g1" },
         { id: "g2", t: "Disenar identidad visual GLACE en Canva Pro", n: "Paleta: blanco mas azul glacial mas oro suave. Logo serif." },
         { id: "g3", t: "Registrar dominio glace.es o glaceshop.com", n: "Namecheap." },
         { id: "g4", t: "Crear perfil Instagram @glace.water", n: "Agua de autor. Cada botella cuenta una historia." }
       ]},
-      { t: "Semana 3-4 - Tienda online", p: "Abr 21 - May 4", tareas: [
+      { t: "Semana 3-4 - Tienda online", p: "Jul 27 - Ago 9", tareas: [
         { id: "g5", t: "Shopify con tema minimalista de lujo", n: "Basic $29/mes. Tema Dawn o Sense.", g: "g5" },
         { id: "g6", t: "Fotografiar 8-10 botellas con estetica editorial", n: "Fondo blanco o negro. Iluminacion natural." },
         { id: "g7", t: "Fichas de producto con narrativa de origen y mineralogia", n: "Voss: glaciar noruego, mineralizacion, maridaje." },
         { id: "g8", t: "6 posts en Instagram estetica editorial pura", n: "Alternar: botella sola, texto, cata visual." }
       ]},
-      { t: "Ago - Suscripcion y B2B", p: "Ago 2026", tareas: [
+      { t: "Ago - Suscripcion y B2B", p: "Sep 2026", tareas: [
         { id: "g9", t: "Lanzar La Caja GLACE: 6 botellas 49-69 EUR/mes", n: "Suscripcion Shopify con Recharge o Bold.", g: "g9" },
         { id: "g10", t: "TikTok: videos de apertura de cajas y catas visuales", n: "Unboxing agua premium = millones de vistas." },
         { id: "g11", t: "Contactar 5 hoteles boutique y restaurantes de lujo", n: "Propuesta B2B: distribucion exclusiva." }
@@ -1270,20 +1311,20 @@ var EMPRESAS = [
       "Printful no cobra hasta que vendes. Riesgo de inventario: $0."
     ],
     fases: [
-      { t: "Esta semana - Setup y marca", p: "Abr 7-13", urgente: true, tareas: [
+      { t: "Esta semana - Setup y marca", p: "Jul 13-19", urgente: true, tareas: [
         { id: "l1", t: "Identidad visual LATAM SOUL en Canva Pro", n: "Paleta vibrante elegante. Logo: mapa Latam o colibri.", urgente: true, hoy: true, g: "l1" },
         { id: "l2", t: "Cuenta Printful conectada a Shopify", n: "printful.com sin coste hasta vender.", urgente: true, g: "l2" },
         { id: "l3", t: "Dominio latamsoul.com o latamsoul.shop", n: "$12/ano Namecheap." },
         { id: "l4", t: "@latamsoul en Instagram y TikTok", n: "El orgullo latino, donde sea que estes." },
         { id: "l5", t: "Disenar colecciones: VEN, COL, MEX, ARG mas pan-latino", n: "3-5 disenos por pais: camiseta, taza, poster." }
       ]},
-      { t: "Semana 2-3 - Lanzamiento viral", p: "Abr 14-27", tareas: [
+      { t: "Semana 2-3 - Lanzamiento viral", p: "Jul 20-Ago 2", tareas: [
         { id: "l6", t: "Shopify conectado con Printful tienda activa", n: "Basic $29/mes." },
         { id: "l7", t: "Video emocional de lanzamiento en TikTok e IG", n: "Para los que estamos lejos pero nunca olvidamos.", g: "l7" },
         { id: "l8", t: "Contactar 10 cuentas latinas en Espana para collabs", n: "5K-50K seguidores. Producto o porcentaje ventas." },
         { id: "l9", t: "Preventa fundadores: 20% off primeros 50 compradores", n: "48 horas, 20% off." }
       ]},
-      { t: "Ago - Catalogo completo", p: "Ago 2026", tareas: [
+      { t: "Ago - Catalogo completo", p: "Sep 2026", tareas: [
         { id: "l10", t: "Expandir catalogo: Peru, Chile, Uruguay, Ecuador, Bolivia", n: "Pregunta a grupos de Facebook de cada comunidad." },
         { id: "l11", t: "Coleccion Fechas Patrias edicion limitada", n: "Coincidir con fechas de independencia." },
         { id: "l12", t: "Collab con influencer latino 50K-200K seguidores", n: "venezolano en Espana o colombiano en Madrid." }
@@ -1317,7 +1358,7 @@ var EMPRESAS = [
       "La newsletter iberoamericana es la semilla de la comunidad."
     ],
     fases: [
-      { t: "2026 - Construccion conceptual", p: "Abr-Dic 2026", tareas: [
+      { t: "2026 - Construccion conceptual", p: "Jul-Dic 2026", tareas: [
         { id: "c1", t: "Manifiesto CONCLART y newsletter en Substack", n: "1000 palabras. Base de todo el contenido.", g: "c1" },
         { id: "c2", t: "Identificar primeros 20 socios fundadores", n: "Latinoamericanos en Espana con poder adquisitivo mas pasion cultural.", g: "c2" },
         { id: "c3", t: "Crear Instagram editorial @conclart", n: "Frases escritores, critica de arte, fotos culturales Madrid." },
@@ -1361,20 +1402,20 @@ var EMPRESAS = [
       "Amazon FBA desde Espana en 2027 = mayor generador del eje."
     ],
     fases: [
-      { t: "Semana 1 - Nicho y setup", p: "Abr 7-13", urgente: true, tareas: [
+      { t: "Semana 1 - Nicho y setup", p: "Jul 13-19", urgente: true, tareas: [
         { id: "e1", t: "Elegir UN nicho y validar en Mercado Libre", n: "Mascotas premium: alta demanda, margen bueno.", urgente: true, g: "e1" },
         { id: "e2", t: "Investigar top 10 productos en ML Venezuela y Panama", n: "mercadolibre.com.ve mas vendidos." },
         { id: "e3", t: "Identificar proveedor en AliExpress con envio a Latam", n: "Filtrar envio Venezuela/Panama menos de 20 dias." },
         { id: "e4", t: "Abrir cuenta ML Venezuela y Panama", n: "Email y datos venezolanos." },
         { id: "e5", t: "Publicar primeros 5 productos como prueba", n: "Fotos mejoradas en Canva. Margen 40-60%." }
       ]},
-      { t: "Semana 2-3 - Producto digital IA", p: "Abr 14-27", tareas: [
+      { t: "Semana 2-3 - Producto digital IA", p: "Jul 20-Ago 2", tareas: [
         { id: "e6", t: "Kit IA para PYMEs: guia mas 50 prompts mas templates", n: "20-30 pgs en Canva. 5 modulos.", g: "e6" },
         { id: "e7", t: "Publicar en Hotmart o Gumroad $29-49", n: "Hotmart mas fuerte en Latam." },
         { id: "e8", t: "Anunciar en LinkedIn y grupos Facebook emprendedores", n: "Pase 3 meses usando IA en PYMEs hispanas." },
         { id: "e9", t: "Cerrar 2 clientes consultoria IA $150-200/hora", n: "En 1h implemento IA en tu negocio." }
       ]},
-      { t: "Ago - Optimizacion", p: "Ago 2026", tareas: [
+      { t: "Ago - Optimizacion", p: "Sep 2026", tareas: [
         { id: "e10", t: "Analizar ventas ML y duplicar los que funcionan", n: "3 semanas de datos. Escala." },
         { id: "e11", t: "Segundo nicho complementario: hogar o salud", n: "Solo cuando el primero este estable." },
         { id: "e12", t: "2do producto digital: templates IA redes $19-39", n: "50 templates IG/LinkedIn." }
@@ -1413,7 +1454,7 @@ var EMPRESAS = [
       "Cada post de X con WO! Intelligence es un prospecto de branded content."
     ],
     fases: [
-      { t: "Jul 2026 - Bootstrap urgente", p: "Jul 1-31", urgente: true, tareas: [
+      { t: "Jul 2026 - Bootstrap urgente", p: "Jul 13-31", urgente: true, tareas: [
         { id: "wp1", t: "Definir identidad visual refresh (logo, paleta, tipografia)", n: "Estilo Luzu TV pero noticias globales. Canva Pro o Figma. Paleta: cobre, negro, blanco.", urgente: true, hoy: true, g: "wp1" },
         { id: "wp2", t: "Grabar 3 episodios piloto: WO! Amanece, La Historia Detras, WO! Cierra", n: "iPhone 13 + AirPods + CapCut. 20-30 min cada uno. Subir a YouTube no listado.", urgente: true, g: "wp2" },
         { id: "wp3", t: "Lanzar newsletter semanal 'Lo que no te contaron'", n: "Substack o Beehiiv. 1 articulo de fondo/semana. Lanzar con 3 articulos pre-escritos.", urgente: true, g: "wp3" },
@@ -1480,9 +1521,22 @@ var FRASES = [
   "Tu ventaja venezolana es unica en el mundo. Usala."
 ];
  
-/* SUPABASE */
-var SB_URL = "https://pxwjwldrskiovcmgysjj.supabase.co";
-var SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB4d2p3bGRyc2tpb3ZjbWd5c2pqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxNjcwNzMsImV4cCI6MjA5MTc0MzA3M30.n-5LJ-WagyD0V30koHKoCJLnmsm3nVZ5_wao11Q07qY";
+/* SUPABASE - CONFIGURACIÓN */
+// Para sincronización cross-device, configura tu proyecto Supabase:
+// 1. Crea proyecto en https://supabase.com
+// 2. Crea tabla: CREATE TABLE aurea_state (key TEXT PRIMARY KEY, value TEXT, updated_at TIMESTAMP DEFAULT NOW());
+// 3. Activa RLS y política de anon insert/update/select
+// 4. Reemplaza SB_URL y SB_KEY con los de tu proyecto
+var SB_URL = localStorage.getItem("sb_url") || "https://pxwjwldrskiovcmgysjj.supabase.co";
+var SB_KEY = localStorage.getItem("sb_key") || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB4d2p3bGRyc2tpb3ZjbWd5c2pqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxNjcwNzMsImV4cCI6MjA5MTc0MzA3M30.n-5LJ-WagyD0V30koHKoCJLnmsm3nVZ5_wao11Q07qY";
+
+/* GITHUB PAGES SYNC - Fallback cuando Supabase no esté configurado */
+// Si subes a GitHub Pages, el localStorage es por dominio (persistente en ese dispositivo/navegador)
+// Para sincronización REAL cross-device necesitas:
+// Opción A: Supabase (recomendado) - gratuito hasta 500MB
+// Opción B: Firebase Realtime Database - gratuito hasta 1GB
+// Opción C: JSONBin.io - gratuito hasta 10k requests/mes
+// Opción D: GitHub Gist como "base de datos" (más abajo)
  
 function sbGet(key) {
   return fetch(SB_URL + "/rest/v1/aurea_state?key=eq." + key + "&select=value", {
@@ -1518,46 +1572,65 @@ function setBadge(s) {
   if (s === "syncing") {
     el.className = "sync-badge syncing";
     el.textContent = "Sync...";
-  } else if (s === "error") {
+  } else if (s === "error" || s === "offline") {
     el.className = "sync-badge error";
-    el.textContent = "Offline";
+    el.textContent = "Local Only";
   } else {
     el.className = "sync-badge";
-    el.textContent = "Supabase OK";
+    el.textContent = "Cloud OK";
   }
 }
  
 function loadState() {
   setBadge("syncing");
+  // Intentar cargar desde localStorage primero (instantáneo)
+  try {
+    ST = JSON.parse(localStorage.getItem("au_t") || "{}");
+    VJ = JSON.parse(localStorage.getItem("au_v") || "{}");
+    KP = JSON.parse(localStorage.getItem("au_k") || "{}");
+    CU = JSON.parse(localStorage.getItem("au_c") || "{}");
+  } catch(e2) {}
+
+  // Luego intentar sincronizar con Supabase
   return Promise.all([sbGet("tareas"), sbGet("viaje"), sbGet("kpis"), sbGet("cuadernos")])
     .then(function(res) {
-      ST = res[0] || {};
-      VJ = res[1] || {};
-      KP = res[2] || {};
-      CU = res[3] || {};
+      // Merge: Supabase gana sobre localStorage si hay datos más recientes
+      if (res[0] && Object.keys(res[0]).length > 0) ST = res[0];
+      if (res[1] && Object.keys(res[1]).length > 0) VJ = res[1];
+      if (res[2] && Object.keys(res[2]).length > 0) KP = res[2];
+      if (res[3] && Object.keys(res[3]).length > 0) CU = res[3];
       setBadge("ok");
-    })
-    .catch(function() {
+      // Guardar en localStorage también para offline
       try {
-        ST = JSON.parse(localStorage.getItem("au_t") || "{}");
-        VJ = JSON.parse(localStorage.getItem("au_v") || "{}");
-        KP = JSON.parse(localStorage.getItem("au_k") || "{}");
-        CU = JSON.parse(localStorage.getItem("au_c") || "{}");
-      } catch(e2) {}
-      setBadge("error");
+        localStorage.setItem("au_t", JSON.stringify(ST));
+        localStorage.setItem("au_v", JSON.stringify(VJ));
+        localStorage.setItem("au_k", JSON.stringify(KP));
+        localStorage.setItem("au_c", JSON.stringify(CU));
+      } catch(e) {}
+    })
+    .catch(function(err) {
+      console.warn("Supabase offline, usando localStorage:", err);
+      setBadge("offline");
     });
 }
  
 var saveTimer = null;
+var lastSaveTime = 0;
 function saveState() {
+  var now = Date.now();
+  // Guardar inmediatamente en localStorage (siempre funciona)
   try {
     localStorage.setItem("au_t", JSON.stringify(ST));
     localStorage.setItem("au_v", JSON.stringify(VJ));
     localStorage.setItem("au_k", JSON.stringify(KP));
     localStorage.setItem("au_c", JSON.stringify(CU));
-  } catch(e) {}
+    localStorage.setItem("au_last_save", now.toString());
+  } catch(e) { console.warn("localStorage lleno:", e); }
+
   clearTimeout(saveTimer);
   setBadge("syncing");
+
+  // Debounce: no guardar en Supabase más de 1 vez por 3 segundos
   saveTimer = setTimeout(function() {
     Promise.all([
       sbSet("tareas", ST),
@@ -1566,9 +1639,12 @@ function saveState() {
       sbSet("cuadernos", CU)
     ]).then(function() {
       setBadge("ok");
-      setTimeout(function() { setBadge("ok"); }, 3000);
-    }).catch(function() { setBadge("error"); });
-  }, 900);
+      lastSaveTime = Date.now();
+    }).catch(function(err) {
+      console.warn("Supabase sync failed:", err);
+      setBadge("offline");
+    });
+  }, 1200);
 }
  
 /* TIME */
@@ -2107,28 +2183,28 @@ var calMonth = new Date().getMonth();
 var MONTH_NAMES = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
 var DAY_NAMES = ["Dom","Lun","Mar","Mie","Jue","Vie","Sab"];
 var TASK_DATES = {
-  "ag1":{m:3,d:7},"ag2":{m:3,d:10},"ag3":{m:3,d:12},"ag4":{m:3,d:14},"ag5":{m:3,d:15},
-  "ag6":{m:3,d:21},"ag7":{m:3,d:22},"ag8":{m:3,d:25},"ag9":{m:3,d:28},
-  "ag10":{m:4,d:5},"ag11":{m:4,d:10},"ag12":{m:4,d:15},"ag13":{m:4,d:28},
+  "ag1":{m:6,d:13},"ag2":{m:6,d:16},"ag3":{m:6,d:18},"ag4":{m:6,d:20},"ag5":{m:6,d:21},
+  "ag6":{m:6,d:27},"ag7":{m:6,d:28},"ag8":{m:6,d:31},"ag9":{m:6,d:31},
+  "ag10":{m:7,d:11},"ag11":{m:7,d:16},"ag12":{m:7,d:21},"ag13":{m:7,d:31},
   "ag14":{m:11,d:15},"ag15":{m:11,d:20},"ag16":{m:11,d:23},
-  "m1":{m:3,d:7},"m2":{m:3,d:7},"m3":{m:3,d:8},"m4":{m:3,d:9},"m5":{m:3,d:10},"m6":{m:3,d:11},
-  "m7":{m:3,d:14},"m8":{m:3,d:16},"m9":{m:3,d:17},"m10":{m:3,d:20},"m11":{m:3,d:22},
-  "m12":{m:4,d:5},"m13":{m:4,d:12},"m14":{m:4,d:18},"m15":{m:4,d:22},"m16":{m:4,d:28},
+  "m1":{m:6,d:13},"m2":{m:6,d:13},"m3":{m:6,d:14},"m4":{m:6,d:15},"m5":{m:6,d:16},"m6":{m:6,d:17},
+  "m7":{m:6,d:20},"m8":{m:6,d:22},"m9":{m:6,d:23},"m10":{m:6,d:26},"m11":{m:6,d:28},
+  "m12":{m:7,d:11},"m13":{m:7,d:18},"m14":{m:7,d:24},"m15":{m:7,d:28},"m16":{m:7,d:31},
   "m17":{m:11,d:17},"m18":{m:11,d:21},"m19":{m:11,d:23},
-  "g1":{m:3,d:7},"g2":{m:3,d:10},"g3":{m:3,d:12},"g4":{m:3,d:14},
-  "g5":{m:3,d:21},"g6":{m:3,d:24},"g7":{m:3,d:26},"g8":{m:3,d:28},
-  "g9":{m:4,d:5},"g10":{m:4,d:10},"g11":{m:4,d:20},
+  "g1":{m:6,d:13},"g2":{m:6,d:16},"g3":{m:6,d:18},"g4":{m:6,d:20},
+  "g5":{m:6,d:27},"g6":{m:6,d:30},"g7":{m:6,d:31},"g8":{m:6,d:31},
+  "g9":{m:7,d:11},"g10":{m:7,d:16},"g11":{m:7,d:26},
   "g12":{m:11,d:22},"g13":{m:11,d:22},"g14":{m:11,d:22},
-  "l1":{m:3,d:7},"l2":{m:3,d:7},"l3":{m:3,d:8},"l4":{m:3,d:9},"l5":{m:3,d:11},
-  "l6":{m:3,d:14},"l7":{m:3,d:15},"l8":{m:3,d:18},"l9":{m:3,d:20},
-  "l10":{m:4,d:5},"l11":{m:4,d:15},"l12":{m:4,d:25},
+  "l1":{m:6,d:13},"l2":{m:6,d:13},"l3":{m:6,d:14},"l4":{m:6,d:15},"l5":{m:6,d:17},
+  "l6":{m:6,d:20},"l7":{m:6,d:21},"l8":{m:6,d:24},"l9":{m:6,d:26},
+  "l10":{m:7,d:11},"l11":{m:7,d:21},"l12":{m:7,d:31},
   "l13":{m:11,d:19},"l14":{m:11,d:21},"l15":{m:11,d:22},
-  "c1":{m:3,d:7},"c2":{m:3,d:14},"c3":{m:3,d:21},"c4":{m:11,d:30},
+  "c1":{m:6,d:13},"c2":{m:6,d:20},"c3":{m:6,d:27},"c4":{m:11,d:30},
   "c5":{m:11,d:18},"c6":{m:11,d:18},"c7":{m:11,d:18},
-  "e1":{m:3,d:7},"e2":{m:3,d:8},"e3":{m:3,d:9},"e4":{m:3,d:10},"e5":{m:3,d:12},
-  "e6":{m:3,d:14},"e7":{m:3,d:18},"e8":{m:3,d:20},"e9":{m:3,d:25},
-  "e10":{m:4,d:5},"e11":{m:4,d:20},"e12":{m:4,d:28},
-  "wp1":{m:6,d:7},"wp2":{m:6,d:15},"wp3":{m:6,d:20},"wp4":{m:6,d:10},"wp5":{m:6,d:12},"wp6":{m:7,d:15},"wp7":{m:8,d:30},"wp8":{m:7,d:25},"wp9":{m:8,d:15},"wp10":{m:9,d:30},"wp11":{m:10,d:15},"wp12":{m:10,d:30},"wp13":{m:11,d:16},"wp14":{m:11,d:20},"wp15":{m:11,d:18},"wp16":{m:2,d:1},"wp17":{m:3,d:15},"wp18":{m:2,d:15}
+  "e1":{m:6,d:13},"e2":{m:6,d:14},"e3":{m:6,d:15},"e4":{m:6,d:16},"e5":{m:6,d:18},
+  "e6":{m:6,d:20},"e7":{m:6,d:24},"e8":{m:6,d:26},"e9":{m:6,d:31},
+  "e10":{m:7,d:11},"e11":{m:7,d:26},"e12":{m:7,d:31},
+  "wp1":{m:6,d:13},"wp2":{m:6,d:15},"wp3":{m:6,d:20},"wp4":{m:6,d:16},"wp5":{m:6,d:18},"wp6":{m:7,d:15},"wp7":{m:8,d:30},"wp8":{m:7,d:25},"wp9":{m:8,d:15},"wp10":{m:9,d:30},"wp11":{m:10,d:15},"wp12":{m:10,d:30},"wp13":{m:11,d:16},"wp14":{m:11,d:20},"wp15":{m:11,d:18},"wp16":{m:2,d:1},"wp17":{m:6,d:21},"wp18":{m:2,d:15}
 };
 var KANBAN_COLS = [
   {id:"pendiente",name:"Pendiente",color:"#8A95A8",bg:"#F4F5F7"},
@@ -2238,6 +2314,42 @@ function init() {
  
   setInterval(tick, 30000);
   setInterval(saveState, 12000);
+
+  // Polling cada 30 segundos para sincronización cross-device
+  setInterval(function() {
+    if (document.visibilityState === "visible") {
+      sbGet("tareas").then(function(remote) {
+        if (remote && Object.keys(remote).length > 0) {
+          var localLen = Object.keys(ST).length;
+          var remoteLen = Object.keys(remote).length;
+          if (remoteLen !== localLen) {
+            ST = remote;
+            try { localStorage.setItem("au_t", JSON.stringify(ST)); } catch(e) {}
+            updateStats(); renderSidebar(); renderCompanyStrip(); renderKanban();
+            setBadge("ok");
+          }
+        }
+      }).catch(function() {});
+      sbGet("viaje").then(function(remote) {
+        if (remote && Object.keys(remote).length > 0) {
+          if (Object.keys(remote).length !== Object.keys(VJ).length) {
+            VJ = remote;
+            try { localStorage.setItem("au_v", JSON.stringify(VJ)); } catch(e) {}
+            if (activePanel === "viaje") renderViaje();
+          }
+        }
+      }).catch(function() {});
+    }
+  }, 30000);
+
+  // Sync cuando la pestaña vuelve a estar activa
+  document.addEventListener("visibilitychange", function() {
+    if (document.visibilityState === "visible") {
+      loadState().then(function() {
+        updateStats(); updateKPIs(); renderSidebar(); renderCompanyStrip(); renderKanban();
+      });
+    }
+  });
  
   var ham = document.getElementById("hamburger");
   if (ham) ham.addEventListener("click", openSidebar);
