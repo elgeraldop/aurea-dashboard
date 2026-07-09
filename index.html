@@ -5,31 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>AUREA Enterprises - Digital Office</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-/* BACK TO HOME BUTTON */
-.btn-back-home {
-  display: none;
-  align-items: center;
-  gap: 6px;
-  height: 32px;
-  padding: 0 12px;
-  border-radius: var(--radius);
-  font-size: 12px;
-  font-weight: 500;
-  border: 1px solid var(--border);
-  color: var(--text2);
-  background: var(--surface);
-  transition: all var(--trans);
-  white-space: nowrap;
-  margin-left: 8px;
-  flex-shrink: 0;
-}
-.btn-back-home:hover { background: var(--surface2); color: var(--text); }
-.btn-back-home.visible { display: flex; }
-@media (max-width: 767px) {
-  .btn-back-home { padding: 0 8px; font-size: 11px; }
-  .btn-back-home span { display: none; }
-}
-  <style>
+<style>
 :root {
   --bg: #F0F2F5; --surface: #FFFFFF; --surface2: #F7F8FA; --border: #DDE1E8; --border2: #C8CDD8;
   --text: #1A2233; --text2: #4A5568; --text3: #8A95A8; --accent: #0052CC; --accent-bg: #E6F0FF;
@@ -516,7 +492,33 @@ input, textarea { font-family: inherit; }
 @media (max-width: 767px) { .kanban-board { grid-template-columns: repeat(2, minmax(0, 1fr)); } .view-tabs { display: none; } }
 @media (min-width: 768px) and (max-width: 1100px) { .kanban-board { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
+
+/* BACK TO HOME BUTTON */
+.btn-back-home {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: var(--radius);
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  color: var(--text2);
+  background: var(--surface);
+  transition: all var(--trans);
+  white-space: nowrap;
+  margin-left: 8px;
+  flex-shrink: 0;
+}
+.btn-back-home:hover { background: var(--surface2); color: var(--text); }
+.btn-back-home.visible { display: flex; }
+@media (max-width: 767px) {
+  .btn-back-home { padding: 0 8px; font-size: 11px; }
+  .btn-back-home span { display: none; }
+}
 </style>
+<base target="_blank">
 <base target="_blank">
 </head>
 <body>
@@ -535,7 +537,8 @@ input, textarea { font-family: inherit; }
       <div class="brand-name">AUREA Enterprises</div>
       <div class="brand-sub">Digital Office - Geraldo Meneses</div>
     </div>
-    <button class="btn-back-home" id="btn-back-home" title="Volver al inicio">
+
+  <button class="btn-back-home" id="btn-back-home" title="Volver al inicio">
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l4-4 4 4"/><path d="M7 5v10"/></svg>
     <span>Inicio</span>
   </button>
@@ -1637,7 +1640,7 @@ function renderHomeCompanies() {
 
 /* PANELS */
 function showPanel(id) {
-    var bh = document.getElementById("btn-back-home");
+  var bh = document.getElementById("btn-back-home");
   if (bh) bh.classList.toggle("visible", id !== "home");
   document.querySelectorAll(".panel").forEach(function(p) { p.classList.remove("active"); });
   activePanel = id;
@@ -2157,13 +2160,14 @@ function init() {
   var cn = document.getElementById("cal-next");
   if (cp) cp.addEventListener("click", function() { calMonth--; if(calMonth<0){calMonth=11;calYear--;} renderCalendar(); });
   if (cn) cn.addEventListener("click", function() { calMonth++; if(calMonth>11){calMonth=0;calYear++;} renderCalendar(); });
+
+  var bh = document.getElementById("btn-back-home");
+  if (bh) bh.addEventListener("click", function() { showPanel("home"); });
 }
 
 init();
 
 })();
-   var bh = document.getElementById("btn-back-home");
-  if (bh) bh.addEventListener("click", function() { showPanel("home"); }); 
 </script>
 </body>
 </html>
