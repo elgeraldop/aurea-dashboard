@@ -225,6 +225,8 @@ input, textarea, .topbar-date, .cal-day-num, .cal-event, .cal-month-title { font
 
 /* FASE */
 .fase { border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 10px; background: var(--surface); }
+.fase-custom { border-style: dashed; border-color: var(--accent); }
+.fase-custom .fase-title { color: var(--accent); }
 .fase-header { display: flex; align-items: center; gap: 12px; padding: 14px 18px; cursor: pointer;
   transition: background var(--trans); min-height: 52px; touch-action: manipulation;
   border: none; background: none; width: 100%; text-align: left; }
@@ -737,7 +739,7 @@ input, textarea, .topbar-date, .cal-day-num, .cal-event, .cal-month-title { font
         <div class="si-dot" style="background:var(--text3)"></div>
         <div class="si-info">
           <div class="si-name">Configuracion</div>
-          <div class="si-meta">API Key OpenAI</div>
+          <div class="si-meta">API Key Claude</div>
         </div>
       </button>
       <div class="sidebar-divider"></div>
@@ -849,15 +851,15 @@ input, textarea, .topbar-date, .cal-day-num, .cal-event, .cal-month-title { font
           <div>
             <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:4px">AJUSTES</div>
             <div class="empresa-title">Configuracion</div>
-            <div class="empresa-tagline">Conecta tu API Key de OpenAI para usar el Agente AUREA</div>
+            <div class="empresa-tagline">Conecta tu API Key de Anthropic (Claude) para que el Agente AUREA opere el Dashboard</div>
           </div>
         </div>
       </div>
       <div class="config-wrap">
         <div class="config-block">
-          <div class="config-label">API Key de OpenAI</div>
+          <div class="config-label">API Key de Anthropic (Claude)</div>
           <div class="config-input-row">
-            <input class="modal-input" type="password" id="cfg-apikey" placeholder="sk-...">
+            <input class="modal-input" type="password" id="cfg-apikey" placeholder="sk-ant-...">
             <button class="btn-modal btn-modal-ghost" id="cfg-toggle-visibility" style="min-width:44px">&#128065;</button>
           </div>
           <div class="config-actions">
@@ -866,7 +868,16 @@ input, textarea, .topbar-date, .cal-day-num, .cal-event, .cal-month-title { font
             <button class="btn-modal btn-modal-ghost" id="cfg-clear">Borrar</button>
           </div>
           <div class="config-status" id="cfg-status"></div>
-          <div class="config-note">La key se guarda solo en este dispositivo (localStorage), nunca se sube a Supabase ni a ningun servidor. Si "Probar conexion" falla con un error de red/CORS, es porque OpenAI bloquea llamadas directas desde el navegador para muchas cuentas; en ese caso necesitas un proxy (Cloudflare Worker, Supabase Edge Function o Make.com) entre esta app y OpenAI.</div>
+          <div class="config-note">Consigue tu key en <strong>console.anthropic.com</strong> (Settings &rarr; API Keys). Se guarda solo en este dispositivo (localStorage): nunca se sube a Supabase, ni a ningun servidor, ni queda escrita en el HTML/repositorio. Como esta app llama a Claude directamente desde el navegador (header <code>anthropic-dangerous-direct-browser-access</code>), cualquiera que abra las herramientas de desarrollador en TU navegador podria ver tu key mientras la usas &mdash; es la misma logica que pegar una clave en un script personal. Ponle un limite de gasto a la key en la consola de Anthropic como precaucion.</div>
+        </div>
+        <div class="config-block">
+          <div class="config-label">Modelo</div>
+          <select class="modal-input" id="cfg-model">
+            <option value="claude-sonnet-5">Claude Sonnet 5 (recomendado, equilibrado)</option>
+            <option value="claude-haiku-4-5-20251001">Claude Haiku 4.5 (mas rapido y economico)</option>
+            <option value="claude-opus-4-8">Claude Opus 4.8 (mas capaz, mas lento/caro)</option>
+          </select>
+          <div class="config-note">El Agente usa este modelo para leer y modificar tus tareas (marcar, crear, resumir). Haiku alcanza de sobra para gestionar el Dashboard dia a dia.</div>
         </div>
       </div>
     </div>
@@ -911,6 +922,31 @@ input, textarea, .topbar-date, .cal-day-num, .cal-event, .cal-month-title { font
     <div class="modal-footer">
       <button class="btn-modal btn-modal-ghost" id="modal-cancel">Cancelar</button>
       <button class="btn-modal btn-modal-primary" id="modal-save">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-newtask">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="nt-title">Nueva tarea</div>
+      <button class="modal-close" id="nt-close">&#10005;</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-label">Tarea</div>
+      <input class="modal-input" type="text" id="nt-texto" placeholder="Ej: Enviar propuesta a cliente X" style="margin-bottom:12px">
+      <div class="modal-label">Nota (opcional)</div>
+      <input class="modal-input" type="text" id="nt-nota" placeholder="Detalle o contexto" style="margin-bottom:12px">
+      <div class="modal-label">Fecha objetivo (opcional, para verla en el calendario)</div>
+      <input class="modal-input" type="date" id="nt-fecha" style="margin-bottom:12px">
+      <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2);cursor:pointer">
+        <input type="checkbox" id="nt-urgente" style="width:16px;height:16px"> Marcar como urgente
+      </label>
+      <div class="modal-note" id="nt-note">Esta tarea se agrega a tu lista real y se sincroniza igual que las demas. Asi el Dashboard nunca se queda sin contenido.</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-modal btn-modal-ghost" id="nt-cancel">Cancelar</button>
+      <button class="btn-modal btn-modal-primary" id="nt-save">Crear tarea</button>
     </div>
   </div>
 </div>
@@ -1531,7 +1567,7 @@ var SB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZ
 function sbGet(key) {
   return fetch(SB_URL + "/rest/v1/aurea_state?key=eq." + encodeURIComponent(key) + "&select=value,updated_at", {
     headers: { "apikey": SB_KEY, "Authorization": "Bearer " + SB_KEY }
-  }).then(function(r) { return r.json(); })
+  }).then(function(r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
   .then(function(d) {
     if (d && d[0] && d[0].value) {
       try {
@@ -1541,7 +1577,7 @@ function sbGet(key) {
       } catch(e) { return null; }
     }
     return null;
-  }).catch(function() { return null; });
+  });
 }
 
 function sbSet(key, value) {
@@ -1559,12 +1595,37 @@ function sbSet(key, value) {
       "Prefer": "resolution=merge-duplicates,return=minimal"
     },
     body: JSON.stringify(payload)
-  }).catch(function(e) { console.warn("SB error", e); throw e; });
+  }).then(function(r) { if (!r.ok) throw new Error("HTTP " + r.status); return r; })
+  .catch(function(e) { console.warn("SB error", e); throw e; });
 }
 
 /* STATE */
-var ST = {}, VJ = {}, KP = {}, CU = {}, GA = {};
+var ST = {}, VJ = {}, KP = {}, CU = {}, GA = {}, CT = {};
 var activePanel = "home", kpiKey = null;
+
+/* Tareas custom (creadas a mano o por el Agente) fusionadas con las fases fijas de cada empresa,
+   asi el Dashboard nunca se queda sin contenido cuando se completan las tareas originales. */
+function allFasesFor(e) {
+  var fases = e.fases.slice();
+  var customs = CT[e.id];
+  if (customs && customs.length) {
+    fases = fases.concat([{ t: "Tareas nuevas (tuyas + Agente)", p: "Continuo", tareas: customs, custom: true }]);
+  }
+  return fases;
+}
+
+function crearTareaCustom(empresaId, texto, nota, urgente, fecha) {
+  if (!CT[empresaId]) CT[empresaId] = [];
+  var id = "ct" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  var tarea = { id: id, t: texto, n: nota || "", urgente: !!urgente, fecha: fecha || null };
+  CT[empresaId].push(tarea);
+  if (fecha) {
+    var parts = fecha.split("-");
+    if (parts.length === 3) TASK_DATES[id] = { m: parseInt(parts[1], 10) - 1, d: parseInt(parts[2], 10) };
+  }
+  saveState(true);
+  return tarea;
+}
 
 function setBadge(s) {
   var el = document.getElementById("sync-badge");
@@ -1581,22 +1642,28 @@ function loadState() {
     VJ = JSON.parse(localStorage.getItem("au_v") || "{}");
     KP = JSON.parse(localStorage.getItem("au_k") || "{}");
     CU = JSON.parse(localStorage.getItem("au_c") || "{}");
+    CT = JSON.parse(localStorage.getItem("au_ct") || "{}");
   } catch(e) {
-    ST = {}; VJ = {}; KP = {}; CU = {};
+    ST = {}; VJ = {}; KP = {}; CU = {}; CT = {};
   }
+  rebuildCustomTaskDates();
 
-  return Promise.all([sbGet("tareas"), sbGet("viaje"), sbGet("kpis"), sbGet("cuadernos")])
-    .then(function(res) {
+  return Promise.allSettled([sbGet("tareas"), sbGet("viaje"), sbGet("kpis"), sbGet("cuadernos"), sbGet("tareas_custom")])
+    .then(function(settled) {
+      var anyFailed = settled.some(function(s) { return s.status === "rejected"; });
+      var res = settled.map(function(s) { return s.status === "fulfilled" ? s.value : null; });
       var changed = false;
       var remoteST = res[0] || {};
       var remoteVJ = res[1] || {};
       var remoteKP = res[2] || {};
       var remoteCU = res[3] || {};
+      var remoteCT = res[4] || {};
 
       if (remoteST.__ts > (ST.__ts || 0)) { ST = remoteST; changed = true; }
       if (remoteVJ.__ts > (VJ.__ts || 0)) { VJ = remoteVJ; changed = true; }
       if (remoteKP.__ts > (KP.__ts || 0)) { KP = remoteKP; changed = true; }
       if (remoteCU.__ts > (CU.__ts || 0)) { CU = remoteCU; changed = true; }
+      if (remoteCT.__ts > (CT.__ts || 0)) { CT = remoteCT; changed = true; rebuildCustomTaskDates(); }
 
       if (changed) {
         try {
@@ -1604,9 +1671,10 @@ function loadState() {
           localStorage.setItem("au_v", JSON.stringify(VJ));
           localStorage.setItem("au_k", JSON.stringify(KP));
           localStorage.setItem("au_c", JSON.stringify(CU));
+          localStorage.setItem("au_ct", JSON.stringify(CT));
         } catch(e) {}
       }
-      setBadge("ok");
+      setBadge(anyFailed ? "error" : "ok");
       return changed;
     })
     .catch(function(err) {
@@ -1616,16 +1684,28 @@ function loadState() {
     });
 }
 
+function rebuildCustomTaskDates() {
+  Object.keys(CT).forEach(function(eid) {
+    (CT[eid] || []).forEach(function(t) {
+      if (t.fecha) {
+        var parts = t.fecha.split("-");
+        if (parts.length === 3) TASK_DATES[t.id] = { m: parseInt(parts[1], 10) - 1, d: parseInt(parts[2], 10) };
+      }
+    });
+  });
+}
+
 var saveTimer = null;
 function saveState(immediate) {
   var now = Date.now();
-  ST.__ts = now; VJ.__ts = now; KP.__ts = now; CU.__ts = now;
+  ST.__ts = now; VJ.__ts = now; KP.__ts = now; CU.__ts = now; CT.__ts = now;
 
   try {
     localStorage.setItem("au_t", JSON.stringify(ST));
     localStorage.setItem("au_v", JSON.stringify(VJ));
     localStorage.setItem("au_k", JSON.stringify(KP));
     localStorage.setItem("au_c", JSON.stringify(CU));
+    localStorage.setItem("au_ct", JSON.stringify(CT));
   } catch(e) {}
 
   clearTimeout(saveTimer);
@@ -1635,7 +1715,8 @@ function saveState(immediate) {
       sbSet("tareas", ST),
       sbSet("viaje", VJ),
       sbSet("kpis", KP),
-      sbSet("cuadernos", CU)
+      sbSet("cuadernos", CU),
+      sbSet("tareas_custom", CT)
     ]).then(function() {
       setBadge("ok");
     }).catch(function() {
@@ -1698,7 +1779,7 @@ function updateClocks(now) {
 function updateStats() {
   var all = [];
   EMPRESAS.forEach(function(e) {
-    e.fases.forEach(function(f) {
+    allFasesFor(e).forEach(function(f) {
       f.tareas.forEach(function(t) { all.push(t); });
     });
   });
@@ -1793,6 +1874,37 @@ function closeModal() {
   if (mo) mo.classList.remove("visible");
 }
 
+/* NUEVA TAREA (manual, para que el Dashboard nunca se quede sin contenido) */
+var newTaskEmpresaId = null;
+function openNewTaskModal(empresaId) {
+  newTaskEmpresaId = empresaId;
+  var emp = null;
+  EMPRESAS.forEach(function(e) { if (e.id === empresaId) emp = e; });
+  var t = document.getElementById("nt-title");
+  if (t) t.textContent = "Nueva tarea" + (emp ? " - " + emp.nombre : "");
+  ["nt-texto", "nt-nota", "nt-fecha"].forEach(function(id) { var el = document.getElementById(id); if (el) el.value = ""; });
+  var u = document.getElementById("nt-urgente"); if (u) u.checked = false;
+  var mo = document.getElementById("modal-newtask");
+  if (mo) mo.classList.add("visible");
+  setTimeout(function() { var tx = document.getElementById("nt-texto"); if (tx) tx.focus(); }, 150);
+}
+function closeNewTaskModal() {
+  var mo = document.getElementById("modal-newtask");
+  if (mo) mo.classList.remove("visible");
+}
+function saveNewTaskFromModal() {
+  var texto = (document.getElementById("nt-texto") || {}).value || "";
+  texto = texto.trim();
+  if (!texto || !newTaskEmpresaId) { closeNewTaskModal(); return; }
+  var nota = ((document.getElementById("nt-nota") || {}).value || "").trim();
+  var fecha = (document.getElementById("nt-fecha") || {}).value || "";
+  var urgente = !!(document.getElementById("nt-urgente") || {}).checked;
+  crearTareaCustom(newTaskEmpresaId, texto, nota, urgente, fecha);
+  closeNewTaskModal();
+  updateStats(); renderSidebar(); renderCompanyStrip(); renderKanban();
+  if (activePanel === newTaskEmpresaId) showPanel(newTaskEmpresaId);
+}
+
 /* SIDEBAR */
 function renderSidebar() {
   var c = document.getElementById("sidebar-items");
@@ -1800,7 +1912,7 @@ function renderSidebar() {
   var html = "";
   EMPRESAS.forEach(function(e) {
     var all = [];
-    e.fases.forEach(function(f) { f.tareas.forEach(function(t) { all.push(t); }); });
+    allFasesFor(e).forEach(function(f) { f.tareas.forEach(function(t) { all.push(t); }); });
     var done = all.filter(function(t) { return ST[t.id]; }).length;
     var pct = Math.round(done / all.length * 100);
     var active = activePanel === e.id ? " active" : "";
@@ -1844,7 +1956,7 @@ function renderHomeCompanies() {
   var html = "";
   EMPRESAS.forEach(function(e) {
     var all = [];
-    e.fases.forEach(function(f) { f.tareas.forEach(function(t) { all.push(t); }); });
+    allFasesFor(e).forEach(function(f) { f.tareas.forEach(function(t) { all.push(t); }); });
     var done = all.filter(function(t) { return ST[t.id]; }).length;
     var pct = Math.round(done / all.length * 100);
     html += '<div class="company-progress" data-panel="' + e.id + '">' +
@@ -1998,11 +2110,14 @@ function showPanel(id) {
       a.click();
     });
   });
+
+  var btnNewTask = panel.querySelector("#btn-new-task");
+  if (btnNewTask) btnNewTask.addEventListener("click", function() { openNewTaskModal(btnNewTask.dataset.eid); });
 }
 
 function renderEmpresa(e) {
   var all = [];
-  e.fases.forEach(function(f) { f.tareas.forEach(function(t) { all.push(t); }); });
+  allFasesFor(e).forEach(function(f) { f.tareas.forEach(function(t) { all.push(t); }); });
   var done = all.filter(function(t) { return ST[t.id]; }).length;
   var pct = Math.round(done / all.length * 100);
   var tip = e.tips[new Date().getDay() % e.tips.length];
@@ -2036,12 +2151,14 @@ function renderEmpresa(e) {
   '</div>' +
 
   '<div class="tab-panel active" id="tp-tareas">' +
-    '<div class="consejo"><div class="consejo-icon">&#128161;</div><div><div class="consejo-label">Consejo</div><div class="consejo-text">' + tip + '</div></div></div>';
+    '<div class="consejo"><div class="consejo-icon">&#128161;</div><div><div class="consejo-label">Consejo</div><div class="consejo-text">' + tip + '</div></div></div>' +
+    '<button class="btn-sm btn-sm-primary" id="btn-new-task" data-eid="' + e.id + '" style="margin-bottom:12px">+ Nueva tarea</button>';
 
-  e.fases.forEach(function(f) {
+  allFasesFor(e).forEach(function(f) {
+    if (!f.tareas.length) return;
     var fd = f.tareas.filter(function(t) { return ST[t.id]; }).length;
     var fp = Math.round(fd / f.tareas.length * 100);
-    html += '<div class="fase">' +
+    html += '<div class="fase' + (f.custom ? ' fase-custom' : '') + '">' +
       '<button class="fase-header">' +
         '<span class="fase-chevron">&#9660;</span>' +
         '<span class="fase-title">' + (f.madrid ? "Madrid - " : "") + f.t + '</span>' +
@@ -2184,16 +2301,23 @@ function renderViaje() {
   }
 }
 
-/* CONFIGURACION / AGENTE IA */
-var OPENAI_KEY_LS = "au_openai_key";
+/* CONFIGURACION / AGENTE IA - Claude (Anthropic), con tool-use real sobre el Dashboard */
+var ANTHROPIC_KEY_LS = "au_anthropic_key";
+var ANTHROPIC_MODEL_LS = "au_anthropic_model";
+var ANTHROPIC_VERSION = "2023-06-01";
+var AGENTE_MAX_TURNS = 6;
+
+function getAnthropicKey() { return localStorage.getItem(ANTHROPIC_KEY_LS) || ""; }
+function getAnthropicModel() { return localStorage.getItem(ANTHROPIC_MODEL_LS) || "claude-sonnet-5"; }
 
 function initConfigPanel() {
   var input = document.getElementById("cfg-apikey");
   if (!input) return;
   if (!input.dataset.bound) {
     input.dataset.bound = "1";
-    var saved = localStorage.getItem(OPENAI_KEY_LS) || "";
-    input.value = saved;
+    input.value = getAnthropicKey();
+    var modelSel = document.getElementById("cfg-model");
+    if (modelSel) modelSel.value = getAnthropicModel();
 
     document.getElementById("cfg-toggle-visibility").addEventListener("click", function() {
       input.type = input.type === "password" ? "text" : "password";
@@ -2206,24 +2330,29 @@ function initConfigPanel() {
         return;
       }
       try {
-        localStorage.setItem(OPENAI_KEY_LS, val);
-        showCfgStatus("ok", "API Key guardada en este dispositivo.");
+        localStorage.setItem(ANTHROPIC_KEY_LS, val);
+        if (modelSel) localStorage.setItem(ANTHROPIC_MODEL_LS, modelSel.value);
+        showCfgStatus("ok", "API Key y modelo guardados en este dispositivo.");
       } catch (e) {
         showCfgStatus("err", "No se pudo guardar: " + e.message);
       }
     });
 
+    if (modelSel) modelSel.addEventListener("change", function() {
+      try { localStorage.setItem(ANTHROPIC_MODEL_LS, modelSel.value); } catch(e) {}
+    });
+
     document.getElementById("cfg-clear").addEventListener("click", function() {
-      localStorage.removeItem(OPENAI_KEY_LS);
+      localStorage.removeItem(ANTHROPIC_KEY_LS);
       input.value = "";
       showCfgStatus("info", "API Key eliminada de este dispositivo.");
     });
 
     document.getElementById("cfg-test").addEventListener("click", function() {
-      testOpenAIConnection(input.value.trim());
+      testAnthropicConnection(input.value.trim(), modelSel ? modelSel.value : getAnthropicModel());
     });
   }
-  if (!localStorage.getItem(OPENAI_KEY_LS)) {
+  if (!getAnthropicKey()) {
     showCfgStatus("info", "Aun no tienes una API Key guardada. Pegala arriba y presiona Guardar.");
   }
 }
@@ -2245,39 +2374,140 @@ function showCfgStatus(type, msg) {
   el.textContent = msg;
 }
 
-function testOpenAIConnection(key) {
+function anthropicHeaders(key) {
+  return {
+    "x-api-key": key,
+    "anthropic-version": ANTHROPIC_VERSION,
+    "content-type": "application/json",
+    "anthropic-dangerous-direct-browser-access": "true"
+  };
+}
+
+function testAnthropicConnection(key, model) {
   if (!key) {
-    showCfgStatus("err", "Pega tu API Key primero (empieza con sk-...).");
+    showCfgStatus("err", "Pega tu API Key primero (empieza con sk-ant-...).");
     return;
   }
   showCfgStatus("info", "Probando conexion...");
-  fetch("https://api.openai.com/v1/models", {
-    method: "GET",
-    headers: { "Authorization": "Bearer " + key }
-  }).then(function(r) {
-    if (r.status === 401) {
-      showCfgStatus("err", "La API Key fue rechazada (401). Verifica que sea correcta y este activa.");
+  fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: anthropicHeaders(key),
+    body: JSON.stringify({
+      model: model || "claude-haiku-4-5-20251001",
+      max_tokens: 8,
+      messages: [{ role: "user", content: "Responde solo con OK" }]
+    })
+  }).then(function(r) { return r.json().then(function(d) { return { ok: r.ok, status: r.status, data: d }; }); })
+  .then(function(res) {
+    if (!res.ok) {
+      var msg = (res.data && res.data.error && res.data.error.message) ? res.data.error.message : ("Error " + res.status);
+      showCfgStatus("err", "La API Key fue rechazada: " + msg);
       return;
     }
-    if (!r.ok) {
-      showCfgStatus("err", "OpenAI respondio con error " + r.status + ". Intenta de nuevo en unos minutos.");
-      return;
-    }
-    showCfgStatus("ok", "Conexion exitosa. Tu API Key funciona correctamente.");
+    showCfgStatus("ok", "Conexion exitosa. Tu API Key de Claude funciona correctamente.");
   }).catch(function(err) {
-    showCfgStatus("err", "No se pudo conectar directamente desde el navegador (probable bloqueo CORS de OpenAI). La key puede ser valida igual: usala a traves de un proxy (Cloudflare Worker, Supabase Edge Function o Make.com) en vez de llamar a OpenAI directo desde aqui.");
+    showCfgStatus("err", "No se pudo conectar desde el navegador (red o CORS). Revisa tu conexion y que la key sea correcta; si persiste, prueba de nuevo en unos segundos.");
   });
 }
 
 function addAgenteMsg(text, cls) {
   var wrap = document.getElementById("agente-messages");
-  if (!wrap) return;
+  if (!wrap) return null;
   var div = document.createElement("div");
   div.className = "agente-msg " + cls;
   div.textContent = text;
   wrap.appendChild(div);
   wrap.scrollTop = wrap.scrollHeight;
+  return div;
 }
+
+/* ===== HERRAMIENTAS QUE EL AGENTE PUEDE EJECUTAR SOBRE EL DASHBOARD ===== */
+var AGENTE_TOOLS = [
+  {
+    name: "listar_tareas",
+    description: "Lista tareas reales del Dashboard AUREA, con su id exacto, texto y estado. Usar antes de marcar o referirse a una tarea especifica.",
+    input_schema: { type: "object", properties: {
+      empresa_id: { type: "string", description: "ag, mady, glace, latam, conclart, ecom o wp. Omitir para todas las empresas." },
+      estado: { type: "string", enum: ["pendiente", "urgente", "completada", "todas"], description: "Filtro de estado. Por defecto 'pendiente'." }
+    } }
+  },
+  {
+    name: "marcar_tarea",
+    description: "Marca una tarea existente (por su id exacto, obtenido con listar_tareas) como completada o pendiente.",
+    input_schema: { type: "object", properties: {
+      id: { type: "string" }, completada: { type: "boolean" }
+    }, required: ["id", "completada"] }
+  },
+  {
+    name: "crear_tarea",
+    description: "Crea una tarea nueva dentro de una empresa del holding AUREA. Usar cuando el usuario pida agregar/anadir una tarea, o cuando ya no queden tareas pendientes y haga falta proponer la siguiente accion concreta.",
+    input_schema: { type: "object", properties: {
+      empresa_id: { type: "string", description: "ag, mady, glace, latam, conclart, ecom o wp" },
+      texto: { type: "string" },
+      nota: { type: "string" },
+      urgente: { type: "boolean" },
+      fecha: { type: "string", description: "Fecha objetivo en formato YYYY-MM-DD, opcional" }
+    }, required: ["empresa_id", "texto"] }
+  },
+  {
+    name: "resumen_holding",
+    description: "Devuelve el resumen de progreso (tareas completadas/pendientes por empresa y KPIs) de todo el holding AUREA.",
+    input_schema: { type: "object", properties: {} }
+  }
+];
+
+function empresaNombre(id) {
+  var found = null;
+  EMPRESAS.forEach(function(e) { if (e.id === id) found = e; });
+  return found ? found.nombre : id;
+}
+
+function ejecutarHerramienta(name, input) {
+  input = input || {};
+  if (name === "listar_tareas") {
+    var estado = input.estado || "pendiente";
+    var out = [];
+    EMPRESAS.forEach(function(e) {
+      if (input.empresa_id && input.empresa_id !== e.id) return;
+      allFasesFor(e).forEach(function(f) {
+        f.tareas.forEach(function(t) {
+          var st = getTaskStatus(t);
+          if (estado !== "todas" && estado !== st) {
+            if (!(estado === "pendiente" && st === "urgente")) return;
+          }
+          out.push({ id: t.id, empresa: e.nombre, empresa_id: e.id, texto: t.t, estado: st });
+        });
+      });
+    });
+    return JSON.stringify(out.slice(0, 60));
+  }
+  if (name === "marcar_tarea") {
+    ST[input.id] = !!input.completada;
+    saveState(true); updateStats(); renderSidebar(); renderCompanyStrip(); renderKanban();
+    if (EMPRESAS.some(function(e) { return e.id === activePanel; })) showPanel(activePanel);
+    return JSON.stringify({ ok: true, id: input.id, completada: !!input.completada });
+  }
+  if (name === "crear_tarea") {
+    if (!EMPRESAS.some(function(e) { return e.id === input.empresa_id; })) {
+      return JSON.stringify({ ok: false, error: "empresa_id invalido. Usa: ag, mady, glace, latam, conclart, ecom o wp." });
+    }
+    var tarea = crearTareaCustom(input.empresa_id, input.texto, input.nota, input.urgente, input.fecha);
+    updateStats(); renderSidebar(); renderCompanyStrip(); renderKanban();
+    if (activePanel === input.empresa_id) showPanel(activePanel);
+    return JSON.stringify({ ok: true, tarea: tarea, empresa: empresaNombre(input.empresa_id) });
+  }
+  if (name === "resumen_holding") {
+    var resumen = EMPRESAS.map(function(e) {
+      var all = []; allFasesFor(e).forEach(function(f) { f.tareas.forEach(function(t) { all.push(t); }); });
+      var done = all.filter(function(t) { return ST[t.id]; }).length;
+      return { empresa: e.nombre, id: e.id, completadas: done, total: all.length };
+    });
+    return JSON.stringify({ empresas: resumen, kpis: KP });
+  }
+  return JSON.stringify({ ok: false, error: "herramienta desconocida" });
+}
+
+var agenteHistory = [];
 
 function sendAgenteMessage() {
   var input = document.getElementById("agente-input");
@@ -2287,40 +2517,64 @@ function sendAgenteMessage() {
   addAgenteMsg(text, "user");
   input.value = "";
 
-  var key = localStorage.getItem(OPENAI_KEY_LS);
+  var key = getAnthropicKey();
   if (!key) {
-    addAgenteMsg("No hay API Key configurada. Guarda tu key de OpenAI arriba primero.", "err");
+    addAgenteMsg("No hay API Key configurada. Ve a Configuracion y guarda tu key de Anthropic (Claude) primero.", "err");
     return;
   }
 
-  addAgenteMsg("Pensando...", "bot");
-  var wrap = document.getElementById("agente-messages");
-  var thinkingEl = wrap.lastChild;
+  agenteHistory.push({ role: "user", content: text });
+  runAgentTurn(key, 0);
+}
 
-  fetch("https://api.openai.com/v1/chat/completions", {
+function runAgentTurn(key, depth) {
+  var thinkingEl = addAgenteMsg("Pensando...", "bot");
+  var systemPrompt = "Eres el Agente AUREA, el asistente operativo del holding AUREA Enterprises de Geraldo Meneses (7 empresas: ag=Atlantico Growth, mady=MADY, glace=GLACE, latam=LATAM SOUL, conclart=CONCLART, ecom=E-Commerce e IA, wp=WO! Press). " +
+    "Fecha actual: " + new Date().toISOString().slice(0, 10) + ". " +
+    "Usa las herramientas para leer, marcar y crear tareas reales del Dashboard en vez de inventar informacion: listar_tareas para consultar, marcar_tarea para completar/reabrir, crear_tarea cuando el usuario pida agregar una tarea nueva o cuando ya no queden pendientes en una empresa y haga falta proponer el siguiente paso concreto, resumen_holding para ver el avance general. " +
+    "Responde en espanol, breve y directo, como un asistente ejecutivo. Cuando ejecutes una accion, confirmalo con una frase corta.";
+
+  fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
-    headers: {
-      "Authorization": "Bearer " + key,
-      "Content-Type": "application/json"
-    },
+    headers: anthropicHeaders(key),
     body: JSON.stringify({
-      model: "gpt-4o-mini",
-      messages: [{ role: "user", content: text }],
-      max_tokens: 500
+      model: getAnthropicModel(),
+      max_tokens: 1024,
+      system: systemPrompt,
+      tools: AGENTE_TOOLS,
+      messages: agenteHistory
     })
   }).then(function(r) { return r.json().then(function(d) { return { ok: r.ok, status: r.status, data: d }; }); })
   .then(function(res) {
-    thinkingEl.remove();
+    if (thinkingEl) thinkingEl.remove();
     if (!res.ok) {
       var msg = (res.data && res.data.error && res.data.error.message) ? res.data.error.message : ("Error " + res.status);
-      addAgenteMsg("Error: " + msg, "err");
+      addAgenteMsg("Error de Claude: " + msg, "err");
       return;
     }
-    var reply = res.data.choices && res.data.choices[0] && res.data.choices[0].message && res.data.choices[0].message.content;
-    addAgenteMsg(reply || "(sin respuesta)", "bot");
+    var content = res.data.content || [];
+    agenteHistory.push({ role: "assistant", content: content });
+
+    var toolUses = content.filter(function(b) { return b.type === "tool_use"; });
+    var textBlocks = content.filter(function(b) { return b.type === "text"; });
+
+    textBlocks.forEach(function(b) { if (b.text && b.text.trim()) addAgenteMsg(b.text.trim(), "bot"); });
+
+    if (toolUses.length && depth < AGENTE_MAX_TURNS) {
+      var toolResults = toolUses.map(function(tu) {
+        var resultado;
+        try { resultado = ejecutarHerramienta(tu.name, tu.input); }
+        catch (e) { resultado = JSON.stringify({ ok: false, error: String(e) }); }
+        return { type: "tool_result", tool_use_id: tu.id, content: resultado };
+      });
+      agenteHistory.push({ role: "user", content: toolResults });
+      runAgentTurn(key, depth + 1);
+      return;
+    }
+    if (!textBlocks.length && !toolUses.length) addAgenteMsg("(sin respuesta)", "bot");
   }).catch(function(err) {
-    thinkingEl.remove();
-    addAgenteMsg("No se pudo conectar con OpenAI desde el navegador (posible bloqueo CORS). Necesitas un proxy intermedio para el Agente en produccion.", "err");
+    if (thinkingEl) thinkingEl.remove();
+    addAgenteMsg("No se pudo conectar con Claude desde el navegador (red o CORS). Verifica tu conexion e intenta de nuevo.", "err");
   });
 }
 
@@ -2328,7 +2582,7 @@ function sendAgenteMessage() {
 function checkAlerts() {
   var urgentes = [];
   EMPRESAS.forEach(function(e) {
-    e.fases.forEach(function(f) {
+    allFasesFor(e).forEach(function(f) {
       f.tareas.forEach(function(t) {
         if ((t.urgente || t.hoy) && !ST[t.id]) urgentes.push(t);
       });
@@ -2383,7 +2637,7 @@ function renderCompanyStrip(){
   var c=document.getElementById("company-strip"); if(!c) return;
   var html='<div class="co-chip'+(filterEmpresa==="all"?" active":"")+'" data-filter="all"><div class="co-dot" style="background:#D8DCE3"></div><div class="co-name">Todas</div></div>';
   EMPRESAS.forEach(function(e){
-    var all=[]; e.fases.forEach(function(f){f.tareas.forEach(function(t){all.push(t);});});
+    var all=[]; allFasesFor(e).forEach(function(f){f.tareas.forEach(function(t){all.push(t);});});
     var done=all.filter(function(t){return ST[t.id];}).length;
     var pct=Math.round(done/all.length*100);
     html+='<div class="co-chip'+(filterEmpresa===e.id?" active":"")+'" data-filter="'+e.id+'"><div class="co-dot" style="background:'+e.color+'"></div><div class="co-name">'+e.nombre+'</div><div class="co-pct">'+pct+'%</div></div>';
@@ -2399,7 +2653,7 @@ function renderKanban(){
   var cols={"pendiente":[],"urgente":[],"en-curso":[],"completada":[]};
   EMPRESAS.forEach(function(e){
     if(filterEmpresa!=="all"&&filterEmpresa!==e.id) return;
-    e.fases.forEach(function(f){f.tareas.forEach(function(t){cols[getTaskStatus(t)].push({t:t,e:e,f:f});});});
+    allFasesFor(e).forEach(function(f){f.tareas.forEach(function(t){cols[getTaskStatus(t)].push({t:t,e:e,f:f});});});
   });
   var html="";
   KANBAN_COLS.forEach(function(col){
@@ -2433,7 +2687,7 @@ function renderCalendar(){
   var tasksByDay={};
   EMPRESAS.forEach(function(e){
     if(filterEmpresa!=="all"&&filterEmpresa!==e.id) return;
-    e.fases.forEach(function(f){f.tareas.forEach(function(t){
+    allFasesFor(e).forEach(function(f){f.tareas.forEach(function(t){
       var dt=TASK_DATES[t.id]; if(!dt||dt.m!==calMonth) return;
       if(!tasksByDay[dt.d]) tasksByDay[dt.d]=[];
       tasksByDay[dt.d].push({t:t,e:e});
@@ -2543,7 +2797,16 @@ function init() {
   var mo = document.getElementById("modal-kpi");
   if (mo) mo.addEventListener("click", function(e) { if (e.target === mo) closeModal(); });
 
-  document.addEventListener("keydown", function(e) { if (e.key === "Escape") closeModal(); });
+  var ntClose = document.getElementById("nt-close");
+  if (ntClose) ntClose.addEventListener("click", closeNewTaskModal);
+  var ntCancel = document.getElementById("nt-cancel");
+  if (ntCancel) ntCancel.addEventListener("click", closeNewTaskModal);
+  var ntSave = document.getElementById("nt-save");
+  if (ntSave) ntSave.addEventListener("click", saveNewTaskFromModal);
+  var ntModal = document.getElementById("modal-newtask");
+  if (ntModal) ntModal.addEventListener("click", function(e) { if (e.target === ntModal) closeNewTaskModal(); });
+
+  document.addEventListener("keydown", function(e) { if (e.key === "Escape") { closeModal(); closeNewTaskModal(); } });
 
   var ad = document.getElementById("alert-dismiss");
   if (ad) ad.addEventListener("click", function() {
