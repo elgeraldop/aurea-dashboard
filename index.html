@@ -2394,14 +2394,24 @@ function testAnthropicConnection(key, model) {
     headers: anthropicHeaders(key),
     body: JSON.stringify({
       model: model || "claude-haiku-4-5-20251001",
-      max_tokens: 8,
+      max_tokens: 32,
+      thinking: { type: "disabled" },
       messages: [{ role: "user", content: "Responde solo con OK" }]
     })
   }).then(function(r) { return r.json().then(function(d) { return { ok: r.ok, status: r.status, data: d }; }); })
   .then(function(res) {
     if (!res.ok) {
       var msg = (res.data && res.data.error && res.data.error.message) ? res.data.error.message : ("Error " + res.status);
-      showCfgStatus("err", "La API Key fue rechazada: " + msg);
+      if (res.status === 401) msg = "Key invalida o mal copiada (401). Revisa que empiece con sk-ant- y que no tenga espacios de mas. " + msg;
+      else if (res.status === 400) msg = "Solicitud rechazada (400), probablemente config de modelo/parametros. " + msg;
+      else if (res.status === 403) msg = "Cuenta sin creditos o key sin permisos para este modelo (403). Verifica facturacion en console.anthropic.com. " + msg;
+      else if (res.status === 429) msg = "Limite de uso alcanzado (429). Espera un momento o revisa tu plan. " + msg;
+      showCfgStatus("err", msg);
+      return;
+    }
+    var block = (res.data.content || [])[0];
+    if (!block || !block.text) {
+      showCfgStatus("err", "La API respondio pero sin texto (stop_reason: " + res.data.stop_reason + "). Intenta de nuevo.");
       return;
     }
     showCfgStatus("ok", "Conexion exitosa. Tu API Key de Claude funciona correctamente.");
@@ -2539,7 +2549,8 @@ function runAgentTurn(key, depth) {
     headers: anthropicHeaders(key),
     body: JSON.stringify({
       model: getAnthropicModel(),
-      max_tokens: 1024,
+      max_tokens: 2048,
+      thinking: { type: "disabled" },
       system: systemPrompt,
       tools: AGENTE_TOOLS,
       messages: agenteHistory
@@ -2549,6 +2560,9 @@ function runAgentTurn(key, depth) {
     if (thinkingEl) thinkingEl.remove();
     if (!res.ok) {
       var msg = (res.data && res.data.error && res.data.error.message) ? res.data.error.message : ("Error " + res.status);
+      if (res.status === 401) msg = "Key invalida o mal copiada (401). " + msg;
+      else if (res.status === 403) msg = "Cuenta sin creditos o sin acceso a este modelo (403). Verifica facturacion en console.anthropic.com. " + msg;
+      else if (res.status === 429) msg = "Limite de uso alcanzado (429), espera un momento. " + msg;
       addAgenteMsg("Error de Claude: " + msg, "err");
       return;
     }
