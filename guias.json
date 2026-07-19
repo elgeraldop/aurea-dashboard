@@ -1,0 +1,604 @@
+{
+  "ag1": {
+    "t": "Optimizar LinkedIn como fundador de AG",
+    "p": [
+      {
+        "n": 1,
+        "t": "Foto profesional: Fondo liso, ropa formal. Usa photoroom.com desde el móvil."
+      },
+      {
+        "n": 2,
+        "t": "Banner Canva: 1584x396px. 'Atlántico Growth - Comunicaciones España-América Latina'."
+      },
+      {
+        "n": 3,
+        "t": "Titular: 'Fundador @ Atlántico Growth - Comunicaciones estratégicas España-Latam - IA aplicada al contenido'."
+      },
+      {
+        "n": 4,
+        "t": "About: 'Las empresas que crecen entre España y América Latina necesitan a alguien que hable ambos idiomas: el corporativo y el cultural. Eso soy yo.'"
+      },
+      {
+        "n": 5,
+        "t": "Servicios: Atlas de Entrada, Puente Continuo, Inteligencia Atlántica, Aterrizaje en Europa."
+      },
+      {
+        "n": 6,
+        "t": "URL: Editar perfil a URL pública linkedin.com/in/geraldomeneses"
+      }
+    ],
+    "nota": "El perfil optimizado genera 3-5x más visitas orgánicas."
+  },
+  "ag2": {
+    "t": "Activar atlanticogrowth.com",
+    "p": [
+      {
+        "n": 1,
+        "t": "Dominio: namecheap.com → atlanticogrowth.com aprox $12/año."
+      },
+      {
+        "n": 2,
+        "t": "Hosting: carrd.co Pro $19/año para landing sin código."
+      },
+      {
+        "n": 3,
+        "t": "DNS: Carrd Settings → Custom domain → configurar en Namecheap."
+      },
+      {
+        "n": 4,
+        "t": "Contenido mínimo: Qué es AG, 4 servicios con precio, quién eres, contacto."
+      },
+      {
+        "n": 5,
+        "t": "Email: hola@atlanticogrowth.com por $1/mes en Namecheap."
+      }
+    ],
+    "nota": "La landing no tiene que ser perfecta. Tiene que existir."
+  },
+  "ag3": {
+    "t": "Deck de 1 página de AG",
+    "p": [
+      {
+        "n": 1,
+        "t": "Canva: Formato A4 apaisado. Paleta oscura + oro."
+      },
+      {
+        "n": 2,
+        "t": "Estructura: Logo, quién eres, el problema, 4 servicios con precio, por qué tú, contacto."
+      },
+      {
+        "n": 3,
+        "t": "Servicios: Atlas $1500-3000, Puente $800-2000/mes, Inteligencia $500-1500, Aterrizaje $1000-2500."
+      },
+      {
+        "n": 4,
+        "t": "Exporta PDF: Canva → Descargar → PDF. Comparte desde Files por WhatsApp."
+      },
+      {
+        "n": 5,
+        "t": "Una versión, buena. No hagas 10 versiones."
+      }
+    ],
+    "nota": "La propuesta personalizada cierra 4x mejor que el deck genérico."
+  },
+  "ag6": {
+    "t": "10 mensajes de outreach en LinkedIn",
+    "p": [
+      {
+        "n": 1,
+        "t": "Estructura: Observación específica, lo que aportas, CTA 20 min."
+      },
+      {
+        "n": 2,
+        "t": "Ejemplo: 'Hola [Nombre], vi que [empresa] acaba de abrir en Colombia. Llevo 6 años en comunicaciones iberoamericanas. ¿Tienes 20 min?'"
+      },
+      {
+        "n": 3,
+        "t": "Segmento: Directores Comunicación/Marketing/Internacional en empresas españolas con Latam."
+      },
+      {
+        "n": 4,
+        "t": "Volumen: 10 mensajes/semana. Personaliza la primera línea."
+      },
+      {
+        "n": 5,
+        "t": "Follow-up a 5 días: 'Hola [Nombre], seguimiento. ¿Es posible hablar esta semana?'"
+      }
+    ],
+    "nota": "El 80% de los cierres vienen del follow-up."
+  },
+  "m1": {
+    "t": "Activar número virtual +34 en Zadarma",
+    "p": [
+      {
+        "n": 1,
+        "t": "zadarma.com: Regístrate, Mis Números, Comprar, España +34, aprox 3-5 EUR/mes."
+      },
+      {
+        "n": 2,
+        "t": "Verificación: Zadarma acepta pasaporte venezolano escaneado."
+      },
+      {
+        "n": 3,
+        "t": "Recarga: Mínimo 5 EUR. Activo en menos de 24h."
+      },
+      {
+        "n": 4,
+        "t": "Alternativa CallHippo: callhippo.com Starter $16/mes."
+      },
+      {
+        "n": 5,
+        "t": "Desvío: Zadarma → Ajustes → Desvío a tu número venezolano."
+      }
+    ],
+    "nota": "El número +34 es el requisito #1 para WhatsApp Business."
+  },
+  "m2": {
+    "t": "Configurar WhatsApp Business con +34",
+    "p": [
+      {
+        "n": 1,
+        "t": "Descarga WhatsApp Business App (no la normal). Introduce el +34 de Zadarma."
+      },
+      {
+        "n": 2,
+        "t": "Verificación: App Zadarma → Mensajes → código SMS de WhatsApp."
+      },
+      {
+        "n": 3,
+        "t": "Perfil: MADY Gestión Habitaciones Madrid. Descripción con IA."
+      },
+      {
+        "n": 4,
+        "t": "Respuesta automática: ¡Hola! Soy MADY. Respuesta en menos de 24h."
+      },
+      {
+        "n": 5,
+        "t": "Catálogo: Gestión completa, Matching, Suscripción propietario."
+      }
+    ],
+    "nota": "WhatsApp Business App (no API) es la solución correcta para el inicio."
+  },
+  "m3": {
+    "t": "Typeform de captura de inquilinos",
+    "p": [
+      {
+        "n": 1,
+        "t": "typeform.com: Plan gratuito 10 respuestas/mes. Básico $25/mes para escalar."
+      },
+      {
+        "n": 2,
+        "t": "Preguntas: Nombre, Trabajo, Ingresos, Horarios, Mascotas, Zona, Presupuesto, Fecha entrada."
+      },
+      {
+        "n": 3,
+        "t": "Personalidad: 'Descríbete en 3 palabras' y '¿Qué buscas en un piso compartido?'"
+      },
+      {
+        "n": 4,
+        "t": "Al final: 'Recibirás análisis en 24h. Guarda: [tu +34 Zadarma]'"
+      },
+      {
+        "n": 5,
+        "t": "Link corto: Typeform genera link que compartes con propietarios."
+      }
+    ],
+    "nota": "Cada candidato que completa el Typeform ya está cualificado."
+  },
+  "m4": {
+    "t": "Claude API para análisis de compatibilidad",
+    "p": [
+      {
+        "n": 1,
+        "t": "console.anthropic.com: Crea cuenta. Primeros $5 gratis ≈ 200 análisis."
+      },
+      {
+        "n": 2,
+        "t": "API key: Dashboard → API Keys → Create Key."
+      },
+      {
+        "n": 3,
+        "t": "Prompt: 'Analiza compatibilidad propietario/candidato. Score 1-10 + 3 razones.'"
+      },
+      {
+        "n": 4,
+        "t": "Sin código: Usa Claude.ai directamente. Pega prompt + datos Typeform."
+      },
+      {
+        "n": 5,
+        "t": "PDF Canva: Logo MADY, Score, Razones, Recomendación. Envía en 24h."
+      }
+    ],
+    "nota": "El informe en 24h es el diferenciador absoluto de MADY."
+  },
+  "m6": {
+    "t": "Escribir a 20 propietarios en Idealista",
+    "p": [
+      {
+        "n": 1,
+        "t": "idealista.com: Habitaciones Madrid, Filtro +15 días publicados."
+      },
+      {
+        "n": 2,
+        "t": "Mensaje: 'Hola, soy gestor con IA. Traigo inquilinos pre-filtrados. No cobro hasta que la habitación esté alquilada. ¿Te interesa?'"
+      },
+      {
+        "n": 3,
+        "t": "Contacto: Formulario de cada anuncio. Algunos tienen WhatsApp directo."
+      },
+      {
+        "n": 4,
+        "t": "Airtable: Tabla Propietarios: Nombre, Zona, Precio, Fecha, Estado."
+      },
+      {
+        "n": 5,
+        "t": "Meta: 20 mensajes → 4-6 respuestas → 1 propietario activo semana 1."
+      }
+    ],
+    "nota": "'Solo pagas si funciona' elimina el riesgo para el propietario."
+  },
+  "g1": {
+    "t": "Investigar distribuidores agua premium",
+    "p": [
+      {
+        "n": 1,
+        "t": "Amazon España: Voss ≈ 3.5 EUR, Fiji ≈ 4.8 EUR, Acqua Panna ≈ 2.8 EUR, Hildon ≈ 4.2 EUR."
+      },
+      {
+        "n": 2,
+        "t": "Margen: Voss a 6-10 EUR en restaurante. Tu margen distribución 60-80%."
+      },
+      {
+        "n": 3,
+        "t": "Distribuidores: Busca 'distribuidor agua mineral premium España' → Aquaservice."
+      },
+      {
+        "n": 4,
+        "t": "Dropshipping: Sin stock. Compras al distribuidor cuando tienes pedido."
+      },
+      {
+        "n": 5,
+        "t": "Fichas: Origen, mineralogía sodio/calcio/pH, sabor, maridaje."
+      }
+    ],
+    "nota": "La curaduría narrativa es el diferencial de GLACE, no el precio."
+  },
+  "g5": {
+    "t": "Shopify para GLACE",
+    "p": [
+      {
+        "n": 1,
+        "t": "shopify.com: Basic $29/mes. Trial 3 días."
+      },
+      {
+        "n": 2,
+        "t": "Tema: Dawn o Sense gratis. Color blanco/negro, acento azul glacial."
+      },
+      {
+        "n": 3,
+        "t": "Dominio: Conectar glace.es desde Namecheap."
+      },
+      {
+        "n": 4,
+        "t": "Suscripciones: Bold Subscriptions o Recharge. Essenziale €49, Prestige €69, Collector €89."
+      },
+      {
+        "n": 5,
+        "t": "Stripe: Shopify → Ajustes → Pagos. Abre cuenta con pasaporte."
+      }
+    ],
+    "nota": "El tema visual es lo más importante de GLACE."
+  },
+  "g9": {
+    "t": "Lanzar La Caja GLACE",
+    "p": [
+      {
+        "n": 1,
+        "t": "Tiers: Essenziale 4 botellas €49/mes, Prestige 6 botellas €69/mes, Collector 8 botellas €89/mes."
+      },
+      {
+        "n": 2,
+        "t": "Carta de cata: Escrita por ti: origen, mineralogía, maridaje del mes."
+      },
+      {
+        "n": 3,
+        "t": "Packaging: Caja negra + logo oro. Canva + imprenta local. 3-5 EUR/caja."
+      },
+      {
+        "n": 4,
+        "t": "Primera suscriptora: Tu entorno. El primer testimonio vale más que 10 posts."
+      },
+      {
+        "n": 5,
+        "t": "TikTok: 'Así curé este mes de La Caja GLACE'. Unboxing premium."
+      }
+    ],
+    "nota": "LTV estimado por suscriptor: €400-600."
+  },
+  "l1": {
+    "t": "Identidad visual LATAM SOUL",
+    "p": [
+      {
+        "n": 1,
+        "t": "Canva Pro: Logo. Concepto: identidad premium, no souvenir."
+      },
+      {
+        "n": 2,
+        "t": "Paleta: Terracota #C1440E + dorado #D4AF37 + verde selva #2D5A27 + crema."
+      },
+      {
+        "n": 3,
+        "t": "Logo: Mapa Sudamérica línea fina + LATAM SOUL bold. O colibrí geométrico."
+      },
+      {
+        "n": 4,
+        "t": "Diseños: Mapa topográfico + lema. Venezuela: SOMOS VENEZUELA."
+      },
+      {
+        "n": 5,
+        "t": "Printful: printful.com mockup generator, sube diseño, descarga para IG."
+      }
+    ],
+    "nota": "Sin buen diseño no hay viralidad."
+  },
+  "l2": {
+    "t": "Printful + Shopify para LATAM SOUL",
+    "p": [
+      {
+        "n": 1,
+        "t": "printful.com: Cuenta gratis. Sin coste hasta vender."
+      },
+      {
+        "n": 2,
+        "t": "Conectar Shopify: Printful → Tiendas → Shopify → URL → Autorizar."
+      },
+      {
+        "n": 3,
+        "t": "Productos: Bella+Canvas 3001 mejor calidad, sube diseño, colores."
+      },
+      {
+        "n": 4,
+        "t": "Precios: Coste base ≈ $13.50 → PVP Shopify $32-42. Margen $18-28."
+      },
+      {
+        "n": 5,
+        "t": "Prueba: Pide una unidad antes de lanzar. Verifica calidad y tiempo."
+      }
+    ],
+    "nota": "Sin stock, sin riesgo. Printful envía a España, EEUU, México y más de 20 países."
+  },
+  "l7": {
+    "t": "Video emocional de lanzamiento",
+    "p": [
+      {
+        "n": 1,
+        "t": "Concepto: Para los que viven lejos pero nunca se van. Inicio: ¿Cuándo te sentiste 100% venezolano?"
+      },
+      {
+        "n": 2,
+        "t": "Estructura 60s: 0-10s emoción, 10-40s problema, 40-55s solución, 55-60s CTA."
+      },
+      {
+        "n": 3,
+        "t": "iPhone 13: Modo retrato, ventana lateral, AirPods como micrófono."
+      },
+      {
+        "n": 4,
+        "t": "CapCut: Subtítulos = +38% retención. Música latino instrumental suave."
+      },
+      {
+        "n": 5,
+        "t": "Publicar: TikTok primero. Luego Reels. Grupos venezolanos Madrid Facebook."
+      }
+    ],
+    "nota": "Sin emoción no hay viralidad."
+  },
+  "e1": {
+    "t": "Validar nicho de dropshipping",
+    "p": [
+      {
+        "n": 1,
+        "t": "mercadolibre.com.ve: Mascotas → Más vendidos. Top 10 con reviews."
+      },
+      {
+        "n": 2,
+        "t": "Criterios: > 50 ventas, precio $15-80, no marca conocida, fácil enviar."
+      },
+      {
+        "n": 3,
+        "t": "AliExpress: Mismo producto envío Venezuela/Panamá < 20 días. Margen 2.5x."
+      },
+      {
+        "n": 4,
+        "t": "Top nichos: Ropa perros, Camas ortopédicas, Comederos automáticos, Juguetes gatos."
+      },
+      {
+        "n": 5,
+        "t": "Un solo nicho: 5 productos, 3 semanas de datos, luego escala o pivota."
+      }
+    ],
+    "nota": "Mascotas premium LATAM: $5.5B en 2025."
+  },
+  "e6": {
+    "t": "Kit IA para PYMEs",
+    "p": [
+      {
+        "n": 1,
+        "t": "Estructura Canva 30-40 pgs: Portada, Intro, 5 módulos: Atención, Redes, Email, Ventas, Productividad."
+      },
+      {
+        "n": 2,
+        "t": "50 prompts: 10 por módulo. Contexto + instrucción + output. Copy-paste directo."
+      },
+      {
+        "n": 3,
+        "t": "10 templates: Post IG semanal, email venta, propuesta, respuesta review, script video."
+      },
+      {
+        "n": 4,
+        "t": "Hotmart: hotmart.com Ebook PDF $39 con 10% comisión Hotmart."
+      },
+      {
+        "n": 5,
+        "t": "Lanzamiento: 'Pasé 3 meses usando IA en PYMEs hispanas. Aquí lo que funciona.' + link."
+      }
+    ],
+    "nota": "Margen 100% en cada venta adicional. Se crea una vez."
+  },
+  "c1": {
+    "t": "Comunidad digital CONCLART",
+    "p": [
+      {
+        "n": 1,
+        "t": "Manifiesto: 1000 palabras sobre por qué Madrid necesita un club cultural iberoamericano privado."
+      },
+      {
+        "n": 2,
+        "t": "Substack: Newsletter mensual. Ensayos culturales iberoamericanos."
+      },
+      {
+        "n": 3,
+        "t": "@conclart Instagram: Frases escritores, fragmentos ensayos, fotos culturales Madrid."
+      },
+      {
+        "n": 4,
+        "t": "Meta 2026: 1000 suscriptores newsletter + 3000 seguidores IG."
+      },
+      {
+        "n": 5,
+        "t": "Dic Madrid: Barrio de las Letras, Malasaña, Lavapiés. Espacios 100-200 m2."
+      }
+    ],
+    "nota": "CONCLART se construye en 2026. Se inaugura en 2028."
+  },
+  "c2": {
+    "t": "Primeros 20 socios fundadores",
+    "p": [
+      {
+        "n": 1,
+        "t": "Perfil: Latinoamericanos en España con poder adquisitivo + pasión cultural."
+      },
+      {
+        "n": 2,
+        "t": "Dónde: LinkedIn, Galerías iberoamericanas, Casa de América Madrid, Presentaciones libros."
+      },
+      {
+        "n": 3,
+        "t": "Pitch: CONCLART: primer club cultural privado iberoamericano Madrid. 20 socios fundadores. €2000/año. Acceso vitalicio + voto curaduría."
+      },
+      {
+        "n": 4,
+        "t": "Capital: 20 socios x €2000 = €40000. Sin deuda, sin inversores."
+      },
+      {
+        "n": 5,
+        "t": "Airtable: Nombre, Profesión, País, Canal, Estado."
+      }
+    ],
+    "nota": "La admisión es el producto más importante de CONCLART."
+  },
+  "wp1": {
+    "t": "Identidad visual WO! Press",
+    "p": [
+      {
+        "n": 1,
+        "t": "Concepto: Luzu TV meets noticias globales. Energía, juventud, seriedad cuando cuenta."
+      },
+      {
+        "n": 2,
+        "t": "Paleta: Cobre #B87333, negro mate, blanco roto, acento dorado suave."
+      },
+      {
+        "n": 3,
+        "t": "Tipografía: Títulos: Bebas Neue o similar. Cuerpo: Inter o Roboto."
+      },
+      {
+        "n": 4,
+        "t": "Logo: WO! en bold + icono de ondas/sonido. Canva Pro o contratar en Fiverr $50."
+      },
+      {
+        "n": 5,
+        "t": "Motion: Identidad animada de 3 seg para videos. Canva o After Effects."
+      }
+    ],
+    "nota": "La identidad visual es el 50% de la percepción de profesionalidad."
+  },
+  "wp2": {
+    "t": "Grabar 3 episodios piloto",
+    "p": [
+      {
+        "n": 1,
+        "t": "Equipo mínimo: iPhone 13+, trípode, 2 focos LED, AirPods como micrófono."
+      },
+      {
+        "n": 2,
+        "t": "WO! Amanece: 20 min. Noticias del día, tono fresco, sin amarillismo. Guión bullet points."
+      },
+      {
+        "n": 3,
+        "t": "La Historia Detrás: 30 min. Un tema de fondo investigado. 3 fuentes mínimo."
+      },
+      {
+        "n": 4,
+        "t": "WO! Cierra: 15 min. Resumen + entrevista corta. Lunes o viernes."
+      },
+      {
+        "n": 5,
+        "t": "Edición: CapCut. Subtítulos automáticos. Música de epidemicsound.com."
+      }
+    ],
+    "nota": "Subir a YouTube no listado. Compartir solo con feedbackers de confianza."
+  },
+  "wp3": {
+    "t": "Lanzar newsletter semanal",
+    "p": [
+      {
+        "n": 1,
+        "t": "Plataforma: Substack (gratis) o Beehiiv (mejor analytics). Empezar con Substack."
+      },
+      {
+        "n": 2,
+        "t": "Nombre: 'Lo que no te contaron'. Tono: insider, riguroso, entretenido."
+      },
+      {
+        "n": 3,
+        "t": "Frecuencia: 1 artículo de fondo semanal. Jueves 8am. Consistencia > perfección."
+      },
+      {
+        "n": 4,
+        "t": "Contenido inicial: 3 artículos pre-escritos antes de lanzar. 1500-2000 palabras."
+      },
+      {
+        "n": 5,
+        "t": "Growth: Compartir en X/LinkedIn. Collabs con otros newsletters. Sin ads pagados inicialmente."
+      }
+    ],
+    "nota": "La newsletter es el único activo digital que realmente posees."
+  },
+  "wp6": {
+    "t": "Desplegar demo WO! Intelligence",
+    "p": [
+      {
+        "n": 1,
+        "t": "Concepto: Hilo de X demostrando cómo 6 agentes IA operan el backend de WO! Press."
+      },
+      {
+        "n": 2,
+        "t": "Formato: 10-15 tweets. Screenshots del sistema. Video corto de 60 seg."
+      },
+      {
+        "n": 3,
+        "t": "Verificación: Si la cuenta no está verificada, usar imágenes y texto puro."
+      },
+      {
+        "n": 4,
+        "t": "CTA: 'Esto es cómo operamos WO! Press. Si quieres esta inteligencia para tu empresa, DM.'"
+      },
+      {
+        "n": 5,
+        "t": "Timing: Publicar martes o miércoles 9am ET. Máxima visibilidad."
+      }
+    ],
+    "nota": "La demo de WO! Intelligence es el mejor lead magnet para branded content."
+  }
+}

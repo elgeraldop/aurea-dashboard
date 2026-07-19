@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg: #F0F2F5;
+    --surface: #FFFFFF;
+    --surface2: #F7F8FA;
+    --surface3: #EDEEF2;
+    --border: #DDE1E8;
+    --border2: #C8CDD8;
+    --text: #1A2233;
+    --text2: #4A5568;
+    --text3: #8A95A8;
+    --accent: #0052CC;
+    --accent-light: rgba(0,82,204,0.1);
+    --accent-hover: #0055D4;
+    --green: #006644;
+    --green-bg: #E3FCEF;
+    --green-light: #36B37E;
+    --amber: #FF8B00;
+    --amber-bg: #FFF4E5;
+    --red: #BF2600;
+    --red-bg: #FFEBE6;
+    --gold: #C49A1A;
+    --gold-bg: #FFF8E1;
+    --purple: #7C3AED;
+    --purple-bg: #F3E8FF;
+    --cobre: #B87333;
+    --cobre-bg: #FFF0E0;
+    --glass: rgba(255,255,255,0.85);
+  }
+  .dark {
+    --bg: #0F1117;
+    --surface: #1A1D29;
+    --surface2: #222636;
+    --surface3: #2A2E3F;
+    --border: #2E3347;
+    --border2: #3A4059;
+    --text: #E8ECF4;
+    --text2: #A0A8C0;
+    --text3: #6B7290;
+    --accent: #4C9AFF;
+    --accent-light: rgba(76,154,255,0.15);
+    --accent-hover: #6BAFFF;
+    --green: #36B37E;
+    --green-bg: rgba(54,179,126,0.15);
+    --amber: #FFAB00;
+    --amber-bg: rgba(255,171,0,0.15);
+    --red: #FF5630;
+    --red-bg: rgba(255,86,48,0.15);
+    --gold: #FFD700;
+    --gold-bg: rgba(255,215,0,0.15);
+    --glass: rgba(26,29,41,0.85);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html { height: 100%; }
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.5;
+    height: 100%; overflow-x: hidden; -webkit-font-smoothing: antialiased;
+    -webkit-overflow-scrolling: touch; transition: background 0.3s ease, color 0.3s ease;
+  }
+  #root { height: 100%; }
+  button, input, textarea { font-family: inherit; }
+  a { text-decoration: none; color: inherit; }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  }
+}
+
+@layer components {
+  .glass { background: var(--glass); backdrop-filter: blur(12px) saturate(180%); -webkit-backdrop-filter: blur(12px) saturate(180%); }
+  .skeleton { background: linear-gradient(90deg, var(--surface2) 25%, var(--surface3) 50%, var(--surface2) 75%); background-size: 200% 100%; animation: skeleton 1.5s ease-in-out infinite; }
+}
+
+@layer utilities {
+  .scrollbar-thin::-webkit-scrollbar { width: 4px; }
+  .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+  .scrollbar-thin::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+}
