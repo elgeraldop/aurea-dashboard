@@ -753,7 +753,7 @@ input, textarea, .topbar-date, .cal-day-num, .cal-event, .cal-month-title { font
         <div class="si-dot" style="background:var(--text3)"></div>
         <div class="si-info">
           <div class="si-name">Configuracion</div>
-          <div class="si-meta">API Key Gemini</div>
+          <div class="si-meta">API Key OpenRouter</div>
         </div>
       </button>
       <div class="sidebar-divider"></div>
@@ -865,15 +865,15 @@ input, textarea, .topbar-date, .cal-day-num, .cal-event, .cal-month-title { font
           <div>
             <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:4px">AJUSTES</div>
             <div class="empresa-title">Configuracion</div>
-            <div class="empresa-tagline">Conecta tu API Key gratuita de Google Gemini para que el Agente AUREA opere el Dashboard</div>
+            <div class="empresa-tagline">Conecta tu API Key gratuita de OpenRouter para que el Agente AUREA opere el Dashboard</div>
           </div>
         </div>
       </div>
       <div class="config-wrap">
         <div class="config-block">
-          <div class="config-label">API Key de Gemini (Google AI Studio)</div>
+          <div class="config-label">API Key de OpenRouter</div>
           <div class="config-input-row">
-            <input class="modal-input" type="password" id="cfg-apikey" placeholder="AIza...">
+            <input class="modal-input" type="password" id="cfg-apikey" placeholder="sk-or-v1-...">
             <button class="btn-modal btn-modal-ghost" id="cfg-toggle-visibility" style="min-width:44px">&#128065;</button>
           </div>
           <div class="config-actions">
@@ -882,15 +882,17 @@ input, textarea, .topbar-date, .cal-day-num, .cal-event, .cal-month-title { font
             <button class="btn-modal btn-modal-ghost" id="cfg-clear">Borrar</button>
           </div>
           <div class="config-status" id="cfg-status"></div>
-          <div class="config-note">Consigue tu key gratis (sin tarjeta) en <strong>aistudio.google.com/apikey</strong> con tu cuenta de Google, en menos de un minuto. Se guarda solo en este dispositivo (localStorage): nunca se sube a Supabase, ni a ningun servidor, ni queda escrita en el HTML/repositorio. Como esta app llama a Gemini directamente desde el navegador, cualquiera que abra las herramientas de desarrollador en TU navegador podria ver tu key mientras la usas &mdash; es la misma logica que pegar una clave en un script personal. En Google AI Studio, restringe la key a "Generative Language API" como precaucion.</div>
+          <div class="config-note">Consigue tu key gratis (sin tarjeta) en <strong>openrouter.ai/keys</strong> con tu cuenta de Google o email, en menos de un minuto. Se guarda solo en este dispositivo (localStorage): nunca se sube a Supabase, ni a ningun servidor, ni queda escrita en el HTML/repositorio. Como esta app llama a OpenRouter directamente desde el navegador, cualquiera que abra las herramientas de desarrollador en TU navegador podria ver tu key mientras la usas &mdash; es la misma logica que pegar una clave en un script personal.</div>
         </div>
         <div class="config-block">
-          <div class="config-label">Modelo</div>
+          <div class="config-label">Modelo (gratis - lista en vivo)</div>
           <select class="modal-input" id="cfg-model">
-            <option value="gemini-2.5-flash">Gemini 2.5 Flash (recomendado, gratis)</option>
-            <option value="gemini-2.5-flash-lite">Gemini 2.5 Flash-Lite (mas rapido, mas cuota gratis)</option>
+            <option value="">Cargando modelos gratis...</option>
           </select>
-          <div class="config-note">El Agente usa este modelo para leer y modificar tus tareas (marcar, crear, resumir). El tier gratis alcanza de sobra para gestionar el Dashboard dia a dia (limite aprox. 10 solicitudes/min, 500/dia).</div>
+          <div class="config-actions">
+            <button class="btn-modal btn-modal-ghost" id="cfg-refresh-models">Actualizar lista</button>
+          </div>
+          <div class="config-note">OpenRouter da acceso a decenas de modelos (Llama, Qwen, DeepSeek, Kimi cuando este disponible sin costo, etc.) por una sola key. Esta lista se consulta en vivo contra su catalogo porque los modelos gratis cambian seguido &mdash; nunca queda fija en el codigo. Limite tipico del tier gratis: 20 solicitudes/min y 50-1000/dia segun tu cuenta.</div>
         </div>
       </div>
     </div>
@@ -2346,22 +2348,22 @@ function renderViaje() {
   }
 }
 
-/* CONFIGURACION / AGENTE IA - Google Gemini (gratis, sin tarjeta), con tool-use real sobre el Dashboard */
-var GEMINI_KEY_LS = "au_gemini_key";
-var GEMINI_MODEL_LS = "au_gemini_model";
+/* CONFIGURACION / AGENTE IA - OpenRouter (un solo key, muchos modelos gratis incl. Kimi cuando este disponible sin costo),
+   con tool-use real sobre el Dashboard. La lista de modelos gratis se consulta en vivo porque OpenRouter rota
+   frecuentemente cuales modelos tienen costo $0 - por eso NUNCA se fija un modelo a mano en el codigo. */
+var OR_KEY_LS = "au_or_key";
+var OR_MODEL_LS = "au_or_model";
 var AGENTE_MAX_TURNS = 6;
 
-function getGeminiKey() { return localStorage.getItem(GEMINI_KEY_LS) || ""; }
-function getGeminiModel() { return localStorage.getItem(GEMINI_MODEL_LS) || "gemini-2.5-flash"; }
+function getOrKey() { return localStorage.getItem(OR_KEY_LS) || ""; }
+function getOrModel() { return localStorage.getItem(OR_MODEL_LS) || ""; }
 
 function initConfigPanel() {
   var input = document.getElementById("cfg-apikey");
   if (!input) return;
   if (!input.dataset.bound) {
     input.dataset.bound = "1";
-    input.value = getGeminiKey();
-    var modelSel = document.getElementById("cfg-model");
-    if (modelSel) modelSel.value = getGeminiModel();
+    input.value = getOrKey();
 
     document.getElementById("cfg-toggle-visibility").addEventListener("click", function() {
       input.type = input.type === "password" ? "text" : "password";
@@ -2374,31 +2376,32 @@ function initConfigPanel() {
         return;
       }
       try {
-        localStorage.setItem(GEMINI_KEY_LS, val);
-        if (modelSel) localStorage.setItem(GEMINI_MODEL_LS, modelSel.value);
-        showCfgStatus("ok", "API Key y modelo guardados en este dispositivo.");
+        localStorage.setItem(OR_KEY_LS, val);
+        var modelSel = document.getElementById("cfg-model");
+        if (modelSel && modelSel.value) localStorage.setItem(OR_MODEL_LS, modelSel.value);
+        showCfgStatus("ok", "API Key guardada en este dispositivo.");
       } catch (e) {
         showCfgStatus("err", "No se pudo guardar: " + e.message);
       }
     });
 
-    if (modelSel) modelSel.addEventListener("change", function() {
-      try { localStorage.setItem(GEMINI_MODEL_LS, modelSel.value); } catch(e) {}
-    });
-
     document.getElementById("cfg-clear").addEventListener("click", function() {
-      localStorage.removeItem(GEMINI_KEY_LS);
+      localStorage.removeItem(OR_KEY_LS);
       input.value = "";
       showCfgStatus("info", "API Key eliminada de este dispositivo.");
     });
 
     document.getElementById("cfg-test").addEventListener("click", function() {
-      testGeminiConnection(input.value.trim(), modelSel ? modelSel.value : getGeminiModel());
+      testOpenRouterConnection(input.value.trim());
     });
+
+    var refreshBtn = document.getElementById("cfg-refresh-models");
+    if (refreshBtn) refreshBtn.addEventListener("click", function() { cargarModelosGratis(true); });
   }
-  if (!getGeminiKey()) {
-    showCfgStatus("info", "Aun no tienes una API Key guardada. Consiguela gratis en aistudio.google.com/apikey y pegala arriba.");
+  if (!getOrKey()) {
+    showCfgStatus("info", "Aun no tienes una API Key guardada. Consiguela gratis en openrouter.ai/keys y pegala arriba.");
   }
+  cargarModelosGratis(false);
 }
 
 function initAgentePanel() {
@@ -2418,41 +2421,86 @@ function showCfgStatus(type, msg) {
   el.textContent = msg;
 }
 
-function geminiUrl(model, key) {
-  return "https://generativelanguage.googleapis.com/v1beta/models/" + model + ":generateContent";
+/* Consulta en vivo el catalogo publico de OpenRouter y filtra los modelos con costo $0,
+   para no depender nunca de un nombre de modelo fijo que puede dejar de ser gratis sin aviso. */
+var modelosGratisCache = null;
+function cargarModelosGratis(forzar) {
+  var sel = document.getElementById("cfg-model");
+  if (!sel) return;
+  if (modelosGratisCache && !forzar) { poblarSelectModelos(sel, modelosGratisCache); return; }
+  sel.innerHTML = '<option value="">Cargando modelos gratis...</option>';
+  fetch("https://openrouter.ai/api/v1/models")
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      var todos = (d && d.data) || [];
+      var gratis = todos.filter(function(m) {
+        return m.pricing && parseFloat(m.pricing.prompt || "1") === 0 && parseFloat(m.pricing.completion || "1") === 0;
+      }).sort(function(a, b) { return (b.context_length || 0) - (a.context_length || 0); });
+      modelosGratisCache = gratis;
+      poblarSelectModelos(sel, gratis);
+    })
+    .catch(function() {
+      sel.innerHTML = '<option value="">No se pudo cargar la lista (revisa tu conexion)</option>';
+    });
 }
 
-function testGeminiConnection(key, model) {
-  if (!key) {
-    showCfgStatus("err", "Pega tu API Key primero (empieza con AIza...).");
+function poblarSelectModelos(sel, gratis) {
+  if (!gratis.length) {
+    sel.innerHTML = '<option value="">Sin modelos gratis disponibles ahora mismo</option>';
     return;
   }
-  showCfgStatus("info", "Probando conexion...");
-  fetch(geminiUrl(model || "gemini-2.5-flash", key), {
+  var guardado = getOrModel();
+  var html = "";
+  gratis.forEach(function(m) {
+    html += '<option value="' + m.id + '"' + (m.id === guardado ? " selected" : "") + '>' + m.id + "</option>";
+  });
+  sel.innerHTML = html;
+  if (!guardado) { localStorage.setItem(OR_MODEL_LS, gratis[0].id); }
+  sel.onchange = function() { try { localStorage.setItem(OR_MODEL_LS, sel.value); } catch(e) {} };
+}
+
+function testOpenRouterConnection(key) {
+  if (!key) {
+    showCfgStatus("err", "Pega tu API Key primero (empieza con sk-or-...).");
+    return;
+  }
+  var model = getOrModel();
+  if (!model) {
+    showCfgStatus("err", "Espera a que cargue la lista de modelos gratis (o revisa tu conexion) antes de probar.");
+    return;
+  }
+  showCfgStatus("info", "Probando conexion con " + model + "...");
+  fetch("https://openrouter.ai/api/v1/chat/completions", {
     method: "POST",
-    headers: { "Content-Type": "application/json", "x-goog-api-key": key },
+    headers: {
+      "Authorization": "Bearer " + key,
+      "Content-Type": "application/json",
+      "HTTP-Referer": window.location.origin || "https://aurea-dashboard.local",
+      "X-Title": "AUREA Dashboard"
+    },
     body: JSON.stringify({
-      contents: [{ role: "user", parts: [{ text: "Responde solo con OK" }] }]
+      model: model,
+      messages: [{ role: "user", content: "Responde solo con OK" }],
+      max_tokens: 16
     })
   }).then(function(r) { return r.json().then(function(d) { return { ok: r.ok, status: r.status, data: d }; }); })
   .then(function(res) {
     if (!res.ok) {
       var msg = (res.data && res.data.error && res.data.error.message) ? res.data.error.message : ("Error " + res.status);
-      if (res.status === 400 && /API key/i.test(msg)) msg = "Key invalida o mal copiada (400). Revisa que empiece con AIza y que no tenga espacios de mas. " + msg;
-      else if (res.status === 403) msg = "Key sin permiso para este modelo o restringida (403). " + msg;
-      else if (res.status === 429) msg = "Limite gratuito alcanzado por ahora (429). Espera un minuto e intenta de nuevo. " + msg;
+      if (res.status === 401) msg = "Key invalida o mal copiada (401). " + msg;
+      else if (res.status === 402) msg = "Sin creditos suficientes para este modelo (402). Prueba otro modelo gratis de la lista. " + msg;
+      else if (res.status === 429) msg = "Limite gratuito alcanzado (429, 20/min o cupo diario). Espera un momento. " + msg;
       showCfgStatus("err", msg);
       return;
     }
-    var cand = (res.data.candidates || [])[0];
-    var text = cand && cand.content && cand.content.parts && cand.content.parts[0] && cand.content.parts[0].text;
+    var text = res.data.choices && res.data.choices[0] && res.data.choices[0].message && res.data.choices[0].message.content;
     if (!text) {
-      showCfgStatus("err", "La API respondio pero sin texto (finishReason: " + (cand && cand.finishReason) + "). Intenta de nuevo.");
+      showCfgStatus("err", "La API respondio pero sin texto. Intenta con otro modelo de la lista.");
       return;
     }
-    showCfgStatus("ok", "Conexion exitosa. Tu API Key de Gemini funciona correctamente.");
+    showCfgStatus("ok", "Conexion exitosa con " + model + ".");
   }).catch(function(err) {
-    showCfgStatus("err", "No se pudo conectar desde el navegador (red). Revisa tu conexion y que la key sea correcta; si persiste, prueba de nuevo en unos segundos.");
+    showCfgStatus("err", "No se pudo conectar desde el navegador (red). Revisa tu conexion e intenta de nuevo.");
   });
 }
 
@@ -2467,43 +2515,39 @@ function addAgenteMsg(text, cls) {
   return div;
 }
 
-/* ===== HERRAMIENTAS QUE EL AGENTE PUEDE EJECUTAR SOBRE EL DASHBOARD (formato Gemini function_declarations) ===== */
+/* ===== HERRAMIENTAS QUE EL AGENTE PUEDE EJECUTAR SOBRE EL DASHBOARD (formato OpenAI-compatible, usado por OpenRouter) ===== */
 var AGENTE_TOOLS = [
-  {
-    functionDeclarations: [
-      {
-        name: "listar_tareas",
-        description: "Lista tareas reales del Dashboard AUREA, con su id exacto, texto y estado. Usar antes de marcar o referirse a una tarea especifica.",
-        parameters: { type: "object", properties: {
-          empresa_id: { type: "string", description: "ag, mady, glace, latam, conclart, ecom o wp. Omitir para todas las empresas." },
-          estado: { type: "string", enum: ["pendiente", "urgente", "completada", "todas"], description: "Filtro de estado. Por defecto 'pendiente'." }
-        } }
-      },
-      {
-        name: "marcar_tarea",
-        description: "Marca una tarea existente (por su id exacto, obtenido con listar_tareas) como completada o pendiente.",
-        parameters: { type: "object", properties: {
-          id: { type: "string" }, completada: { type: "boolean" }
-        }, required: ["id", "completada"] }
-      },
-      {
-        name: "crear_tarea",
-        description: "Crea una tarea nueva dentro de una empresa del holding AUREA. Usar cuando el usuario pida agregar/anadir una tarea, o cuando ya no queden tareas pendientes y haga falta proponer la siguiente accion concreta.",
-        parameters: { type: "object", properties: {
-          empresa_id: { type: "string", description: "ag, mady, glace, latam, conclart, ecom o wp" },
-          texto: { type: "string" },
-          nota: { type: "string" },
-          urgente: { type: "boolean" },
-          fecha: { type: "string", description: "Fecha objetivo en formato YYYY-MM-DD, opcional" }
-        }, required: ["empresa_id", "texto"] }
-      },
-      {
-        name: "resumen_holding",
-        description: "Devuelve el resumen de progreso (tareas completadas/pendientes por empresa y KPIs) de todo el holding AUREA.",
-        parameters: { type: "object", properties: {} }
-      }
-    ]
-  }
+  { type: "function", function: {
+    name: "listar_tareas",
+    description: "Lista tareas reales del Dashboard AUREA, con su id exacto, texto y estado. Usar antes de marcar o referirse a una tarea especifica.",
+    parameters: { type: "object", properties: {
+      empresa_id: { type: "string", description: "ag, mady, glace, latam, conclart, ecom o wp. Omitir para todas las empresas." },
+      estado: { type: "string", enum: ["pendiente", "urgente", "completada", "todas"], description: "Filtro de estado. Por defecto 'pendiente'." }
+    } }
+  } },
+  { type: "function", function: {
+    name: "marcar_tarea",
+    description: "Marca una tarea existente (por su id exacto, obtenido con listar_tareas) como completada o pendiente.",
+    parameters: { type: "object", properties: {
+      id: { type: "string" }, completada: { type: "boolean" }
+    }, required: ["id", "completada"] }
+  } },
+  { type: "function", function: {
+    name: "crear_tarea",
+    description: "Crea una tarea nueva dentro de una empresa del holding AUREA. Usar cuando el usuario pida agregar/anadir una tarea, o cuando ya no queden tareas pendientes y haga falta proponer la siguiente accion concreta.",
+    parameters: { type: "object", properties: {
+      empresa_id: { type: "string", description: "ag, mady, glace, latam, conclart, ecom o wp" },
+      texto: { type: "string" },
+      nota: { type: "string" },
+      urgente: { type: "boolean" },
+      fecha: { type: "string", description: "Fecha objetivo en formato YYYY-MM-DD, opcional" }
+    }, required: ["empresa_id", "texto"] }
+  } },
+  { type: "function", function: {
+    name: "resumen_holding",
+    description: "Devuelve el resumen de progreso (tareas completadas/pendientes por empresa y KPIs) de todo el holding AUREA.",
+    parameters: { type: "object", properties: {} }
+  } }
 ];
 
 function empresaNombre(id) {
@@ -2567,68 +2611,83 @@ function sendAgenteMessage() {
   addAgenteMsg(text, "user");
   input.value = "";
 
-  var key = getGeminiKey();
+  var key = getOrKey();
   if (!key) {
-    addAgenteMsg("No hay API Key configurada. Ve a Configuracion y guarda tu key gratuita de Gemini primero.", "err");
+    addAgenteMsg("No hay API Key configurada. Ve a Configuracion y guarda tu key gratuita de OpenRouter primero.", "err");
+    return;
+  }
+  var model = getOrModel();
+  if (!model) {
+    addAgenteMsg("Aun no hay un modelo cargado. Entra a Configuracion, espera a que cargue la lista de modelos gratis y vuelve a intentar.", "err");
     return;
   }
 
-  agenteHistory.push({ role: "user", parts: [{ text: text }] });
-  runAgentTurn(key, 0);
+  agenteHistory.push({ role: "user", content: text });
+  runAgentTurn(key, model, 0);
 }
 
-function runAgentTurn(key, depth) {
+function runAgentTurn(key, model, depth) {
   var thinkingEl = addAgenteMsg("Pensando...", "bot");
   var systemPrompt = "Eres el Agente AUREA, el asistente operativo del holding AUREA Enterprises de Geraldo Meneses (7 empresas: ag=Atlantico Growth, mady=MADY, glace=GLACE, latam=LATAM SOUL, conclart=CONCLART, ecom=E-Commerce e IA, wp=WO! Press). " +
     "Fecha actual: " + new Date().toISOString().slice(0, 10) + ". " +
     "Usa las herramientas para leer, marcar y crear tareas reales del Dashboard en vez de inventar informacion: listar_tareas para consultar, marcar_tarea para completar/reabrir, crear_tarea cuando el usuario pida agregar una tarea nueva o cuando ya no queden pendientes en una empresa y haga falta proponer el siguiente paso concreto, resumen_holding para ver el avance general. " +
     "Responde en espanol, breve y directo, como un asistente ejecutivo. Cuando ejecutes una accion, confirmalo con una frase corta.";
 
-  fetch(geminiUrl(getGeminiModel(), key), {
+  var messages = [{ role: "system", content: systemPrompt }].concat(agenteHistory);
+
+  fetch("https://openrouter.ai/api/v1/chat/completions", {
     method: "POST",
-    headers: { "Content-Type": "application/json", "x-goog-api-key": key },
+    headers: {
+      "Authorization": "Bearer " + key,
+      "Content-Type": "application/json",
+      "HTTP-Referer": window.location.origin || "https://aurea-dashboard.local",
+      "X-Title": "AUREA Dashboard"
+    },
     body: JSON.stringify({
-      system_instruction: { parts: [{ text: systemPrompt }] },
+      model: model,
+      messages: messages,
       tools: AGENTE_TOOLS,
-      contents: agenteHistory
+      max_tokens: 1024
     })
   }).then(function(r) { return r.json().then(function(d) { return { ok: r.ok, status: r.status, data: d }; }); })
   .then(function(res) {
     if (thinkingEl) thinkingEl.remove();
     if (!res.ok) {
       var msg = (res.data && res.data.error && res.data.error.message) ? res.data.error.message : ("Error " + res.status);
-      if (res.status === 400) msg = "Solicitud rechazada (400), revisa la key. " + msg;
-      else if (res.status === 403) msg = "Key sin permiso o restringida (403). " + msg;
-      else if (res.status === 429) msg = "Limite gratuito alcanzado (429), espera un minuto. " + msg;
-      addAgenteMsg("Error de Gemini: " + msg, "err");
+      if (res.status === 401) msg = "Key invalida (401). " + msg;
+      else if (res.status === 402) msg = "Sin creditos para este modelo (402). Cambia de modelo gratis en Configuracion. " + msg;
+      else if (res.status === 429) msg = "Limite gratuito alcanzado (429), espera un momento. " + msg;
+      addAgenteMsg("Error: " + msg, "err");
       return;
     }
-    var cand = (res.data.candidates || [])[0];
-    var parts = (cand && cand.content && cand.content.parts) || [];
-    agenteHistory.push({ role: "model", parts: parts });
+    var choice = (res.data.choices || [])[0];
+    var msgOut = choice && choice.message;
+    if (!msgOut) { addAgenteMsg("(sin respuesta del modelo)", "bot"); return; }
 
-    var funcCalls = parts.filter(function(p) { return !!p.functionCall; });
-    var textParts = parts.filter(function(p) { return typeof p.text === "string" && p.text.trim(); });
+    agenteHistory.push({ role: "assistant", content: msgOut.content || "", tool_calls: msgOut.tool_calls });
 
-    textParts.forEach(function(p) { addAgenteMsg(p.text.trim(), "bot"); });
+    if (msgOut.content && msgOut.content.trim()) addAgenteMsg(msgOut.content.trim(), "bot");
 
-    if (funcCalls.length && depth < AGENTE_MAX_TURNS) {
-      var responseParts = funcCalls.map(function(fc) {
+    var toolCalls = msgOut.tool_calls || [];
+    if (toolCalls.length && depth < AGENTE_MAX_TURNS) {
+      toolCalls.forEach(function(tc) {
         var resultado;
-        try { resultado = ejecutarHerramienta(fc.functionCall.name, fc.functionCall.args); }
-        catch (e) { resultado = { ok: false, error: String(e) }; }
-        return { functionResponse: { name: fc.functionCall.name, response: resultado } };
+        try {
+          var args = tc.function.arguments ? JSON.parse(tc.function.arguments) : {};
+          resultado = ejecutarHerramienta(tc.function.name, args);
+        } catch (e) { resultado = { ok: false, error: String(e) }; }
+        agenteHistory.push({ role: "tool", tool_call_id: tc.id, content: JSON.stringify(resultado) });
       });
-      agenteHistory.push({ role: "function", parts: responseParts });
-      runAgentTurn(key, depth + 1);
+      runAgentTurn(key, model, depth + 1);
       return;
     }
-    if (!textParts.length && !funcCalls.length) addAgenteMsg("(sin respuesta, finishReason: " + (cand && cand.finishReason) + ")", "bot");
+    if (!msgOut.content && !toolCalls.length) addAgenteMsg("(sin respuesta)", "bot");
   }).catch(function(err) {
     if (thinkingEl) thinkingEl.remove();
-    addAgenteMsg("No se pudo conectar con Gemini desde el navegador (red). Verifica tu conexion e intenta de nuevo.", "err");
+    addAgenteMsg("No se pudo conectar con OpenRouter desde el navegador (red). Verifica tu conexion e intenta de nuevo.", "err");
   });
 }
+
 
 
 /* ALERTS */
