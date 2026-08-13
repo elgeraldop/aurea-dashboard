@@ -1,646 +1,1409 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" translate="no">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>AUREA Digital Office</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="AUREA">
+<meta name="theme-color" content="#0B0D10">
+<meta name="background-color" content="#0B0D10">
+<meta name="description" content="AUREA Enterprises - Dashboard Imperial. Construye tu imperio empresarial.">
+<title>AUREA — Dashboard Imperial</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#0a0a0f;--card:#12121a;--card2:#1a1a28;--gold:#d4a853;--gold2:#e8c87a;--blue:#4a90d9;--green:#4ade80;--red:#f87171;--orange:#fb923c;--text:#f0f0f5;--text2:#a0a0b0;--muted:#6b6b7b;--border:#2a2a3a}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-tap-highlight-color:transparent}
-.app{padding:12px;padding-bottom:90px;max-width:100%;overflow-x:hidden}
-.top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
-.brand h1{font-size:20px;font-weight:800;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.brand p{font-size:11px;color:var(--muted);margin-top:2px}
-.clocks{display:flex;gap:12px;background:var(--card);padding:8px 14px;border-radius:10px;border:1px solid var(--border)}
-.clock{text-align:center}
-.clock .city{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
-.clock .time{font-size:13px;font-weight:700;color:var(--gold);font-variant-numeric:tabular-nums}
-.clock .date{font-size:9px;color:var(--muted)}
-.countdown{background:linear-gradient(135deg,rgba(212,168,83,0.08),rgba(74,144,217,0.05));border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px;text-align:center}
-.countdown h2{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:8px}
-.countdown .num{font-size:48px;font-weight:800;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
-.countdown .label{font-size:14px;color:var(--text2);margin-top:4px}
-.countdown .target{font-size:12px;color:var(--muted);margin-top:8px}
-.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px}
-.stat{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px}
-.stat .val{font-size:22px;font-weight:700;color:var(--text);margin-bottom:2px}
-.stat .name{font-size:11px;color:var(--text2)}
-.stat .meta{font-size:10px;color:var(--muted);margin-top:6px;padding-top:6px;border-top:1px solid var(--border)}
-.sec-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.sec-title{font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px}
-.sec-title::before{content:'';width:6px;height:6px;background:var(--gold);border-radius:50%;display:inline-block}
-.sec-link{font-size:12px;color:var(--gold)}
-.companies{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:16px}
-.company{background:var(--card2);border:1px solid var(--border);border-radius:14px;padding:16px;cursor:pointer;transition:all .2s}
-.company:active{transform:scale(.98)}
-.company-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
-.company-name{font-size:14px;font-weight:700}
-.company-badge{font-size:9px;font-weight:600;padding:3px 8px;border-radius:5px;text-transform:uppercase}
-.badge-urgent{background:rgba(248,113,113,.15);color:var(--red)}
-.badge-setup{background:rgba(74,144,217,.15);color:var(--blue)}
-.badge-active{background:rgba(251,146,60,.15);color:var(--orange)}
-.badge-research{background:rgba(168,85,247,.15);color:#a855f7}
-.company-desc{font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.5}
-.company-meta{display:flex;justify-content:space-between;font-size:11px;color:var(--text2)}
-.company-meta span{color:var(--gold);font-weight:600}
-.company-progress{height:3px;background:var(--bg);border-radius:2px;margin-top:10px;overflow:hidden}
-.company-progress-bar{height:100%;border-radius:2px;transition:width .5s}
-.tasks{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:16px}
-.task-list{max-height:320px;overflow-y:auto}
-.task{display:flex;align-items:flex-start;gap:10px;padding:10px;border-radius:10px;margin-bottom:6px;cursor:pointer;border:1px solid transparent;transition:all .2s}
-.task:active{background:var(--card2)}
-.task.done{opacity:.5}
-.task.done .task-text{text-decoration:line-through;color:var(--muted)}
-.task-check{width:20px;height:20px;border:2px solid var(--border);border-radius:6px;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all .2s}
-.task-check.checked{background:var(--green);border-color:var(--green)}
-.task-check.checked::after{content:'✓';color:#000;font-size:11px;font-weight:700}
-.task-text{font-size:13px;line-height:1.4;flex:1}
-.task-tags{display:flex;gap:6px;margin-top:4px;flex-wrap:wrap}
-.task-tag{font-size:9px;padding:2px 8px;border-radius:4px;font-weight:500}
-.tag-urgent{background:rgba(248,113,113,.12);color:var(--red)}
-.tag-today{background:rgba(74,222,128,.12);color:var(--green)}
-.tag-week{background:rgba(251,146,60,.12);color:var(--orange)}
-.tag-company{background:rgba(74,144,217,.12);color:var(--blue)}
-.agent{background:linear-gradient(135deg,rgba(74,222,128,.05),rgba(74,144,217,.05));border:1px solid rgba(74,222,128,.15);border-radius:14px;padding:16px;display:flex;align-items:center;gap:14px;margin-bottom:16px}
-.agent-avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--blue));display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;animation:agentPulse 2s infinite}
-.agent-info{flex:1;min-width:0}
-.agent-name{font-size:15px;font-weight:700}
-.agent-status{font-size:11px;color:var(--green);display:flex;align-items:center;gap:5px;margin-top:2px}
-.agent-status::before{content:'';width:6px;height:6px;background:var(--green);border-radius:50%;animation:pulse 1.5s infinite}
-.agent-desc{font-size:11px;color:var(--text2);margin-top:3px}
-.agent-btns{display:flex;gap:8px;margin-top:10px}
-.btn{padding:8px 16px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;border:none;transition:all .2s}
-.btn-gold{background:linear-gradient(135deg,var(--gold),#b8860b);color:#000}
-.btn-gold:active{transform:scale(.95)}
-.btn-sec{background:var(--card2);color:var(--text);border:1px solid var(--border)}
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:8px 0;z-index:100;padding-bottom:calc(8px + env(safe-area-inset-bottom))}
-.bnav-item{display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 12px;color:var(--muted);text-decoration:none;font-size:10px;transition:all .2s;border:none;background:none;cursor:pointer;-webkit-appearance:none}
-.bnav-item.active{color:var(--gold)}
-.bnav-item svg{width:22px;height:22px}
-.page{display:none}
-.page.active{display:block;animation:fadeIn .3s}
-.back-btn{display:inline-flex;align-items:center;gap:6px;color:var(--text2);font-size:13px;padding:8px 14px;background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:14px;cursor:pointer}
-.company-hero{background:var(--card2);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:14px}
-.company-hero h2{font-size:20px;font-weight:800;margin-bottom:6px}
-.company-hero p{font-size:13px;color:var(--text2);line-height:1.5}
-.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
-.metric{background:var(--bg);border-radius:10px;padding:12px;text-align:center}
-.metric .v{font-size:18px;font-weight:700;color:var(--gold)}
-.metric .l{font-size:10px;color:var(--muted);margin-top:2px}
-.task-input-wrap{display:none;gap:8px;margin-bottom:12px}
-.task-input-wrap.show{display:flex}
-.task-input{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-size:13px;font-family:inherit;-webkit-appearance:none}
-.task-input:focus{outline:none;border-color:var(--gold)}
-.add-btn{font-size:12px;color:var(--gold);display:flex;align-items:center;gap:4px;padding:6px 12px;background:rgba(212,168,83,.08);border:1px solid rgba(212,168,83,.15);border-radius:8px;cursor:pointer;margin-bottom:12px}
-.chat-wrap{display:flex;flex-direction:column;height:calc(100vh - 220px);background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden}
-.chat-messages{flex:1;overflow-y:auto;padding:14px}
-.chat-msg{display:flex;gap:10px;margin-bottom:14px;animation:fadeIn .3s}
-.chat-msg.user{flex-direction:row-reverse}
-.chat-av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
-.chat-av.ag{background:linear-gradient(135deg,var(--green),var(--blue))}
-.chat-av.us{background:linear-gradient(135deg,var(--gold),#b8860b)}
-.chat-bub{max-width:75%;padding:10px 14px;border-radius:14px;font-size:13px;line-height:1.5;word-break:break-word}
-.chat-bub.ag{background:var(--card2);border:1px solid var(--border);border-bottom-left-radius:4px}
-.chat-bub.us{background:rgba(212,168,83,.12);border:1px solid rgba(212,168,83,.2);border-bottom-right-radius:4px}
-.chat-time{font-size:10px;color:var(--muted);margin-top:4px}
-.chat-input-area{padding:10px 14px;border-top:1px solid var(--border);display:flex;gap:8px;align-items:flex-end;background:var(--card)}
-.chat-ta{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-size:13px;font-family:inherit;resize:none;min-height:40px;max-height:100px;-webkit-appearance:none}
-.chat-ta:focus{outline:none;border-color:var(--gold)}
-.chat-send{width:40px;height:40px;border-radius:10px;background:var(--gold);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;color:#000}
-.chat-send:active{transform:scale(.95)}
-.settings-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px}
-.settings-card h3{font-size:14px;font-weight:700;margin-bottom:12px}
-.form-g{margin-bottom:12px}
-.form-g label{display:block;font-size:12px;color:var(--text2);margin-bottom:4px}
-.form-g input,.form-g select{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-size:13px;font-family:inherit;-webkit-appearance:none}
-.form-g input:focus,.form-g select:focus{outline:none;border-color:var(--gold)}
-.form-g small{display:block;font-size:10px;color:var(--muted);margin-top:3px}
-.toggle-r{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}
-.toggle-r:last-child{border-bottom:none}
-.toggle-s{width:40px;height:22px;background:var(--border);border-radius:11px;position:relative;cursor:pointer;transition:all .3s}
-.toggle-s.on{background:var(--green)}
-.toggle-s::after{content:'';position:absolute;width:18px;height:18px;background:#fff;border-radius:50%;top:2px;left:2px;transition:all .3s}
-.toggle-s.on::after{left:20px}
-.danger-btns{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:200;padding:20px}
-.modal-bg.on{display:flex}
-.modal-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;max-width:400px;width:100%}
-.modal-box h3{font-size:16px;margin-bottom:6px}
-.modal-box p{font-size:13px;color:var(--text2);margin-bottom:14px}
-.modal-btns{display:flex;gap:8px;justify-content:flex-end}
-.toast-wrap{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:300;display:flex;flex-direction:column;gap:6px;width:90%;max-width:320px}
-.toast{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 16px;font-size:12px;animation:slideUp .3s;text-align:center}
-.toast.ok{border-left:3px solid var(--green)}
-.toast.bad{border-left:3px solid var(--red)}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-@keyframes slideUp{from{opacity:0;transform:translate(-50%,20px)}to{opacity:1;transform:translate(-50%,0)}}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-@keyframes agentPulse{0%{box-shadow:0 0 0 0 rgba(74,222,128,.4)}70%{box-shadow:0 0 0 10px rgba(74,222,128,0)}100%{box-shadow:0 0 0 0 rgba(74,222,128,0)}}
-@media(min-width:768px){.app{max-width:900px;margin:0 auto;padding:24px;padding-bottom:24px}.companies{grid-template-columns:repeat(2,1fr)}.stats{grid-template-columns:repeat(4,1fr)}.bottom-nav{position:relative;background:none;border:none;padding:0;margin-bottom:16px;justify-content:flex-start;gap:8px}.bnav-item{flex-direction:row;padding:10px 18px;font-size:13px;background:var(--card);border:1px solid var(--border);border-radius:10px}.bnav-item.active{background:rgba(212,168,83,.08);border-color:rgba(212,168,83,.2)}.chat-wrap{height:calc(100vh - 180px)}}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
+html{height:100%;-webkit-text-size-adjust:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text','Helvetica Neue',Arial,sans-serif;background:#000;color:#fff;font-size:16px;line-height:1.47059;height:100%;overflow:hidden;-webkit-font-smoothing:antialiased;overscroll-behavior-y:none}
+#app{display:flex;flex-direction:column;height:100dvh;height:calc(var(--vh,1vh)*100);position:relative;background:linear-gradient(180deg,#0B0D10 0%,#07080A 100%)}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;-webkit-appearance:none}
+input,textarea{font-family:inherit;-webkit-appearance:none;border-radius:0}
+a{color:inherit;text-decoration:none}
+
+:root{
+  --bg:#000;--surface:#121418;--surface2:#1A1D23;--surface3:#22262E;
+  --border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.14);
+  --text:#FFFFFF;--text2:#8E8E93;--text3:#636366;
+  --accent:#FFD60A;--accent2:#FF9F0A;--accent-glow:rgba(255,214,10,0.3);
+  --green:#30D158;--green-bg:rgba(48,209,88,0.15);--red:#FF453A;--red-bg:rgba(255,69,58,0.15);
+  --blue:#0A84FF;--blue-bg:rgba(10,132,255,0.15);--purple:#BF5AF2;--purple-bg:rgba(191,90,242,0.15);
+  --orange:#FF9F0A;--orange-bg:rgba(255,159,10,0.15);--teal:#40C8E0;
+  --gold:#FFD60A;--gold2:#D4AF37;
+  --safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px);
+  --nav-h:64px;--header-h:52px;
+  --radius:14px;--radius-lg:20px;--radius-sm:10px;
+  --shadow:0 8px 32px rgba(0,0,0,0.4);--shadow-lg:0 20px 60px rgba(0,0,0,0.5);
+}
+
+::-webkit-scrollbar{display:none}
+*{scrollbar-width:none;-ms-overflow-style:none}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeInScale{from{opacity:0;transform:scale(0.92)}to{opacity:1;transform:scale(1)}}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+@keyframes checkPop{0%{transform:scale(0.5)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
+@keyframes progressShine{0%{left:-40%}100%{left:140%}}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 0 0 rgba(255,214,10,0.4)}50%{box-shadow:0 0 0 8px rgba(255,214,10,0)}}
+
+.anim-fade{animation:fadeIn 0.4s cubic-bezier(0.22,1,0.36,1) forwards}
+
+.app-header{
+  height:calc(var(--header-h) + var(--safe-top));
+  padding-top:var(--safe-top);
+  background:rgba(0,0,0,0.65);
+  backdrop-filter:blur(24px) saturate(1.8);
+  -webkit-backdrop-filter:blur(24px) saturate(1.8);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding-left:20px;padding-right:20px;
+  position:sticky;top:0;z-index:100;flex-shrink:0;
+}
+.header-brand{display:flex;align-items:center;gap:10px}
+.header-logo{
+  width:32px;height:32px;border-radius:9px;
+  background:linear-gradient(135deg,var(--gold),var(--orange));
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:800;color:#000;letter-spacing:-0.5px;
+  box-shadow:0 2px 12px rgba(255,214,10,0.3);
+}
+.header-title{font-size:17px;font-weight:700;letter-spacing:-0.3px}
+.header-sub{font-size:11px;color:var(--text2);font-weight:500;margin-top:-2px}
+.header-actions{display:flex;align-items:center;gap:8px}
+.header-btn{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--surface2);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--text2);transition:all 0.2s;font-size:16px;
+}
+.header-btn:active{transform:scale(0.88);background:var(--surface3)}
+
+.bottom-nav{
+  height:calc(var(--nav-h) + var(--safe-bottom));
+  padding-bottom:var(--safe-bottom);
+  background:rgba(0,0,0,0.75);
+  backdrop-filter:blur(24px) saturate(1.8);
+  -webkit-backdrop-filter:blur(24px) saturate(1.8);
+  border-top:1px solid var(--border);
+  display:flex;align-items:flex-start;justify-content:space-around;
+  padding-top:8px;position:fixed;bottom:0;left:0;right:0;z-index:100;
+}
+.bn-item{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  gap:3px;padding:4px 0;color:var(--text3);font-size:10px;
+  font-weight:600;letter-spacing:-0.2px;transition:all 0.25s cubic-bezier(0.22,1,0.36,1);
+  position:relative;border:none;background:none;
+}
+.bn-item svg{width:24px;height:24px;stroke-width:1.8;transition:all 0.25s}
+.bn-item.active{color:var(--accent)}
+.bn-item.active svg{stroke:var(--accent);transform:translateY(-2px)}
+.bn-item.active::before{
+  content:'';position:absolute;top:-8px;left:50%;transform:translateX(-50%);
+  width:4px;height:4px;border-radius:50%;background:var(--accent);
+  box-shadow:0 0 8px var(--accent-glow);
+}
+.bn-item:active{transform:scale(0.9)}
+
+.main-content{
+  flex:1;overflow-y:auto;overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+  padding:16px 16px calc(var(--nav-h) + var(--safe-bottom) + 16px);
+  scroll-behavior:smooth;
+}
+
+.glass-card{
+  background:linear-gradient(135deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02));
+  border:1px solid rgba(255,255,255,0.08);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border-radius:var(--radius-lg);padding:18px;
+  position:relative;overflow:hidden;
+  transition:all 0.3s cubic-bezier(0.22,1,0.36,1);
+}
+.glass-card:active{transform:scale(0.97)}
+.glass-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);
+}
+
+.section-title{
+  font-size:13px;font-weight:700;text-transform:uppercase;
+  letter-spacing:0.08em;color:var(--text2);margin:24px 0 12px;
+  display:flex;align-items:center;gap:8px;
+}
+.section-title::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg,var(--border),transparent);
+}
+
+.hero-widget{
+  background:linear-gradient(135deg,#1A1D23 0%,#0F1115 100%);
+  border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius-lg);
+  padding:20px;position:relative;overflow:hidden;margin-bottom:16px;
+}
+.hero-widget::after{
+  content:'';position:absolute;top:-50%;right:-20%;width:200px;height:200px;
+  background:radial-gradient(circle,rgba(255,214,10,0.08),transparent 70%);
+  pointer-events:none;
+}
+.hero-date{font-size:12px;color:var(--text2);font-weight:600;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.05em}
+.hero-greeting{font-size:28px;font-weight:800;letter-spacing:-0.8px;line-height:1.1;margin-bottom:8px}
+.hero-greeting span{background:linear-gradient(135deg,var(--gold),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-sub{font-size:14px;color:var(--text2);line-height:1.4}
+
+.countdown-row{display:flex;gap:10px;margin-top:16px}
+.countdown-box{
+  flex:1;background:var(--surface2);border:1px solid var(--border);
+  border-radius:var(--radius);padding:12px;text-align:center;
+  position:relative;overflow:hidden;
+}
+.countdown-box .num{
+  font-size:24px;font-weight:800;letter-spacing:-0.5px;
+  font-variant-numeric:tabular-nums;line-height:1;
+  background:linear-gradient(180deg,#fff,#8E8E93);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.countdown-box .lbl{font-size:9px;text-transform:uppercase;letter-spacing:0.1em;color:var(--text3);margin-top:4px;font-weight:600}
+.countdown-box.gold{border-color:rgba(255,214,10,0.2);background:rgba(255,214,10,0.06)}
+.countdown-box.gold .num{background:linear-gradient(180deg,var(--gold),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+.clock-bar{
+  display:flex;gap:16px;padding:12px 16px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);margin-bottom:16px;
+  overflow-x:auto;white-space:nowrap;
+}
+.clock-item{display:flex;align-items:center;gap:8px}
+.clock-flag{font-size:18px}
+.clock-city{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text3)}
+.clock-time{font-size:15px;font-weight:700;font-variant-numeric:tabular-nums}
+
+.kpi-strip{display:flex;gap:10px;overflow-x:auto;padding:4px 0 12px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+.kpi-strip::-webkit-scrollbar{display:none}
+.kpi-card{
+  min-width:160px;flex-shrink:0;scroll-snap-align:start;
+  background:linear-gradient(135deg,var(--surface2),var(--surface));
+  border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px;
+  position:relative;overflow:hidden;transition:all 0.3s;
+}
+.kpi-card:active{transform:scale(0.95)}
+.kpi-card .label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text3);margin-bottom:6px}
+.kpi-card .value{font-size:26px;font-weight:800;letter-spacing:-0.5px;line-height:1;margin-bottom:4px}
+.kpi-card .target{font-size:11px;color:var(--text2);margin-bottom:10px}
+.kpi-card .bar{height:4px;background:var(--surface3);border-radius:2px;overflow:hidden;margin-bottom:4px}
+.kpi-card .bar-fill{height:100%;border-radius:2px;transition:width 0.6s cubic-bezier(0.22,1,0.36,1);position:relative;overflow:hidden}
+.kpi-card .bar-fill::after{
+  content:'';position:absolute;top:0;left:0;width:40%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent);
+  animation:progressShine 2s infinite;
+}
+.kpi-card .pct{font-size:10px;color:var(--text3);font-weight:600}
+
+.co-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.co-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:14px;position:relative;overflow:hidden;transition:all 0.3s;cursor:pointer;
+}
+.co-card:active{transform:scale(0.96)}
+.co-card .dot{width:8px;height:8px;border-radius:50%;position:absolute;top:12px;right:12px;box-shadow:0 0 8px currentColor}
+.co-card .name{font-size:14px;font-weight:700;margin-bottom:2px;letter-spacing:-0.3px}
+.co-card .tag{font-size:11px;color:var(--text2);line-height:1.3;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.co-card .progress-bg{height:3px;background:var(--surface3);border-radius:2px;overflow:hidden;margin-bottom:6px}
+.co-card .progress-fill{height:100%;border-radius:2px;transition:width 0.5s}
+.co-card .meta{display:flex;justify-content:space-between;font-size:11px;font-weight:600;color:var(--text3)}
+
+.kanban-board{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.kanban-col{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.kanban-col-header{
+  padding:10px 12px;display:flex;align-items:center;gap:6px;
+  border-bottom:1px solid var(--border);background:var(--surface2);
+}
+.kanban-col-header .dot{width:8px;height:8px;border-radius:50%}
+.kanban-col-header .name{font-size:11px;font-weight:700;flex:1}
+.kanban-col-header .count{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:var(--surface3);color:var(--text2)}
+.kanban-tasks{padding:8px;display:flex;flex-direction:column;gap:6px;max-height:340px;overflow-y:auto}
+.kanban-card{
+  background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:10px 12px;cursor:pointer;transition:all 0.2s;touch-action:manipulation;
+  position:relative;overflow:hidden;
+}
+.kanban-card:active{transform:scale(0.96)}
+.kanban-card.done{opacity:0.5}
+.kanban-card.done .kc-text{text-decoration:line-through}
+.kanban-card .kc-empresa{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px}
+.kanban-card .kc-text{font-size:12px;font-weight:600;line-height:1.4;margin-bottom:6px}
+.kanban-card .kc-meta{display:flex;align-items:center;justify-content:space-between}
+.kanban-card .kc-badges{display:flex;gap:4px}
+.kanban-card .kc-badge{font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px}
+.kanban-card .kc-check{
+  width:18px;height:18px;border-radius:50%;border:2px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;
+  transition:all 0.2s;flex-shrink:0;
+}
+.kanban-card.done .kc-check{background:var(--green);border-color:var(--green);color:#000;animation:checkPop 0.3s ease}
+
+.cal-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.cal-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border)}
+.cal-nav{display:flex;align-items:center;gap:6px}
+.cal-btn{width:32px;height:32px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface2);color:var(--text2);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700}
+.cal-btn:active{background:var(--surface3)}
+.cal-title{font-size:15px;font-weight:700;min-width:120px;text-align:center}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr)}
+.cal-dh{padding:8px 2px;text-align:center;font-size:10px;font-weight:700;text-transform:uppercase;color:var(--text3);letter-spacing:0.03em;background:var(--surface2);border-bottom:1px solid var(--border)}
+.cal-cell{min-height:64px;padding:4px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);position:relative}
+.cal-cell:nth-child(7n){border-right:none}
+.cal-cell.other{background:var(--surface2);opacity:0.5}
+.cal-cell.today{background:rgba(255,214,10,0.08)}
+.cal-cell.today .cal-num{color:var(--gold);font-weight:800}
+.cal-num{font-size:11px;font-weight:600;color:var(--text2);margin-bottom:2px}
+.cal-event{font-size:8px;font-weight:600;padding:1px 3px;border-radius:3px;margin-bottom:1px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cal-more{font-size:8px;color:var(--text3);padding:1px 3px}
+
+.empresa-hero{
+  background:linear-gradient(135deg,var(--surface2),var(--surface));
+  border:1px solid var(--border);border-radius:var(--radius-lg);
+  padding:20px;margin-bottom:16px;position:relative;overflow:hidden;
+}
+.empresa-hero .tag{
+  font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;
+  color:var(--text3);margin-bottom:6px;
+}
+.empresa-hero .title{font-size:24px;font-weight:800;letter-spacing:-0.5px;margin-bottom:4px}
+.empresa-hero .tagline{font-size:13px;color:var(--text2);line-height:1.4;margin-bottom:14px}
+.empresa-hero .progress-bg{height:6px;background:var(--surface3);border-radius:3px;overflow:hidden;margin-bottom:8px}
+.empresa-hero .progress-fill{height:100%;border-radius:3px;transition:width 0.6s cubic-bezier(0.22,1,0.36,1);position:relative}
+.empresa-hero .progress-fill::after{content:'';position:absolute;top:0;left:0;width:30%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent);animation:progressShine 2s infinite}
+.empresa-hero .progress-meta{display:flex;justify-content:space-between;font-size:12px;font-weight:700}
+
+.tab-bar{display:flex;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:3px;margin-bottom:16px}
+.tab-btn{flex:1;padding:8px 0;border-radius:var(--radius-sm);font-size:13px;font-weight:700;color:var(--text3);background:none;border:none;transition:all 0.25s}
+.tab-btn.active{background:var(--surface3);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,0.3)}
+
+.fase-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
+  overflow:hidden;margin-bottom:10px;transition:all 0.3s;
+}
+.fase-card.urgent{border-color:rgba(255,159,10,0.3)}
+.fase-card.madrid{border-color:rgba(10,132,255,0.3)}
+.fase-header{
+  display:flex;align-items:center;gap:10px;padding:14px 16px;
+  cursor:pointer;touch-action:manipulation;background:none;border:none;width:100%;text-align:left;
+}
+.fase-header:active{background:var(--surface2)}
+.fase-chevron{font-size:11px;color:var(--text3);transition:transform 0.3s;flex-shrink:0}
+.fase-card.collapsed .fase-chevron{transform:rotate(-90deg)}
+.fase-card.collapsed .fase-body{display:none}
+.fase-title{flex:1;font-size:14px;font-weight:700}
+.fase-period{font-size:11px;color:var(--text3);font-weight:600}
+.fase-badge{font-size:9px;font-weight:800;padding:3px 8px;border-radius:20px;text-transform:uppercase;letter-spacing:0.05em}
+.fase-badge.urgent{background:var(--orange-bg);color:var(--orange)}
+.fase-badge.madrid{background:var(--blue-bg);color:var(--blue)}
+
+.tarea{
+  display:flex;align-items:flex-start;gap:12px;padding:12px 16px;
+  border-top:1px solid var(--border);cursor:pointer;touch-action:manipulation;
+  transition:background 0.15s;position:relative;
+}
+.tarea:active{background:var(--surface2)}
+.tarea.done{opacity:0.5}
+.tarea.done .tarea-text{text-decoration:line-through}
+.tarea.urgent{border-left:3px solid var(--orange)}
+.tarea.hoy{border-left:3px solid var(--accent)}
+.tarea-check{
+  width:22px;height:22px;border-radius:50%;border:2px dashed var(--border2);
+  flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;
+  transition:all 0.2s;background:var(--surface);
+}
+.tarea.done .tarea-check{background:var(--green);border-color:var(--green);border-style:solid;animation:checkPop 0.3s ease}
+.tarea-check-icon{color:#000;font-size:12px;font-weight:800;display:none}
+.tarea.done .tarea-check-icon{display:block}
+.tarea-content{flex:1;min-width:0}
+.tarea-text{font-size:13px;font-weight:600;line-height:1.4;margin-bottom:2px}
+.tarea-nota{font-size:11px;color:var(--text2);line-height:1.4}
+.tarea-badges{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.tarea-badge{font-size:9px;font-weight:800;padding:2px 6px;border-radius:4px}
+.tb-hoy{background:var(--accent);color:#000}
+.tb-urgent{background:var(--red);color:#fff}
+.tb-madrid{background:var(--blue);color:#fff}
+.btn-guia{font-size:9px;font-weight:800;padding:3px 8px;border-radius:4px;border:1px solid var(--border2);color:var(--text3);background:var(--surface);transition:all 0.2s}
+.btn-guia.open{border-color:var(--accent);color:var(--accent);background:rgba(255,214,10,0.1)}
+
+.guia-wrap{display:none;background:rgba(255,214,10,0.03);border-top:1px solid rgba(255,214,10,0.15);padding:14px 16px 14px 50px}
+.guia-wrap.open{display:block}
+.guia-title{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent);margin-bottom:8px}
+.guia-step{display:flex;gap:8px;margin-bottom:6px;align-items:flex-start}
+.guia-num{width:18px;height:18px;border-radius:50%;background:var(--accent);color:#000;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.guia-text{font-size:12px;color:var(--text2);line-height:1.5}
+.guia-text strong{color:var(--text);font-weight:700}
+.guia-text code{background:var(--surface3);border:1px solid var(--border2);padding:1px 4px;border-radius:3px;font-size:11px;color:var(--accent);font-family:'SF Mono',monospace}
+.guia-note{margin-top:6px;padding:8px 10px;background:rgba(255,214,10,0.08);border-left:2px solid var(--accent);font-size:11px;color:var(--text2);font-style:italic;border-radius:0 4px 4px 0}
+
+.viaje-item{
+  display:flex;align-items:flex-start;gap:12px;padding:14px 16px;
+  border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.15s;
+}
+.viaje-item:last-child{border-bottom:none}
+.viaje-item:active{background:var(--surface2)}
+.viaje-item.done{opacity:0.5}
+.viaje-item.done .vi-text{text-decoration:line-through}
+.vi-box{width:20px;height:20px;border-radius:6px;border:2px dashed var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.2s;margin-top:1px;font-size:11px;font-weight:800}
+.viaje-item.done .vi-box{background:var(--green);border-color:var(--green);border-style:solid;color:#000}
+.vi-text{font-size:13px;font-weight:600;margin-bottom:2px}
+.vi-sub{font-size:11px;color:var(--text2);line-height:1.4}
+
+.agenda-item{padding:12px 14px;border-left:3px solid var(--border);margin-bottom:8px;background:var(--surface);border-radius:0 var(--radius) var(--radius) 0}
+.agenda-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.agenda-day{font-size:13px;font-weight:700}
+.agenda-type{font-size:11px;font-weight:700}
+.agenda-task{font-size:12px;color:var(--text2);padding:2px 0;border-bottom:1px solid var(--border)}
+.agenda-task:last-child{border-bottom:none}
+
+.consejo{
+  display:flex;gap:10px;padding:14px 16px;background:linear-gradient(135deg,rgba(255,214,10,0.08),rgba(255,159,10,0.04));
+  border:1px solid rgba(255,214,10,0.15);border-left:3px solid var(--gold);
+  border-radius:0 var(--radius) var(--radius) 0;margin-bottom:16px;
+}
+.consejo-icon{font-size:18px;flex-shrink:0}
+.consejo-label{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:var(--gold);margin-bottom:2px}
+.consejo-text{font-size:12px;color:var(--text2);line-height:1.5}
+
+.ven-block{
+  display:flex;gap:10px;padding:14px 16px;background:rgba(255,69,58,0.06);
+  border:1px solid rgba(255,69,58,0.15);border-left:3px solid var(--red);
+  border-radius:0 var(--radius) var(--radius) 0;margin-bottom:16px;
+}
+.ven-icon{font-size:18px;flex-shrink:0}
+.ven-title{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:var(--red);margin-bottom:2px}
+.ven-text{font-size:12px;color:var(--text2);line-height:1.5}
+
+.cuaderno-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.cuaderno-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border)}
+.cuaderno-title{font-size:13px;font-weight:700}
+.cuaderno-saved{font-size:11px;color:var(--green);font-weight:600;opacity:0;transition:opacity 0.3s}
+.cuaderno-saved.show{opacity:1}
+.cuaderno-ta{width:100%;min-height:200px;background:transparent;border:none;outline:none;padding:16px;color:var(--text);line-height:1.6;resize:none;font-size:16px;-webkit-user-select:text;user-select:text}
+.cuaderno-ta::placeholder{color:var(--text3)}
+.cuaderno-footer{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-top:1px solid var(--border)}
+.cuaderno-chars{font-size:11px;color:var(--text3);font-weight:600}
+
+.ek-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.ek-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px}
+.ek-label{font-size:9px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px}
+.ek-value{font-size:18px;font-weight:800;margin-bottom:2px;letter-spacing:-0.3px}
+.ek-desc{font-size:11px;color:var(--text2)}
+
+.goal-item{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:6px}
+.goal-num{width:20px;height:20px;border-radius:50%;background:var(--surface3);color:var(--accent);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.goal-text{font-size:12px;color:var(--text2);line-height:1.5}
+
+.chat-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;display:flex;flex-direction:column;height:calc(100dvh - var(--header-h) - var(--nav-h) - var(--safe-top) - var(--safe-bottom) - 32px)}
+.chat-messages{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
+.chat-msg{font-size:14px;line-height:1.5;padding:10px 14px;border-radius:var(--radius);max-width:88%;word-wrap:break-word}
+.chat-msg.user{background:var(--accent);color:#000;font-weight:600;align-self:flex-end;border-bottom-right-radius:4px}
+.chat-msg.bot{background:var(--surface2);color:var(--text);align-self:flex-start;border-bottom-left-radius:4px;border:1px solid var(--border)}
+.chat-msg.err{background:var(--red-bg);color:var(--red);align-self:flex-start;border:1px solid rgba(255,69,58,0.2)}
+.chat-input-row{display:flex;gap:8px;padding:10px 12px;border-top:1px solid var(--border);background:var(--surface)}
+.chat-input{flex:1;height:40px;padding:0 14px;border:1px solid var(--border2);border-radius:20px;font-size:16px;outline:none;background:var(--surface2);color:var(--text);transition:all 0.2s}
+.chat-input:focus{border-color:var(--accent);background:var(--surface3)}
+.chat-send{height:40px;padding:0 18px;border-radius:20px;background:var(--accent);color:#000;font-size:13px;font-weight:800;transition:all 0.2s}
+.chat-send:active{transform:scale(0.92)}
+
+.config-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px;margin-bottom:16px}
+.config-label{font-size:10px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px}
+.config-input{width:100%;height:48px;padding:0 14px;border:1px solid var(--border2);border-radius:var(--radius);font-size:16px;color:var(--text);background:var(--surface2);outline:none;transition:all 0.2s;font-family:'SF Mono',monospace}
+.config-input:focus{border-color:var(--accent);background:var(--surface3)}
+.config-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.config-note{font-size:12px;color:var(--text2);margin-top:10px;line-height:1.5}
+.config-status{margin-top:12px;padding:10px 12px;border-radius:var(--radius);font-size:12px;font-weight:600;line-height:1.5;display:none}
+.config-status.show{display:block}
+.config-status.ok{background:var(--green-bg);color:var(--green)}
+.config-status.err{background:var(--red-bg);color:var(--red)}
+.config-status.info{background:rgba(255,214,10,0.1);color:var(--accent)}
+
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:flex-end;justify-content:center;z-index:1000;padding:0;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.modal-overlay.visible{display:flex}
+.modal{
+  background:linear-gradient(180deg,#1C1C1E,#000);border:1px solid var(--border2);
+  border-radius:var(--radius-lg) var(--radius-lg) 0 0;width:100%;max-width:420px;
+  box-shadow:var(--shadow-lg);overflow:hidden;animation:slideUp 0.35s cubic-bezier(0.22,1,0.36,1);
+  margin:0 auto;max-height:85dvh;display:flex;flex-direction:column;
+}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border)}
+.modal-title{font-size:17px;font-weight:800}
+.modal-close{width:32px;height:32px;border-radius:50%;background:var(--surface2);color:var(--text2);font-size:18px;display:flex;align-items:center;justify-content:center}
+.modal-body{padding:20px;overflow-y:auto}
+.modal-label{font-size:10px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px}
+.modal-input{width:100%;height:48px;padding:0 14px;border:1px solid var(--border2);border-radius:var(--radius);font-size:17px;color:var(--text);background:var(--surface2);outline:none;transition:all 0.2s}
+.modal-input:focus{border-color:var(--accent);background:var(--surface3)}
+.modal-note{font-size:12px;color:var(--text2);margin-top:8px;line-height:1.4}
+.modal-footer{display:flex;justify-content:flex-end;gap:10px;padding:12px 20px;border-top:1px solid var(--border)}
+.btn-modal{height:44px;padding:0 20px;border-radius:var(--radius);font-size:16px;font-weight:700;transition:all 0.2s;min-width:80px}
+.btn-modal-ghost{border:1px solid var(--border);color:var(--text2);background:none}
+.btn-modal-primary{background:var(--accent);color:#000;border:none}
+.btn-modal:active{transform:scale(0.95)}
+
+.toast-wrap{position:fixed;top:calc(var(--safe-top) + 60px);left:50%;transform:translateX(-50%) translateY(-20px);z-index:2000;opacity:0;transition:all 0.4s cubic-bezier(0.22,1,0.36,1);pointer-events:none}
+.toast-wrap.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast{background:var(--surface3);border:1px solid var(--border2);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:var(--radius);padding:12px 20px;font-size:13px;font-weight:700;color:var(--text);box-shadow:var(--shadow);display:flex;align-items:center;gap:8px;white-space:nowrap}
+.toast.success{background:var(--green-bg);border-color:rgba(48,209,88,0.3);color:var(--green)}
+.toast.error{background:var(--red-bg);border-color:rgba(255,69,58,0.3);color:var(--red)}
+
+.search-bar{
+  position:sticky;top:calc(var(--safe-top) + var(--header-h));z-index:90;
+  background:rgba(0,0,0,0.8);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  padding:8px 16px;border-bottom:1px solid var(--border);display:none;
+}
+.search-bar.visible{display:block}
+.search-input{width:100%;height:40px;padding:0 14px 0 38px;border:1px solid var(--border2);border-radius:var(--radius);font-size:16px;color:var(--text);background:var(--surface2);outline:none}
+.search-input:focus{border-color:var(--accent)}
+.search-icon{position:absolute;left:26px;top:50%;transform:translateY(-50%);color:var(--text3);pointer-events:none}
+
+.chip{display:inline-flex;align-items:center;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;border:1px solid var(--border);background:var(--surface);color:var(--text2);margin:2px}
+.chip.accent{background:var(--accent);color:#000;border-color:transparent}
+.chip.green{background:var(--green);color:#000;border-color:transparent}
+
+.btn-primary{
+  height:48px;padding:0 24px;border-radius:var(--radius);background:linear-gradient(135deg,var(--accent),var(--orange));
+  color:#000;font-size:15px;font-weight:800;border:none;transition:all 0.2s;
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  box-shadow:0 4px 16px rgba(255,214,10,0.25);
+}
+.btn-primary:active{transform:scale(0.96);box-shadow:0 2px 8px rgba(255,214,10,0.15)}
+.btn-sm{height:36px;padding:0 14px;border-radius:var(--radius-sm);font-size:13px;font-weight:700;border:1px solid var(--border);color:var(--text2);background:var(--surface2);transition:all 0.2s}
+.btn-sm:active{background:var(--surface3)}
+
+.panel{display:none}
+.panel.active{display:block;animation:fadeIn 0.3s ease}
+
+.empty-state{text-align:center;padding:40px 20px;color:var(--text3);font-size:14px}
+.empty-state-icon{font-size:40px;margin-bottom:12px;opacity:0.5}
+
+.pill-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:6px 14px;border-radius:20px;font-size:12px;font-weight:700;
+  background:var(--surface2);border:1px solid var(--border);color:var(--text2);
+  transition:all 0.2s;
+}
+.pill-btn:active{transform:scale(0.95);background:var(--surface3)}
+.pill-btn.active{background:var(--accent);color:#000;border-color:transparent}
+
+.stat-row{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+
+@media(min-width:768px){
+  .co-grid{grid-template-columns:repeat(3,1fr)}
+  .kanban-board{grid-template-columns:repeat(4,1fr)}
+  .ek-grid{grid-template-columns:repeat(4,1fr)}
+  .main-content{max-width:900px;margin:0 auto;padding-left:24px;padding-right:24px}
+}
 </style>
 </head>
 <body>
-<div class="app" id="app">
+<div id="app">
+<header class="app-header">
+  <div class="header-brand">
+    <div class="header-logo">AE</div>
+    <div>
+      <div class="header-title">AUREA</div>
+      <div class="header-sub">Dashboard Imperial</div>
+    </div>
+  </div>
+  <div class="header-actions">
+    <button class="header-btn" id="btn-search" title="Buscar">&#128269;</button>
+    <button class="header-btn" id="btn-sync" title="Sincronizar">&#128260;</button>
+  </div>
+</header>
 
-<!-- TOP BAR -->
-<div class="top">
-<div class="brand"><h1>AUREA Digital Office</h1><p>Progreso Holding — 2026</p></div>
-<div class="clocks">
-<div class="clock"><div class="city">Madrid</div><div class="time" id="clk-mad">--:--</div><div class="date" id="dt-mad">--</div></div>
-<div class="clock"><div class="city">Caracas</div><div class="time" id="clk-ccs">--:--</div><div class="date" id="dt-ccs">--</div></div>
-</div>
-</div>
-
-<!-- DASHBOARD -->
-<div class="page active" id="p-dashboard">
-<div class="countdown">
-<h2>Cuenta regresiva</h2>
-<div class="num" id="cd-days">158</div>
-<div class="label">dias para Madrid</div>
-<div class="target" id="cd-target">15 Dic 2026</div>
-</div>
-<div class="stats">
-<div class="stat"><div class="val">EUR 0</div><div class="name">Atlantico Growth Ano 1</div><div class="meta">Meta: EUR 72,000</div></div>
-<div class="stat"><div class="val">EUR 0</div><div class="name">Aterrizaje en Europa</div><div class="meta">Meta: EUR 12,000</div></div>
-<div class="stat"><div class="val">--</div><div class="name">Eficiencia IA</div><div class="meta">Meta: &lt; 120 min</div></div>
-<div class="stat"><div class="val">EUR 0</div><div class="name">MADY Comisiones</div><div class="meta">Meta: EUR 1,400/mes</div></div>
-</div>
-<div class="sec-head"><div class="sec-title">Tus 6 Empresas</div><span class="sec-link" onclick="go('companies')">Ver todas →</span></div>
-<div class="companies" id="dash-companies"></div>
-<div class="tasks">
-<div class="sec-head"><div class="sec-title">Tareas para Hoy</div><span class="sec-link" onclick="go('tasks')">Ver todas →</span></div>
-<div class="task-list" id="dash-tasks"></div>
-</div>
-<div class="agent">
-<div class="agent-avatar">🤖</div>
-<div class="agent-info">
-<div class="agent-name">AUREA Multiagente <span style="font-size:10px;color:var(--muted)">v2.0</span></div>
-<div class="agent-status">Activo y listo</div>
-<div class="agent-desc">Tu trabajador principal. Gestiona tareas y toma decisiones.</div>
-<div class="agent-btns"><button class="btn btn-gold" onclick="go('agent')">💬 Chatear</button><button class="btn btn-sec" onclick="go('settings')">⚙️ Configurar</button></div>
-</div>
-</div>
+<div class="search-bar" id="search-bar">
+  <span class="search-icon">&#128269;</span>
+  <input type="text" class="search-input" id="search-input" placeholder="Buscar tareas, empresas...">
 </div>
 
-<!-- COMPANY DETAIL -->
-<div class="page" id="p-company">
-<div class="back-btn" onclick="go('dashboard')">← Volver al Dashboard</div>
-<div class="company-hero" id="company-hero"></div>
-<div class="tasks">
-<div class="sec-head"><div class="sec-title">Tareas</div><div class="add-btn" onclick="showTaskInput()">+ Nueva tarea</div></div>
-<div class="task-input-wrap" id="task-input-wrap"><input class="task-input" id="task-in" placeholder="Describe la tarea..." onkeypress="if(event.key==='Enter')addCompanyTask()"><button class="btn btn-gold" onclick="addCompanyTask()">Agregar</button></div>
-<div class="task-list" id="company-tasks"></div>
-</div>
-</div>
+<div class="main-content" id="main-content">
 
-<!-- COMPANIES LIST -->
-<div class="page" id="p-companies">
-<div class="back-btn" onclick="go('dashboard')">← Volver al Dashboard</div>
-<div class="sec-head"><div class="sec-title">Todas las Empresas</div></div>
-<div class="companies" id="all-companies"></div>
-</div>
+  <!-- PANEL HOME -->
+  <div class="panel active" id="panel-home">
+    <div class="hero-widget">
+      <div class="hero-date" id="hero-date">Cargando...</div>
+      <div class="hero-greeting">Buenos dias,<br><span>Emperador</span></div>
+      <div class="hero-sub" id="hero-sub">El imperio se construye un dia a la vez. Hoy es el dia <span id="dia-num">1</span> de tu reinado.</div>
+      <div class="countdown-row">
+        <div class="countdown-box gold">
+          <div class="num" id="lc-dias">--</div>
+          <div class="lbl">dias</div>
+        </div>
+        <div class="countdown-box">
+          <div class="num" id="lc-horas">--</div>
+          <div class="lbl">horas</div>
+        </div>
+        <div class="countdown-box">
+          <div class="num" id="lc-min">--</div>
+          <div class="lbl">min</div>
+        </div>
+        <div class="countdown-box gold">
+          <div class="num" id="stat-madrid" style="font-size:18px">--</div>
+          <div class="lbl">a Madrid</div>
+        </div>
+      </div>
+    </div>
 
-<!-- TASKS LIST -->
-<div class="page" id="p-tasks">
-<div class="back-btn" onclick="go('dashboard')">← Volver al Dashboard</div>
-<div class="sec-head"><div class="sec-title">Todas las Tareas</div><div class="add-btn" onclick="showGlobalTaskModal()">+ Nueva tarea</div></div>
-<div id="all-tasks"></div>
-</div>
+    <div class="clock-bar">
+      <div class="clock-item">
+        <div class="clock-flag">&#127483;&#127466;</div>
+        <div>
+          <div class="clock-city">Caracas</div>
+          <div class="clock-time" id="clock-ccs">--:--</div>
+        </div>
+      </div>
+      <div class="clock-item">
+        <div class="clock-flag">&#127466;&#127480;</div>
+        <div>
+          <div class="clock-city">Madrid</div>
+          <div class="clock-time" id="clock-mad">--:--</div>
+        </div>
+      </div>
+      <div class="clock-item">
+        <div class="clock-flag">&#127758;</div>
+        <div>
+          <div class="clock-city">Miami</div>
+          <div class="clock-time" id="clock-mia">--:--</div>
+        </div>
+      </div>
+    </div>
 
-<!-- AGENT CHAT -->
-<div class="page" id="p-agent">
-<div class="back-btn" onclick="go('dashboard')">← Volver al Dashboard</div>
-<div style="margin-bottom:12px">
-<div class="form-g"><label>Proveedor IA</label><select id="chat-provider" onchange="saveChatCfg()"><option value="kimi">Kimi (Moonshot AI)</option><option value="openrouter">OpenRouter</option><option value="openai">OpenAI</option><option value="anthropic">Anthropic</option></select></div>
-<div class="form-g"><label>API Key</label><input type="password" id="chat-key" placeholder="sk-..." onchange="saveChatCfg()"><small>Se guarda solo en tu navegador</small></div>
-</div>
-<div class="chat-wrap">
-<div class="chat-messages" id="chat-msgs">
-<div class="chat-msg"><div class="chat-av ag">🤖</div><div><div class="chat-bub ag">Hola! Soy tu multiagente AUREA. Estoy aqui para ayudarte a gestionar tus 6 empresas. En que puedo trabajar hoy?</div><div class="chat-time">Ahora</div></div></div>
-</div>
-<div class="chat-input-area">
-<textarea class="chat-ta" id="chat-ta" placeholder="Escribe tu mensaje..." rows="1" onkeypress="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg()}"></textarea>
-<button class="chat-send" onclick="sendMsg()">➤</button>
-</div>
-</div>
-</div>
+    <div class="section-title">KPIs Innegociables</div>
+    <div class="kpi-strip" id="kpi-strip">
+      <div class="kpi-card" data-kpi="ag" style="border-top:3px solid var(--gold)">
+        <div class="label">Atlantico Growth Ano 1</div>
+        <div class="value" id="kpi-ag-val" style="color:var(--gold)">EUR 0</div>
+        <div class="target">Meta: EUR 72,000 / ano</div>
+        <div class="bar"><div class="bar-fill" id="kpi-ag-bar" style="background:var(--gold);width:0%"></div></div>
+        <div class="pct" id="kpi-ag-pct">0%</div>
+      </div>
+      <div class="kpi-card" data-kpi="mae" style="border-top:3px solid var(--accent)">
+        <div class="label">Aterrizaje en Europa</div>
+        <div class="value" id="kpi-mae-val" style="color:var(--accent)">EUR 0</div>
+        <div class="target">Meta: EUR 12,000 atraidos</div>
+        <div class="bar"><div class="bar-fill" id="kpi-mae-bar" style="background:var(--accent);width:0%"></div></div>
+        <div class="pct" id="kpi-mae-pct">0%</div>
+      </div>
+      <div class="kpi-card" data-kpi="efic" style="border-top:3px solid var(--green)">
+        <div class="label">Eficiencia IA Produccion</div>
+        <div class="value" id="kpi-efic-val" style="color:var(--green)">--</div>
+        <div class="target">Meta: menos de 120 min</div>
+        <div class="bar"><div class="bar-fill" id="kpi-efic-bar" style="background:var(--green);width:0%"></div></div>
+        <div class="pct" id="kpi-efic-pct">Sin datos</div>
+      </div>
+      <div class="kpi-card" data-kpi="mady" style="border-top:3px solid #9B8CFF">
+        <div class="label">MADY Comisiones</div>
+        <div class="value" id="kpi-mady-val" style="color:#9B8CFF">EUR 0</div>
+        <div class="target">Meta mes 3: EUR 1,400/mes</div>
+        <div class="bar"><div class="bar-fill" id="kpi-mady-bar" style="background:#9B8CFF;width:0%"></div></div>
+        <div class="pct" id="kpi-mady-pct">0%</div>
+      </div>
+    </div>
 
-<!-- SETTINGS -->
-<div class="page" id="p-settings">
-<div class="back-btn" onclick="go('dashboard')">← Volver al Dashboard</div>
-<div class="settings-card">
-<h3>🤖 Multiagente</h3>
-<div class="form-g"><label>Proveedor</label><select id="set-provider" onchange="saveSet()"><option value="kimi">Kimi</option><option value="openrouter">OpenRouter</option><option value="openai">OpenAI</option><option value="anthropic">Anthropic</option></select></div>
-<div class="form-g"><label>API Key</label><input type="password" id="set-key" placeholder="sk-..." onchange="saveSet()"></div>
-<div class="form-g"><label>Modelo</label><select id="set-model" onchange="saveSet()"><option value="auto">Auto</option><option value="kimi-k1.5">Kimi k1.5</option><option value="gpt-4o">GPT-4o</option><option value="claude-sonnet">Claude 3.5 Sonnet</option></select></div>
-</div>
-<div class="settings-card">
-<h3>🎯 Objetivos</h3>
-<div class="form-g"><label>Fecha objetivo Madrid</label><input type="date" id="set-date" value="2026-12-15" onchange="saveSet()"></div>
-<div class="form-g"><label>Meta Atlantico (EUR)</label><input type="number" id="set-atl" value="72000" onchange="saveSet()"></div>
-<div class="form-g"><label>Meta Europa (EUR)</label><input type="number" id="set-eur" value="12000" onchange="saveSet()"></div>
-<div class="form-g"><label>Meta MADY/mes (EUR)</label><input type="number" id="set-mady" value="1400" onchange="saveSet()"></div>
-</div>
-<div class="settings-card">
-<h3>⚠️ Datos</h3>
-<div class="danger-btns">
-<button class="btn btn-sec" onclick="exportData()">📥 Exportar</button>
-<button class="btn btn-sec" onclick="importData()">📤 Importar</button>
-<button class="btn btn-gold" style="background:rgba(248,113,113,.2);color:var(--red)" onclick="resetData()">🗑️ Reset</button>
-</div>
-</div>
-</div>
+    <div class="section-title">Mis Empresas</div>
+    <div class="co-grid" id="co-grid"></div>
+
+    <div class="section-title">Tareas por Estado</div>
+    <div class="kanban-board" id="kanban-board"></div>
+
+    <div class="section-title">Calendario</div>
+    <div class="cal-wrap">
+      <div class="cal-header">
+        <div class="cal-nav">
+          <button class="cal-btn" id="cal-prev">&#8249;</button>
+          <div class="cal-title" id="cal-title">Agosto 2026</div>
+          <button class="cal-btn" id="cal-next">&#8250;</button>
+        </div>
+      </div>
+      <div class="cal-grid" id="cal-grid"></div>
+    </div>
+
+    <div class="ven-block">
+      <div class="ven-icon">&#127757;</div>
+      <div>
+        <div class="ven-title">Ventaja Competitiva Venezuela</div>
+        <div class="ven-text"><strong>Inteligencia nativa unica para corporaciones espanolas.</strong> Ninguna agencia en Espana tiene el acceso, la red y la comprension cultural del mercado venezolano que tu tienes.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL EMPRESA -->
+  <div class="panel" id="panel-empresa">
+    <div class="empresa-hero" id="empresa-hero"></div>
+    <div class="tab-bar" id="empresa-tabs">
+      <button class="tab-btn active" data-tab="tareas">Tareas</button>
+      <button class="tab-btn" data-tab="kpis">KPIs</button>
+      <button class="tab-btn" data-tab="cuaderno">Cuaderno</button>
+    </div>
+    <div id="empresa-content"></div>
+  </div>
+
+  <!-- PANEL VIAJE -->
+  <div class="panel" id="panel-viaje">
+    <div class="empresa-hero">
+      <div class="tag">MISION EJECUTIVA</div>
+      <div class="title" style="color:var(--gold)">Madrid 15-24 Dic 2026</div>
+      <div class="tagline">Marriott Atocha - Financiado con ingresos Oct-Nov 2026 (~EUR 2,200)</div>
+      <div class="progress-bg"><div class="progress-fill" id="viaje-bar" style="background:var(--gold);width:0%"></div></div>
+      <div class="progress-meta"><span id="viaje-pct">0%</span><span>Preparado</span></div>
+    </div>
+    <div class="consejo">
+      <div class="consejo-icon">&#9992;</div>
+      <div>
+        <div class="consejo-label">Por que diciembre 2026</div>
+        <div class="consejo-text">Llegas con 6 meses de track record real + $4,000-6,000/mes consolidados. Baja temporada en diciembre = mejor posicionamiento antes del pico de enero. El viaje (~EUR 2,200) financiado por ingresos de octubre-noviembre. Iberia Socio Clasico para acumular avios. Base operativa 100% Madrid desde enero 2027.</div>
+      </div>
+    </div>
+    <div class="section-title">Checklist pre-viaje</div>
+    <div class="glass-card" style="padding:0" id="viaje-checklist"></div>
+    <div class="section-title">Agenda ejecutiva dia a dia</div>
+    <div id="agenda-wrap"></div>
+  </div>
+
+  <!-- PANEL AGENTE -->
+  <div class="panel" id="panel-agente">
+    <div class="empresa-hero">
+      <div class="tag">MODULO IA</div>
+      <div class="title" style="color:var(--accent)">Agente AUREA</div>
+      <div class="tagline">Tu asistente ejecutivo para el holding. Requiere API Key configurada.</div>
+    </div>
+    <div class="chat-wrap">
+      <div class="chat-messages" id="chat-messages">
+        <div class="chat-msg bot">Hola, soy el Agente AUREA. Si aun no configuraste tu API Key, ve a Configuracion primero. Pregunta lo que necesites sobre tus empresas, tareas o la mision de Madrid.</div>
+      </div>
+      <div class="chat-input-row">
+        <input type="text" class="chat-input" id="chat-input" placeholder="Escribe un mensaje...">
+        <button class="chat-send" id="chat-send">Enviar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL CONFIG -->
+  <div class="panel" id="panel-config">
+    <div class="empresa-hero">
+      <div class="tag">AJUSTES</div>
+      <div class="title">Configuracion</div>
+      <div class="tagline">Conecta tu API Key de OpenRouter para activar el Agente AUREA</div>
+    </div>
+    <div class="config-block">
+      <div class="config-label">API Key de OpenRouter</div>
+      <input type="password" class="config-input" id="cfg-apikey" placeholder="sk-or-v1-...">
+      <div class="config-actions">
+        <button class="btn-sm" id="cfg-save" style="background:var(--accent);color:#000;border:none">Guardar</button>
+        <button class="btn-sm" id="cfg-test">Probar</button>
+        <button class="btn-sm" id="cfg-clear">Borrar</button>
+      </div>
+      <div class="config-status" id="cfg-status"></div>
+      <div class="config-note">Consigue tu key gratis en <strong>openrouter.ai/keys</strong>. Se guarda solo en este dispositivo (localStorage). Nunca se sube a servidor.</div>
+    </div>
+    <div class="config-block">
+      <div class="config-label">Modelo IA (gratis)</div>
+      <select class="config-input" id="cfg-model"><option value="">Cargando...</option></select>
+      <div class="config-actions">
+        <button class="btn-sm" id="cfg-refresh">Actualizar lista</button>
+      </div>
+      <div class="config-note">Los modelos gratis rotan frecuentemente. Esta lista se consulta en vivo.</div>
+    </div>
+    <div class="config-block">
+      <div class="config-label">Sincronizacion</div>
+      <div class="config-note">Todos tus datos (tareas, KPIs, cuadernos) se guardan automaticamente en este dispositivo. La sincronizacion con Supabase es automatica cada 12 segundos cuando hay cambios.</div>
+      <div class="config-actions" style="margin-top:10px">
+        <button class="btn-sm" id="cfg-export">Exportar datos</button>
+        <button class="btn-sm" id="cfg-import">Importar datos</button>
+        <input type="file" id="cfg-import-file" style="display:none" accept=".json">
+      </div>
+    </div>
+  </div>
 
 </div>
 
 <!-- BOTTOM NAV -->
 <nav class="bottom-nav">
-<button class="bnav-item active" onclick="go('dashboard')" data-p="dashboard">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-Inicio
-</button>
-<button class="bnav-item" onclick="go('companies')" data-p="companies">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l8-4 8 4v14"/></svg>
-Empresas
-</button>
-<button class="bnav-item" onclick="go('tasks')" data-p="tasks">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-Tareas
-</button>
-<button class="bnav-item" onclick="go('agent')" data-p="agent">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 6v6"/></svg>
-Agente
-</button>
-<button class="bnav-item" onclick="go('settings')" data-p="settings">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-Ajustes
-</button>
-</nav>
+  <button class="bn-item active" data-panel="home">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+    Inicio
+  </button>
+  <button class="bn-item" data-panel="viaje">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 16l20-8-8 20-3-8-9-4z"/></svg>
+    Madrid
+  </button>
+  <button class="bn-item" data-panel="agente">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    Agente
+  </button>
+  'CONCLART se construye en 2026. Se inaugura en 2028.'
+];
 
-<div class="toast-wrap" id="toast-wrap"></div>
-<div class="modal-bg" id="modal-bg" onclick="if(event.target===this)hideModal()">
-<div class="modal-box" id="modal-box">
-<h3 id="modal-h3">Titulo</h3>
-<p id="modal-p">Descripcion</p>
-<div id="modal-body"></div>
-<div class="modal-btns" id="modal-btns"></div>
-</div>
-</div>
+/* GUIAS POR EMPRESA */
+var G={
+  ag1:{t:'Optimizar LinkedIn como fundador de AG',p:[
+    {n:1,t:'<strong>Foto profesional:</strong> Fondo liso, ropa formal. Usa <code>photoroom.com</code> desde el movil.'},
+    {n:2,t:'<strong>Banner Canva:</strong> 1584x396px. Atlantico Growth - Comunicaciones Espana-America Latina.'},
+    {n:3,t:'<strong>Titular:</strong> Fundador @ Atlantico Growth - Comunicaciones estrategicas Espana-Latam - IA aplicada al contenido.'},
+    {n:4,t:'<strong>About:</strong> Las empresas que crecen entre Espana y America Latina necesitan a alguien que hable ambos idiomas: el corporativo y el cultural. Eso soy yo.'},
+    {n:5,t:'<strong>Servicios:</strong> Atlas de Entrada, Puente Continuo, Inteligencia de Contenido, Embajada Digital.'}
+  ]},
+  ag2:{t:'Lanzar landing page de AG',p:[
+    {n:1,t:'Dominio: <code>atlanticogrowth.com</code> o similar. Comprar en Namecheap.'},
+    {n:2,t:'Hosting: Vercel (gratis) o Netlify. Conectar con GitHub.'},
+    {n:3,t:'Template: Next.js + Tailwind. Clonar un template SaaS minimalista.'},
+    {n:4,t:'Secciones: Hero, Servicios, Casos, Contacto, Blog.'},
+    {n:5,t:'Formulario de contacto conectado a <code>resend.com</code> (gratis hasta 3,000/mes).'}
+  ]},
+  mady1:{t:'Primer contacto en Idealista',p:[
+    {n:1,t:'Crear perfil en Idealista como agente freelance o colaborador.'},
+    {n:2,t:'Buscar inmuebles en Madrid centro: Malasana, Chueca, Lavapies.'},
+    {n:3,t:'Contactar 5 propietarios/agencias por dia. Mensaje corto y profesional.'},
+    {n:4,t:'Ofrecer gestion completa: fotos, descripcion, visitas, cierre.'},
+    {n:5,t:'Comision estandar: 1 mes de alquiler o 3-5% de venta.'}
+  ]},
+  glace1:{t:'Primera produccion GLACE',p:[
+    {n:1,t:'Comprar 6 botellas de vino tinto premium venezolano (ej: Bodegas Pomar).'},
+    {n:2,t:'Fotografiar con iPhone 15 Pro: luz natural, fondo negro, angulo 45 grados.'},
+    {n:3,t:'Editar en Lightroom Mobile: contraste alto, saturacion controlada.'},
+    {n:4,t:'Crear Instagram @glace.wine con 9 posts de lanzamiento.'},
+    {n:5,t:'Precio de venta: EUR 45-65/botella. Target: restaurantes espanoles en Caracas y Madrid.'}
+  ]},
+  latam1:{t:'Lanzar LATAM SOUL',p:[
+    {n:1,t:'Definir posicionamiento: marca de lujo cultural que conecta Latam con Europa.'},
+    {n:2,t:'Crear identidad visual: logo minimalista, paleta tierra+dorado.'},
+    {n:3,t:'Primer producto: caja de experiencia venezolana (chocolate, cafe, ron mini).'},
+    {n:4,t:'Venta online via Shopify o WooCommerce.'},
+    {n:5,t:'Target inicial: venezolanos en Espana y espanoles curiosos por Latam.'}
+  ]},
+  wop1:{t:'Configurar WO! Press',p:[
+    {n:1,t:'Dominio: <code>wopress.com</code> o similar.'},
+    {n:2,t:'Instalar WordPress + tema editorial minimalista.'},
+    {n:3,t:'Crear 6 agentes IA: Politica, Economia, Cultura, Tech, Deportes, Opinion.'},
+    {n:4,t:'Cada agente genera 1 articulo/dia via API de OpenRouter.'},
+    {n:5,t:'Monetizacion: Ads + suscripcion premium EUR 5/mes.'}
+  ]},
+  con1:{t:'Fundar CONCLART',p:[
+    {n:1,t:'Registrar marca en SAPI Venezuela y OEPM Espana.'},
+    {n:2,t:'Crear dossier de proyecto: galeria + residencia artistica en Madrid.'},
+    {n:3,t:'Buscar local: 200-400m2 en Lavapies o Embajadores.'},
+    {n:4,t:'Primer evento: exposicion colectiva venezolana en diciembre 2026.'},
+    {n:5,t:'Socios estrategicos: embajada de Venezuela, galerias existentes, colectivos.'}
+  ]}
+};
 
-<script>
-(function(){
-var KEY='aurea_v2';
-var DEF={companies:[
-{id:'atlantico',name:'Atlantico Growth',desc:'Agencia boutique de inteligencia comunicacional - Espana-America Latina',capital:80,targetM3:1000,currency:'$',status:'active',badge:'Urgente',badgeClass:'badge-urgent',phase:'Semana 1-2: Presencia',tasksPending:5,progress:12,progressColor:'#d4a853'},
-{id:'mady',name:'MADY',desc:'Vivienda - Movilidad - Salud - Tres fases, un ecosistema',capital:120,targetM3:1400,currency:'EUR',status:'urgent',badge:'Setup',badgeClass:'badge-setup',phase:'Esta semana: Setup urgente',tasksPending:6,progress:5,progressColor:'#4a90d9'},
-{id:'glace',name:'GLACE',desc:'Curaduria - Suscripcion - Marca propia',capital:200,targetM3:500,currency:'$',status:'setup',badge:'Investigacion',badgeClass:'badge-research',phase:'Jul: Investigacion y Setup',tasksPending:5,progress:8,progressColor:'#a855f7'},
-{id:'latam',name:'LATAM SOUL',desc:'Ropa que siente como casa - Print-on-demand global',capital:100,targetM3:800,currency:'$',status:'setup',badge:'Identidad',badgeClass:'badge-active',phase:'Jul: Identidad y Setup',tasksPending:5,progress:10,progressColor:'#fb923c'},
-{id:'conclart',name:'CONCLART',desc:'Cultura, literatura, arte - Madrid como sede global',capital:50,targetM3:100,currency:'suscriptores',status:'setup',badge:'Fundacion',badgeClass:'badge-research',phase:'Jul-Ago: Fundacion Digital',tasksPending:5,progress:3,progressColor:'#a855f7'},
-{id:'wopress',name:'WO! Press',desc:'Luzu TV meets noticias globales - Contenido que importa',capital:80,targetM3:400,currency:'$',status:'active',badge:'Piloto',badgeClass:'badge-active',phase:'Jul: Identidad y Piloto',tasksPending:5,progress:7,progressColor:'#fb923c'}
-],tasks:[
-{id:1,text:'Configurar dominio y hosting para Atlantico Growth',company:'atlantico',completed:false,urgent:true,tag:'Hoy'},
-{id:2,text:'Crear cuenta de Instagram profesional',company:'atlantico',completed:false,urgent:true,tag:'Hoy'},
-{id:3,text:'Redactar propuesta de valor inicial',company:'atlantico',completed:false,urgent:false,tag:'Semana'},
-{id:4,text:'Contactar primeros 10 leads potenciales',company:'atlantico',completed:false,urgent:false,tag:'Semana'},
-{id:5,text:'Definir paquetes de servicios y precios',company:'atlantico',completed:false,urgent:false,tag:'Semana'},
-{id:6,text:'Registrar MADY como marca en Espana',company:'mady',completed:false,urgent:true,tag:'Hoy'},
-{id:7,text:'Buscar primer inmueble piloto en Madrid',company:'mady',completed:false,urgent:true,tag:'Hoy'},
-{id:8,text:'Crear pitch deck para inversionistas',company:'mady',completed:false,urgent:false,tag:'Semana'},
-{id:9,text:'Definir modelo de comisiones',company:'mady',completed:false,urgent:false,tag:'Semana'},
-{id:10,text:'Contactar 5 agentes inmobiliarios',company:'mady',completed:false,urgent:false,tag:'Semana'},
-{id:11,text:'Investigar plataformas de curaduria',company:'glace',completed:false,urgent:false,tag:'Semana'},
-{id:12,text:'Definir nicho de mercado inicial',company:'glace',completed:false,urgent:false,tag:'Semana'},
-{id:13,text:'Crear moodboard de marca',company:'latam',completed:false,urgent:false,tag:'Semana'},
-{id:14,text:'Configurar tienda Printful',company:'latam',completed:false,urgent:false,tag:'Semana'},
-{id:15,text:'Escribir manifiesto editorial',company:'conclart',completed:false,urgent:false,tag:'Semana'},
-{id:16,text:'Definir linea editorial de WO! Press',company:'wopress',completed:false,urgent:false,tag:'Semana'},
-{id:17,text:'Grabar piloto de 5 minutos',company:'wopress',completed:false,urgent:false,tag:'Semana'}
-],cfg:{provider:'kimi',key:'',model:'auto',date:'2026-12-15',atl:72000,eur:12000,mady:1400}};
-
-var D,curCo;
-
-function load(){
-  try{
-    var s=localStorage.getItem(KEY);
-    if(s){
-      var p=JSON.parse(s);
-      return {companies:p.companies||DEF.companies,tasks:p.tasks||DEF.tasks,cfg:Object.assign({},DEF.cfg,p.cfg||{})};
-    }
-  }catch(e){}
-  return JSON.parse(JSON.stringify(DEF));
-}
-
-function save(){
-  try{
-    D._t=Date.now();
-    localStorage.setItem(KEY,JSON.stringify(D));
-    return true;
-  }catch(e){return false;}
-}
-
-function go(p,co){
-  var pages=document.querySelectorAll('.page');
-  for(var i=0;i<pages.length;i++)pages[i].classList.remove('active');
-  var navs=document.querySelectorAll('.bnav-item');
-  for(var i=0;i<navs.length;i++)navs[i].classList.remove('active');
-  var tp=document.getElementById('p-'+p);
-  if(tp)tp.classList.add('active');
-  var tn=document.querySelector('.bnav-item[data-p="'+p+'"]');
-  if(tn)tn.classList.add('active');
-  if(p==='company'&&co){curCo=co;renderCoDetail(co);}
-  if(p==='companies')renderAllCos();
-  if(p==='tasks')renderAllTasks();
-  if(p==='settings')loadSet();
-  if(p==='dashboard')renderDash();
-  if(p==='agent')loadChatCfg();
-  window.scrollTo(0,0);
-}
-
-function fmtTime(d){return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}
-function fmtDate(d){var D=['Dom','Lun','Mar','Mie','Jue','Vie','Sab'],M=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];return D[d.getDay()]+' '+d.getDate()+' '+M[d.getMonth()];}
-
-function updateClk(){
-  var n=new Date();
-  var m=new Date(n.toLocaleString('en-US',{timeZone:'Europe/Madrid'}));
-  document.getElementById('clk-mad').textContent=fmtTime(m);
-  document.getElementById('dt-mad').textContent=fmtDate(m);
-  var c=new Date(n.toLocaleString('en-US',{timeZone:'America/Caracas'}));
-  document.getElementById('clk-ccs').textContent=fmtTime(c);
-  document.getElementById('dt-ccs').textContent=fmtDate(c);
-}
-
-function updateCD(){
-  var t=new Date(D.cfg.date+'T00:00:00');
-  var d=Math.ceil((t-new Date())/86400000);
-  document.getElementById('cd-days').textContent=d>0?d:0;
-  document.getElementById('cd-target').textContent=t.toLocaleDateString('es-ES',{day:'numeric',month:'short',year:'numeric'});
-}
-
-function coName(id){for(var i=0;i<D.companies.length;i++)if(D.companies[i].id===id)return D.companies[i].name;return id;}
-
-function renderDash(){
-  var g=document.getElementById('dash-companies');
-  var h='';
-  for(var i=0;i<D.companies.length;i++){
-    var c=D.companies[i];
-    h+='<div class="company" onclick="go(\'company\',\''+c.id+'\')"><div class="company-head"><div class="company-name">'+c.name+'</div><div class="company-badge '+c.badgeClass+'">'+c.badge+'</div></div><div class="company-desc">'+c.desc+'</div><div class="company-meta">Capital: <span>'+c.currency+c.capital+'</span><span>'+c.tasksPending+' pendientes</span></div><div class="company-progress"><div class="company-progress-bar" style="width:'+c.progress+'%;background:'+c.progressColor+'"></div></div></div>';
+/* DATOS INICIALES */
+function initData(){
+  var saved=localStorage.getItem(AUREA_DATA_LS);
+  if(saved){
+    try{var d=JSON.parse(saved);ST=d.ST||{};VJ=d.VJ||{};KP=d.KP||{};CU=d.CU||{};GA=d.GA||{};CT=d.CT||{};}
+    catch(e){}
   }
-  g.innerHTML=h;
-
-  var tk=document.getElementById('dash-tasks');
-  var u=[];
-  for(var i=0;i<D.tasks.length;i++)if(!D.tasks[i].completed&&D.tasks[i].urgent)u.push(D.tasks[i]);
-  var th='';
-  for(var i=0;i<Math.min(u.length,6);i++){
-    var t=u[i];
-    th+='<div class="task" onclick="toggleTask('+t.id+')"><div class="task-check '+(t.completed?'checked':'')+'"></div><div><div class="task-text">'+t.text+'</div><div class="task-tags"><span class="task-tag tag-'+(t.tag==='Hoy'?'today':'week')+'">'+t.tag+'</span><span class="task-tag tag-company">'+coName(t.company)+'</span></div></div></div>';
+  if(!ST.empresas){
+    ST.empresas=[
+      {id:'ag',n:'Atlantico Growth',tag:'Comunicaciones Espana-Latam',c:'var(--gold)',prog:15,meta:100,tareas:12,hechas:2},
+      {id:'mady',n:'MADY',tag:'Real Estate & Comisiones Madrid',c:'#9B8CFF',prog:8,meta:100,tareas:8,hechas:1},
+      {id:'latam',n:'LATAM SOUL',tag:'Marca de lujo cultural',c:'var(--teal)',prog:5,meta:100,tareas:6,hechas:0},
+      {id:'glace',n:'GLACE',tag:'Vinos premium venezolanos',c:'var(--purple)',prog:10,meta:100,tareas:5,hechas:1},
+      {id:'wo',n:'WO! Press',tag:'Editorial con agentes IA',c:'var(--blue)',prog:3,meta:100,tareas:7,hechas:0},
+      {id:'con',n:'CONCLART',tag:'Galeria + Residencia artistica',c:'var(--red)',prog:2,meta:100,tareas:4,hechas:0}
+    ];
   }
-  tk.innerHTML=th;
-  updateCD();
-}
-
-function renderCoDetail(id){
-  var c=null;
-  for(var i=0;i<D.companies.length;i++)if(D.companies[i].id===id){c=D.companies[i];break;}
-  if(!c)return;
-  var ts=[];
-  for(var i=0;i<D.tasks.length;i++)if(D.tasks[i].company===id)ts.push(D.tasks[i]);
-  var done=0;
-  for(var i=0;i<ts.length;i++)if(ts[i].completed)done++;
-  document.getElementById('company-hero').innerHTML='<h2>'+c.name+'</h2><p>'+c.desc+'</p><div class="metrics"><div class="metric"><div class="v">'+c.currency+c.capital+'</div><div class="l">Capital</div></div><div class="metric"><div class="v">'+c.currency+c.targetM3+'/mes</div><div class="l">Meta M3</div></div><div class="metric"><div class="v">'+done+'/'+ts.length+'</div><div class="l">Tareas</div></div></div>';
-  renderCoTasks(id);
-}
-
-function renderCoTasks(id){
-  var ts=[];
-  for(var i=0;i<D.tasks.length;i++)if(D.tasks[i].company===id)ts.push(D.tasks[i]);
-  var h='';
-  for(var i=0;i<ts.length;i++){
-    var t=ts[i];
-    h+='<div class="task '+(t.completed?'done':'')+'" onclick="toggleTask('+t.id+')"><div class="task-check '+(t.completed?'checked':'')+'"></div><div><div class="task-text">'+t.text+'</div><div class="task-tags"><span class="task-tag tag-'+(t.urgent?'urgent':(t.tag==='Hoy'?'today':'week'))+'">'+(t.urgent?'Urgente':t.tag)+'</span></div></div></div>';
+  if(!ST.tareas){
+    ST.tareas=[
+      {id:'t1',eid:'ag',txt:'Optimizar perfil de LinkedIn fundador',done:false,urgent:true,guia:'ag1',f:'2026-08-12'},
+      {id:'t2',eid:'ag',txt:'Crear landing page basica en Vercel',done:false,urgent:false,guia:'ag2',f:'2026-08-15'},
+      {id:'t3',eid:'ag',txt:'Enviar 10 propuestas a empresas espanolas',done:false,urgent:false,guia:null,f:'2026-08-20'},
+      {id:'t4',eid:'ag',txt:'Definir paquetes de servicio y precios',done:true,urgent:false,guia:null,f:'2026-08-10'},
+      {id:'t5',eid:'mady',txt:'Crear perfil en Idealista',done:false,urgent:true,guia:'mady1',f:'2026-08-11'},
+      {id:'t6',eid:'mady',txt:'Contactar 5 propietarios en Madrid centro',done:false,urgent:false,guia:null,f:'2026-08-14'},
+      {id:'t7',eid:'mady',txt:'Fotografiar primer inmueble',done:false,urgent:false,guia:null,f:'2026-08-18'},
+      {id:'t8',eid:'glace',txt:'Comprar 6 botellas vino premium vzla',done:false,urgent:false,guia:'glace1',f:'2026-08-13'},
+      {id:'t9',eid:'glace',txt:'Sesion fotografica con iPhone',done:false,urgent:false,guia:null,f:'2026-08-16'},
+      {id:'t10',eid:'glace',txt:'Crear Instagram @glace.wine',done:true,urgent:false,guia:null,f:'2026-08-10'},
+      {id:'t11',eid:'latam',txt:'Definir posicionamiento de marca',done:false,urgent:false,guia:'latam1',f:'2026-08-17'},
+      {id:'t12',eid:'latam',txt:'Disenar logo y paleta de colores',done:false,urgent:false,guia:null,f:'2026-08-22'},
+      {id:'t13',eid:'wo',txt:'Comprar dominio wopress.com',done:false,urgent:false,guia:'wop1',f:'2026-08-19'},
+      {id:'t14',eid:'wo',txt:'Instalar WordPress + tema editorial',done:false,urgent:false,guia:null,f:'2026-08-25'},
+      {id:'t15',eid:'con',txt:'Registrar marca CONCLART en SAPI',done:false,urgent:false,guia:'con1',f:'2026-08-21'},
+      {id:'t16',eid:'con',txt:'Crear dossier de proyecto PDF',done:false,urgent:false,guia:null,f:'2026-08-28'}
+    ];
   }
-  document.getElementById('company-tasks').innerHTML=h;
-}
-
-function showTaskInput(){
-  var w=document.getElementById('task-input-wrap');
-  w.classList.toggle('show');
-  if(w.classList.contains('show'))setTimeout(function(){document.getElementById('task-in').focus();},100);
-}
-
-function addCompanyTask(){
-  var v=document.getElementById('task-in').value.trim();
-  if(!v||!curCo)return;
-  D.tasks.push({id:Date.now(),text:v,company:curCo,completed:false,urgent:false,tag:'Hoy'});
-  for(var i=0;i<D.companies.length;i++)if(D.companies[i].id===curCo)D.companies[i].tasksPending++;
-  document.getElementById('task-in').value='';
-  showTaskInput();
-  save();
-  renderCoTasks(curCo);
-  renderDash();
-  toast('Tarea agregada','ok');
-}
-
-function toggleTask(id){
-  var t=null;
-  for(var i=0;i<D.tasks.length;i++)if(D.tasks[i].id===id){t=D.tasks[i];break;}
-  if(!t)return;
-  t.completed=!t.completed;
-  for(var i=0;i<D.companies.length;i++){
-    if(D.companies[i].id===t.company){
-      var cnt=0;
-      for(var j=0;j<D.tasks.length;j++)if(D.tasks[j].company===D.companies[i].id&&!D.tasks[j].completed)cnt++;
-      D.companies[i].tasksPending=cnt;
-    }
+  if(!VJ.checklist){
+    VJ.checklist=[
+      {id:'v1',txt:'Pasaporte vigente (min 6 meses)',done:false},
+      {id:'v2',txt:'Visado Schengen / solicitud',done:false},
+      {id:'v3',txt:'Vuelo CCS-MAD (Iberia preferible)',done:false},
+      {id:'v4',txt:'Reserva Marriott Atocha (15-24 Dic)',done:false},
+      {id:'v5',txt:'Seguro de viaje',done:false},
+      {id:'v6',txt:'EUR 2,200 ahorrados (Oct-Nov)',done:false},
+      {id:'v7',txt:'Cita NIE en Madrid (agendar online)',done:false},
+      {id:'v8',txt:'Cuenta bancaria espanola (docs listos)',done:false},
+      {id:'v9',txt:'Portfolio impreso de AG',done:false},
+      {id:'v10',txt:'Tarjetas de visita',done:false},
+      {id:'v11',txt:'Pack GLACE (6 botellas para regalo)',done:false},
+      {id:'v12',txt:'Ropa formal para reuniones (3 outfits)',done:false}
+    ];
   }
-  save();
-  if(curCo)renderCoTasks(curCo);
-  renderDash();
-  renderAllTasks();
-  toast(t.completed?'Completada':'Reactivada','ok');
-}
-
-function renderAllCos(){
-  var g=document.getElementById('all-companies');
-  var h='';
-  for(var i=0;i<D.companies.length;i++){
-    var c=D.companies[i];
-    h+='<div class="company" onclick="go(\'company\',\''+c.id+'\')"><div class="company-head"><div class="company-name">'+c.name+'</div><div class="company-badge '+c.badgeClass+'">'+c.badge+'</div></div><div class="company-desc">'+c.desc+'</div><div style="margin-top:10px;padding:10px;background:var(--bg);border-radius:8px;font-size:11px"><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--muted)">Fase</span><span>'+c.phase+'</span></div><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--muted)">Capital</span><span style="color:var(--gold);font-weight:600">'+c.currency+c.capital+'</span></div><div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Meta M3</span><span>'+c.currency+c.targetM3+'/mes</span></div></div><div class="company-progress" style="margin-top:10px"><div class="company-progress-bar" style="width:'+c.progress+'%;background:'+c.progressColor+'"></div></div></div>';
+  if(!VJ.agenda){
+    VJ.agenda=[
+      {day:'Lun 15 Dic',type:'LLEGADA',tasks:['Llegada MAD 07:00','Check-in Marriott Atocha','Paseo reconocimiento Sol-Gran Via','Cena tipica espanola']},
+      {day:'Mar 16 Dic',type:'ADMIN',tasks:['Cita NIE (si ya agendada)','Abrir cuenta bancaria','Comprar tarjeta SIM local','Buscar pisos en Idealista']},
+      {day:'Mie 17 Dic',type:'NETWORKING',tasks:['Evento networking Madrid (Meetup)','Contactar 3 agencias inmobiliarias','Cafe con posible colaborador AG']},
+      {day:'Jue 18 Dic',type:'AG + MADY',tasks:['Reunion prospecto AG (preparar propuesta)','Visitar 2 inmuebles con MADY','Actualizar KPIs en dashboard']},
+      {day:'Vie 19 Dic',type:'CULTURA',tasks:['Visita Museo Reina Sofia','Contactar galerias para CONCLART','Cena networking en Malasana']},
+      {day:'Sab 20 Dic',type:'ESTRATEGIA',tasks:['Planificar Q1 2027','Definir presupuesto Madrid','Revisar contratos y documentos']},
+      {day:'Dom 21 Dic',type:'DESCANSO',tasks:['Paseo Retiro','Llamada familia Venezuela','Preparar semana final']},
+      {day:'Lun 22 Dic',type:'CIERRE',tasks:['Reunion cierre prospecto AG','Firmar acuerdo MADY (si aplica)','Comprar regalos navidad']},
+      {day:'Mar 23 Dic',type:'LOGISTICA',tasks:['Confirmar vuelo regreso','Empacar','Cena despedida Madrid']},
+      {day:'Mie 24 Dic',type:'REGRESO',tasks:['Check-out hotel','Vuelo MAD-CCS','Navidad en Caracas']}
+    ];
   }
-  g.innerHTML=h;
-}
-
-function renderAllTasks(){
-  var p=[],d=[];
-  for(var i=0;i<D.tasks.length;i++)if(D.tasks[i].completed)d.push(D.tasks[i]);else p.push(D.tasks[i]);
-  var h='<div class="tasks"><div class="sec-head"><div class="sec-title">Pendientes ('+p.length+')</div></div>';
-  if(p.length===0)h+='<div style="color:var(--muted);text-align:center;padding:20px">No hay tareas pendientes</div>';
-  else for(var i=0;i<p.length;i++){
-    var t=p[i];
-    h+='<div class="task" onclick="toggleTask('+t.id+')"><div class="task-check"></div><div><div class="task-text">'+t.text+'</div><div class="task-tags"><span class="task-tag tag-'+(t.urgent?'urgent':(t.tag==='Hoy'?'today':'week'))+'">'+(t.urgent?'Urgente':t.tag)+'</span><span class="task-tag tag-company">'+coName(t.company)+'</span></div></div></div>';
+  if(!KP.ag)KP.ag={v:0,t:72000};
+  if(!KP.mae)KP.mae={v:0,t:12000};
+  if(!KP.efic)KP.efic={v:0,t:120};
+  if(!KP.mady)KP.mady={v:0,t:1400};
+  if(!CU)CU={};
+  if(!GA)GA={};
+  if(!CT.events){
+    CT.events=[
+      {d:'2026-08-12',t:'Lanzamiento AUREA v3',c:'var(--accent)'},
+      {d:'2026-08-15',t:'Deadline landing AG',c:'var(--gold)'},
+      {d:'2026-08-20',t:'Enviar propuestas AG',c:'var(--gold)'},
+      {d:'2026-08-25',t:'WordPress WO! Press',c:'var(--blue)'},
+      {d:'2026-09-01',t:'Inicio Mes 2',c:'var(--text3)'},
+      {d:'2026-09-15',t:'Review KPIs mes 1',c:'var(--green)'},
+      {d:'2026-10-01',t:'Inicio Mes 3',c:'var(--text3)'},
+      {d:'2026-10-15',t:'Review KPIs mes 2',c:'var(--green)'},
+      {d:'2026-11-01',t:'Ahorro viaje Madrid',c:'var(--gold)'},
+      {d:'2026-11-15',t:'Comprar vuelo Madrid',c:'var(--red)'},
+      {d:'2026-12-01',t:'Preparar maleta',c:'var(--orange)'},
+      {d:'2026-12-15',t:'VUELO A MADRID',c:'var(--gold)'},
+      {d:'2026-12-24',t:'Regreso Caracas',c:'var(--blue)'},
+      {d:'2027-01-01',t:'Base operativa Madrid',c:'var(--gold)'},
+      {d:'2027-01-15',t:'Review Q1 2027',c:'var(--green)'},
+      {d:'2027-03-01',t:'Meta MADY EUR 1,400',c:'#9B8CFF'},
+      {d:'2027-06-01',t:'Meta AG EUR 36,000',c:'var(--gold)'},
+      {d:'2027-12-01',t:'Meta AG EUR 72,000',c:'var(--gold)'}
+    ];
   }
-  h+='</div><div class="tasks"><div class="sec-head"><div class="sec-title" style="--dot-color:var(--green)">Completadas ('+d.length+')</div></div>';
-  if(d.length===0)h+='<div style="color:var(--muted);text-align:center;padding:20px">No hay tareas completadas</div>';
-  else for(var i=0;i<d.length;i++){
-    var t=d[i];
-    h+='<div class="task done" onclick="toggleTask('+t.id+')"><div class="task-check checked"></div><div><div class="task-text">'+t.text+'</div><div class="task-tags"><span class="task-tag tag-company">'+coName(t.company)+'</span></div></div></div>';
-  }
-  h+='</div>';
-  document.getElementById('all-tasks').innerHTML=h;
+  saveData();
 }
 
-function showGlobalTaskModal(){
-  var opts='';
-  for(var i=0;i<D.companies.length;i++)opts+='<option value="'+D.companies[i].id+'">'+D.companies[i].name+'</option>';
-  modal('Nueva tarea','','<select class="form-g input" id="m-co" style="width:100%;margin-bottom:10px;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-size:13px;">'+opts+'</select><input class="form-g input" id="m-txt" placeholder="Describe la tarea..." style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-size:13px;">',[
-    {t:'Cancelar',c:'btn-sec',a:hideModal},
-    {t:'Agregar',c:'btn-gold',a:function(){
-      var co=document.getElementById('m-co').value;
-      var txt=document.getElementById('m-txt').value.trim();
-      if(txt){D.tasks.push({id:Date.now(),text:txt,company:co,completed:false,urgent:false,tag:'Hoy'});for(var i=0;i<D.companies.length;i++)if(D.companies[i].id===co)D.companies[i].tasksPending++;save();renderAllTasks();renderDash();hideModal();toast('Tarea agregada','ok');}
-    }}
-  ]);
+function saveData(){
+  localStorage.setItem(AUREA_DATA_LS,JSON.stringify({ST:ST,VJ:VJ,KP:KP,CU:CU,GA:GA,CT:CT}));
 }
 
-function loadChatCfg(){
-  document.getElementById('chat-provider').value=D.cfg.provider;
-  document.getElementById('chat-key').value=D.cfg.key;
-}
-function saveChatCfg(){D.cfg.provider=document.getElementById('chat-provider').value;D.cfg.key=document.getElementById('chat-key').value;save();}
-
-function loadSet(){
-  document.getElementById('set-provider').value=D.cfg.provider;
-  document.getElementById('set-key').value=D.cfg.key;
-  document.getElementById('set-model').value=D.cfg.model;
-  document.getElementById('set-date').value=D.cfg.date;
-  document.getElementById('set-atl').value=D.cfg.atl;
-  document.getElementById('set-eur').value=D.cfg.eur;
-  document.getElementById('set-mady').value=D.cfg.mady;
-}
-function saveSet(){
-  D.cfg.provider=document.getElementById('set-provider').value;
-  D.cfg.key=document.getElementById('set-key').value;
-  D.cfg.model=document.getElementById('set-model').value;
-  D.cfg.date=document.getElementById('set-date').value;
-  D.cfg.atl=parseInt(document.getElementById('set-atl').value)||0;
-  D.cfg.eur=parseInt(document.getElementById('set-eur').value)||0;
-  D.cfg.mady=parseInt(document.getElementById('set-mady').value)||0;
-  save();
-  toast('Guardado','ok');
-}
-
-function addMsg(txt,who){
-  var box=document.getElementById('chat-msgs');
-  var d=document.createElement('div');
-  d.className='chat-msg '+(who==='us'?'user':'');
-  d.innerHTML='<div class="chat-av '+(who==='ag'?'ag':'us')+'">'+(who==='ag'?'🤖':'👤')+'</div><div><div class="chat-bub '+(who==='ag'?'ag':'us')+'">'+esc(txt)+'</div><div class="chat-time">'+fmtTime(new Date())+'</div></div>';
-  box.appendChild(d);
-  box.scrollTop=box.scrollHeight;
-}
-
-function showTyping(){
-  var box=document.getElementById('chat-msgs');
-  var d=document.createElement('div');
-  d.id='typing';
-  d.className='chat-msg';
-  d.innerHTML='<div class="chat-av ag">🤖</div><div><div class="chat-bub ag"><span style="animation:pulse 1s infinite">●</span><span style="animation:pulse 1s .2s infinite">●</span><span style="animation:pulse 1s .4s infinite">●</span></div></div>';
-  box.appendChild(d);
-  box.scrollTop=box.scrollHeight;
-}
-function hideTyping(){var e=document.getElementById('typing');if(e)e.remove();}
-
-function sendMsg(){
-  var ta=document.getElementById('chat-ta');
-  var txt=ta.value.trim();
-  if(!txt)return;
-  addMsg(txt,'us');
-  ta.value='';
-  ta.style.height='auto';
-  showTyping();
-  if(!D.cfg.key){hideTyping();addMsg('Configura una API Key en Ajustes para usar el multiagente. Soporta Kimi, OpenRouter, OpenAI y Anthropic.','ag');return;}
-  callAI(txt).then(function(r){hideTyping();addMsg(r,'ag');}).catch(function(e){hideTyping();addMsg('Error: '+e.message,'ag');});
-}
-
-function callAI(msg){
-  var p=D.cfg.provider,k=D.cfg.key,m=D.cfg.model;
-  var sys='Eres el multiagente AUREA, trabajador principal de un holding de 6 empresas: Atlantico Growth (comunicacion), MADY (vivienda/movilidad/salud), GLACE (curaduria), LATAM SOUL (ropa), CONCLART (cultura), WO! Press (medios). Objetivo: llegar a Madrid 15 dic 2026. Responde profesional y accionable.';
-  var ep,hd,bd;
-  if(p==='openrouter'){ep='https://openrouter.ai/api/v1/chat/completions';hd={'Authorization':'Bearer '+k,'Content-Type':'application/json','HTTP-Referer':location.href,'X-Title':'AUREA'};bd=JSON.stringify({model:m==='auto'?'openai/gpt-4o':m,messages:[{role:'system',content:sys},{role:'user',content:msg}],temperature:.7});}
-  else if(p==='openai'){ep='https://api.openai.com/v1/chat/completions';hd={'Authorization':'Bearer '+k,'Content-Type':'application/json'};bd=JSON.stringify({model:m==='auto'?'gpt-4o':m,messages:[{role:'system',content:sys},{role:'user',content:msg}],temperature:.7});}
-  else if(p==='anthropic'){ep='https://api.anthropic.com/v1/messages';hd={'x-api-key':k,'Content-Type':'application/json','anthropic-version':'2023-06-01'};bd=JSON.stringify({model:m==='auto'?'claude-3-5-sonnet-20241022':m,max_tokens:2000,system:sys,messages:[{role:'user',content:msg}]});}
-  else{ep='https://api.moonshot.cn/v1/chat/completions';hd={'Authorization':'Bearer '+k,'Content-Type':'application/json'};bd=JSON.stringify({model:m==='auto'?'moonshot-v1-8k':m,messages:[{role:'system',content:sys},{role:'user',content:msg}],temperature:.7});}
-  return fetch(ep,{method:'POST',headers:hd,body:bd}).then(function(r){if(!r.ok)throw new Error(r.statusText);return r.json();}).then(function(d){return p==='anthropic'?d.content[0].text:d.choices[0].message.content;});
-}
-
-function esc(t){var d=document.createElement('div');d.textContent=t;return d.innerHTML;}
-
-function exportData(){
-  var b=new Blob([JSON.stringify(D,null,2)],{type:'application/json'});
-  var u=URL.createObjectURL(b);
-  var a=document.createElement('a');
-  a.href=u;a.download='aurea-'+new Date().toISOString().split('T')[0]+'.json';a.click();URL.revokeObjectURL(u);
-  toast('Exportado','ok');
-}
-function importData(){
-  var i=document.createElement('input');i.type='file';i.accept='.json';
-  i.onchange=function(e){
-    var f=e.target.files[0];if(!f)return;
-    var r=new FileReader();
-    r.onload=function(ev){
-      try{
-        var d=JSON.parse(ev.target.result);
-        D={companies:d.companies||DEF.companies,tasks:d.tasks||DEF.tasks,cfg:Object.assign({},DEF.cfg,d.cfg||{})};
-        save();renderDash();toast('Importado','ok');
-      }catch(err){toast('Error','bad');}
-    };
-    r.readAsText(f);
-  };
-  i.click();
-}
-function resetData(){
-  modal('Resetear todo','Se borraran todos los datos. No se puede deshacer.','',[
-    {t:'Cancelar',c:'btn-sec',a:hideModal},
-    {t:'Resetear',c:'btn-gold',a:function(){localStorage.removeItem(KEY);D=JSON.parse(JSON.stringify(DEF));save();renderDash();hideModal();toast('Reseteado','ok');}}
-  ]);
-}
-
+/* UTILS */
+function $(s){return document.querySelector(s);}
+function $$(s){return document.querySelectorAll(s);}
+function fmtEUR(n){return 'EUR '+(n||0).toLocaleString('es-ES');}
+function pct(v,t){return t?Math.min(100,Math.round((v/t)*100)):0;}
+function todayStr(){var d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1).toString().padStart(2,'0')+'-'+d.getDate().toString().padStart(2,'0');}
+function isToday(ds){return ds===todayStr();}
 function toast(msg,type){
-  var w=document.getElementById('toast-wrap');
-  var d=document.createElement('div');
-  d.className='toast '+(type||'ok');
-  d.textContent=msg;
-  w.appendChild(d);
-  setTimeout(function(){d.style.opacity='0';setTimeout(function(){d.remove();},300);},2500);
+  var el=$('#toast'),wrap=$('#toast-wrap');
+  el.textContent=msg;el.className='toast'+(type?' '+type:'');
+  wrap.classList.add('show');
+  setTimeout(function(){wrap.classList.remove('show');},2500);
 }
 
-function modal(t,d,body,acts){
-  document.getElementById('modal-h3').textContent=t;
-  document.getElementById('modal-p').textContent=d;
-  document.getElementById('modal-body').innerHTML=body;
-  var bh='';
-  for(var i=0;i<acts.length;i++)bh+='<button class="btn '+acts[i].c+'" onclick="window._ma['+i+'].a()">'+acts[i].t+'</button>';
-  document.getElementById('modal-btns').innerHTML=bh;
-  window._ma=acts;
-  document.getElementById('modal-bg').classList.add('on');
+/* HERO */
+function updateHero(){
+  var now=new Date();
+  var start=new Date('2026-08-10T00:00:00');
+  var madrid=new Date('2026-12-15T00:00:00');
+  var diff=now-start;
+  var diasReinado=Math.floor(diff/(1000*60*60*24))+1;
+  $('#hero-date').textContent=now.toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  $('#dia-num').textContent=diasReinado;
+  var frase=FRASES[Math.floor(Math.random()*FRASES.length)];
+  $('#hero-sub').innerHTML='El imperio se construye un dia a la vez. Hoy es el dia <span id="dia-num">'+diasReinado+'</span> de tu reinado. <span style="color:var(--text3)">'+frase+'</span>';
+  var md=madrid-now;
+  if(md>0){
+    var d=Math.floor(md/(1000*60*60*24));
+    var h=Math.floor((md%(1000*60*60*24))/(1000*60*60));
+    var m=Math.floor((md%(1000*60*60))/(1000*60));
+    $('#lc-dias').textContent=d;
+    $('#lc-horas').textContent=h;
+    $('#lc-min').textContent=m;
+    $('#stat-madrid').textContent=d;
+  }else{
+    $('#lc-dias').textContent='0';
+    $('#lc-horas').textContent='0';
+    $('#lc-min').textContent='0';
+    $('#stat-madrid').textContent='YA';
+  }
 }
-function hideModal(){document.getElementById('modal-bg').classList.remove('on');}
 
-// INIT
-D=load();
-renderDash();
-updateClk();
-setInterval(updateClk,1000);
-setInterval(updateCD,60000);
+/* RELOJES */
+function updateClocks(){
+  var now=new Date();
+  var opts={hour:'2-digit',minute:'2-digit',hour12:false};
+  $('#clock-ccs').textContent=now.toLocaleTimeString('es-ES',{...opts,timeZone:'America/Caracas'});
+  $('#clock-mad').textContent=now.toLocaleTimeString('es-ES',{...opts,timeZone:'Europe/Madrid'});
+  $('#clock-mia').textContent=now.toLocaleTimeString('es-ES',{...opts,timeZone:'America/New_York'});
+}
 
-var ta=document.getElementById('chat-ta');
-if(ta){
-  ta.addEventListener('input',function(){
-    this.style.height='auto';
-    this.style.height=Math.min(this.scrollHeight,100)+'px';
+/* KPIs */
+function renderKPIs(){
+  var k=KP.ag;
+  $('#kpi-ag-val').textContent=fmtEUR(k.v);
+  $('#kpi-ag-bar').style.width=pct(k.v,k.t)+'%';
+  $('#kpi-ag-pct').textContent=pct(k.v,k.t)+'%';
+  k=KP.mae;
+  $('#kpi-mae-val').textContent=fmtEUR(k.v);
+  $('#kpi-mae-bar').style.width=pct(k.v,k.t)+'%';
+  $('#kpi-mae-pct').textContent=pct(k.v,k.t)+'%';
+  k=KP.efic;
+  $('#kpi-efic-val').textContent=k.v?k.v+' min':'--';
+  $('#kpi-efic-bar').style.width=k.v?Math.min(100,Math.round((k.v/k.t)*100))+'%':'0%';
+  $('#kpi-efic-pct').textContent=k.v?pct(k.v,k.t)+'%':'Sin datos';
+  k=KP.mady;
+  $('#kpi-mady-val').textContent=fmtEUR(k.v);
+  $('#kpi-mady-bar').style.width=pct(k.v,k.t)+'%';
+  $('#kpi-mady-pct').textContent=pct(k.v,k.t)+'%';
+}
+
+/* EMPRESAS GRID */
+function renderEmpresas(){
+  var grid=$('#co-grid');
+  grid.innerHTML=ST.empresas.map(function(e){
+    var done=ST.tareas.filter(function(t){return t.eid===e.id&&t.done;}).length;
+    var total=ST.tareas.filter(function(t){return t.eid===e.id;}).length;
+    return '<div class="co-card" data-eid="'+e.id+'">'+
+      '<div class="dot" style="background:'+e.c+'"></div>'+
+      '<div class="name" style="color:'+e.c+'">'+e.n+'</div>'+
+      '<div class="tag">'+e.tag+'</div>'+
+      '<div class="progress-bg"><div class="progress-fill" style="background:'+e.c+';width:'+e.prog+'%"></div></div>'+
+      '<div class="meta"><span>'+done+'/'+total+' tareas</span><span>'+e.prog+'%</span></div>'+
+      '</div>';
+  }).join('');
+  $$('.co-card').forEach(function(c){
+    c.addEventListener('click',function(){
+      activeEmpresa=this.dataset.eid;
+      showPanel('empresa');
+    });
   });
 }
 
+/* KANBAN */
+function renderKanban(){
+  var board=$('#kanban-board');
+  var cols=[
+    {n:'Pendientes',c:'var(--red)',filter:function(t){return !t.done;}},
+    {n:'Completadas',c:'var(--green)',filter:function(t){return t.done;}}
+  ];
+  board.innerHTML=cols.map(function(col){
+    var tasks=ST.tareas.filter(col.filter);
+    if(searchQuery) tasks=tasks.filter(function(t){return t.txt.toLowerCase().includes(searchQuery);});
+    var cards=tasks.map(function(t){
+      var emp=ST.empresas.find(function(e){return e.id===t.eid;});
+      var badges='';
+      if(t.urgent) badges+='<span class="kc-badge" style="background:var(--red);color:#fff">URGENTE</span>';
+      if(isToday(t.f)) badges+='<span class="kc-badge" style="background:var(--accent);color:#000">HOY</span>';
+      return '<div class="kanban-card '+(t.done?'done':'')+'" data-tid="'+t.id+'">'+
+        '<div class="kc-empresa" style="color:'+(emp?emp.c:'var(--text3)')+'">'+(emp?emp.n:'')+'</div>'+
+        '<div class="kc-text">'+t.txt+'</div>'+
+        '<div class="kc-meta"><div class="kc-badges">'+badges+'</div><div class="kc-check">'+(t.done?'&#10003;':'')+'</div></div>'+
+        '</div>';
+    }).join('');
+    return '<div class="kanban-col">'+
+      '<div class="kanban-col-header"><div class="dot" style="background:'+col.c+'"></div><div class="name">'+col.n+'</div><div class="count">'+tasks.length+'</div></div>'+
+      '<div class="kanban-tasks">'+(cards||'<div style="padding:20px;text-align:center;color:var(--text3);font-size:12px">Sin tareas</div>')+'</div>'+
+      '</div>';
+  }).join('');
+  $$('.kanban-card').forEach(function(c){
+    c.addEventListener('click',function(){
+      var tid=this.dataset.tid;
+      var t=ST.tareas.find(function(x){return x.id===tid;});
+      if(t){t.done=!t.done;saveData();renderKanban();renderEmpresas();updateEmpresaContent();}
+    });
+  });
+}
+
+/* CALENDARIO */
+function renderCal(){
+  $('#cal-title').textContent=MONTH_NAMES[calMonth]+' '+calYear;
+  var grid=$('#cal-grid');
+  var html=DAY_NAMES.map(function(d){return '<div class="cal-dh">'+d+'</div>';}).join('');
+  var first=new Date(calYear,calMonth,1);
+  var startDay=first.getDay();
+  var daysInMonth=new Date(calYear,calMonth+1,0).getDate();
+  var prevDays=new Date(calYear,calMonth,0).getDate();
+  for(var i=0;i<startDay;i++){
+    html+='<div class="cal-cell other"><div class="cal-num">'+(prevDays-startDay+i+1)+'</div></div>';
+  }
+  var today=todayStr();
+  for(var d=1;d<=daysInMonth;d++){
+    var ds=calYear+'-'+(calMonth+1).toString().padStart(2,'0')+'-'+d.toString().padStart(2,'0');
+    var evs=(CT.events||[]).filter(function(e){return e.d===ds;});
+    var cls='cal-cell'+(ds===today?' today':'');
+    var evHtml=evs.slice(0,2).map(function(e){return '<div class="cal-event" style="background:'+e.c+'20;color:'+e.c+'">'+e.t+'</div>';}).join('');
+    if(evs.length>2) evHtml+='<div class="cal-more">+'+(evs.length-2)+' mas</div>';
+    html+='<div class="'+cls+'"><div class="cal-num">'+d+'</div>'+evHtml+'</div>';
+  }
+  var totalCells=startDay+daysInMonth;
+  var rem=(7-(totalCells%7))%7;
+  for(var j=1;j<=rem;j++){
+    html+='<div class="cal-cell other"><div class="cal-num">'+j+'</div></div>';
+  }
+  grid.innerHTML=html;
+}
+
+/* PANEL EMPRESA */
+function renderEmpresaPanel(){
+  var e=ST.empresas.find(function(x){return x.id===activeEmpresa;});
+  if(!e)return;
+  var eh=$('#empresa-hero');
+  var done=ST.tareas.filter(function(t){return t.eid===e.id&&t.done;}).length;
+  var total=ST.tareas.filter(function(t){return t.eid===e.id;}).length;
+  eh.innerHTML='<div class="tag">EMPRESA DEL HOLDING</div>'+
+    '<div class="title" style="color:'+e.c+'">'+e.n+'</div>'+
+    '<div class="tagline">'+e.tag+'</div>'+
+    '<div class="progress-bg"><div class="progress-fill" style="background:'+e.c+';width:'+e.prog+'%"></div></div>'+
+    '<div class="progress-meta"><span>'+done+'/'+total+' tareas</span><span>'+e.prog+'% completado</span></div>';
+  updateEmpresaContent();
+}
+
+function updateEmpresaContent(){
+  var tab=$('#empresa-tabs .tab-btn.active').dataset.tab;
+  var cont=$('#empresa-content');
+  var e=ST.empresas.find(function(x){return x.id===activeEmpresa;});
+  if(!e)return;
+  if(tab==='tareas'){
+    var tasks=ST.tareas.filter(function(t){return t.eid===activeEmpresa;});
+    if(!tasks.length){cont.innerHTML='<div class="empty-state"><div class="empty-state-icon">&#128221;</div>Sin tareas para esta empresa.<br><span style="font-size:12px;color:var(--text3)">Agrega tareas desde el panel principal.</span></div>';return;}
+    cont.innerHTML=tasks.map(function(t){
+      var guiaBtn=t.guia?'<button class="btn-guia '+(GA[t.guia]?'open':'')+'" data-guia="'+t.guia+'">'+(GA[t.guia]?'Guia abierta':'Guia')+'</button>':'';
+      var cls='tarea '+(t.done?'done':'')+(t.urgent?' urgent':'')+(isToday(t.f)?' hoy':'');
+      var badges='';
+      if(t.urgent) badges+='<span class="tarea-badge tb-urgent">URGENTE</span>';
+      if(isToday(t.f)) badges+='<span class="tarea-badge tb-hoy">HOY</span>';
+      var guiaHtml='';
+      if(t.guia&&GA[t.guia]){
+        var g=G[t.guia];
+        guiaHtml='<div class="guia-wrap open">'+
+          '<div class="guia-title">'+g.t+'</div>'+
+          g.p.map(function(s){return '<div class="guia-step"><div class="guia-num">'+s.n+'</div><div class="guia-text">'+s.t+'</div></div>';}).join('')+
+          '</div>';
+      }
+      return '<div class="'+cls+'" data-tid="'+t.id+'">'+
+        '<div class="tarea-check"><span class="tarea-check-icon">&#10003;</span></div>'+
+        '<div class="tarea-content"><div class="tarea-text">'+t.txt+'</div>'+(t.f?'<div class="tarea-nota">'+t.f+'</div>':'')+'</div>'+
+        '<div class="tarea-badges">'+badges+guiaBtn+'</div>'+
+        '</div>'+guiaHtml;
+    }).join('');
+    $$('#empresa-content .tarea').forEach(function(el){
+      el.addEventListener('click',function(){
+        var tid=this.dataset.tid;
+        var t=ST.tareas.find(function(x){return x.id===tid;});
+        if(t){t.done=!t.done;saveData();renderKanban();renderEmpresas();updateEmpresaContent();}
+      });
+    });
+    $$('#empresa-content .btn-guia').forEach(function(el){
+      el.addEventListener('click',function(ev){
+        ev.stopPropagation();
+        var gid=this.dataset.guia;
+        GA[gid]=!GA[gid];saveData();updateEmpresaContent();
+      });
+    });
+  }else if(tab==='kpis'){
+    var ekpis=[];
+    if(activeEmpresa==='ag') ekpis=[{l:'Ingresos Ano 1',v:KP.ag.v,t:KP.ag.t,u:'EUR'},{l:'Clientes activos',v:0,t:5,u:''},{l:'Propuestas enviadas',v:0,t:50,u:''}];
+    else if(activeEmpresa==='mady') ekpis=[{l:'Comisiones acumuladas',v:KP.mady.v,t:KP.mady.t,u:'EUR'},{l:'Inmuebles gestionados',v:0,t:10,u:''},{l:'Contactos Idealista',v:0,t:100,u:''}];
+    else if(activeEmpresa==='glace') ekpis=[{l:'Botellas vendidas',v:0,t:100,u:''},{l:'Ingresos',v:0,t:5000,u:'EUR'},{l:'Seguidores IG',v:0,t:1000,u:''}];
+    else if(activeEmpresa==='latam') ekpis=[{l:'Ventas',v:0,t:3000,u:'EUR'},{l:'Suscripciones',v:0,t:100,u:''},{l:'Seguidores',v:0,t:2000,u:''}];
+    else if(activeEmpresa==='wo') ekpis=[{l:'Articulos publicados',v:0,t:180,u:''},{l:'Lectores/mes',v:0,t:5000,u:''},{l:'Suscripciones',v:0,t:200,u:''}];
+    else if(activeEmpresa==='con') ekpis=[{l:'Artistas contactados',v:0,t:20,u:''},{l:'Eventos realizados',v:0,t:2,u:''},{l:'Patrocinadores',v:0,t:5,u:''}];
+    cont.innerHTML='<div class="ek-grid">'+ekpis.map(function(k){
+      return '<div class="ek-item"><div class="ek-label">'+k.l+'</div><div class="ek-value">'+(k.u==='EUR'?'EUR ':'')+(k.v||0).toLocaleString('es-ES')+(k.u&&k.u!=='EUR'?k.u:'')+'</div><div class="ek-desc">Meta: '+(k.u==='EUR'?'EUR ':'')+k.t.toLocaleString('es-ES')+(k.u&&k.u!=='EUR'?k.u:'')+'</div></div>';
+    }).join('')+'</div>'+
+    '<div style="margin-top:16px"><div class="section-title">Objetivos clave</div>'+
+    '<div class="goal-item"><div class="goal-num">1</div><div class="goal-text">Lanzar operaciones antes de fin de ano 2026</div></div>'+
+    '<div class="goal-item"><div class="goal-num">2</div><div class="goal-text">Primer cliente / venta antes del viaje a Madrid (15 Dic 2026)</div></div>'+
+    '<div class="goal-item"><div class="goal-num">3</div><div class="goal-text">Base operativa 100% Madrid desde enero 2027</div></div>'+
+    '</div>';
+  }else if(tab==='cuaderno'){
+    var key='cuaderno_'+activeEmpresa;
+    var txt=CU[key]||'';
+    cont.innerHTML='<div class="cuaderno-wrap">'+
+      '<div class="cuaderno-header"><div class="cuaderno-title">Cuaderno de '+e.n+'</div><div class="cuaderno-saved" id="cuaderno-saved">Guardado</div></div>'+
+      '<textarea class="cuaderno-ta" id="cuaderno-ta" placeholder="Escribe notas, ideas, contactos, contrasenas...">'+txt+'</textarea>'+
+      '<div class="cuaderno-footer"><div class="cuaderno-chars" id="cuaderno-chars">0 caracteres</div></div>'+
+      '</div>';
+    var ta=$('#cuaderno-ta');
+    var saved=$('#cuaderno-saved');
+    var chars=$('#cuaderno-chars');
+    function updateTa(){chars.textContent=(ta.value.length)+' caracteres';}
+    ta.addEventListener('input',function(){
+      CU[key]=ta.value;saveData();updateTa();
+      saved.classList.add('show');
+      setTimeout(function(){saved.classList.remove('show');},1500);
+    });
+    updateTa();
+  }
+}
+/* VIAJE */
+function renderViaje(){
+  var done=VJ.checklist.filter(function(v){return v.done;}).length;
+  var total=VJ.checklist.length;
+  var p=pct(done,total);
+  $('#viaje-bar').style.width=p+'%';
+  $('#viaje-pct').textContent=p+'%';
+  $('#viaje-checklist').innerHTML=VJ.checklist.map(function(v){
+    return '<div class="viaje-item '+(v.done?'done':'')+'" data-vid="'+v.id+'">'+
+      '<div class="vi-box">'+(v.done?'&#10003;':'')+'</div>'+
+      '<div><div class="vi-text">'+v.txt+'</div></div>'+
+      '</div>';
+  }).join('');
+  $$('#viaje-checklist .viaje-item').forEach(function(el){
+    el.addEventListener('click',function(){
+      var vid=this.dataset.vid;
+      var v=VJ.checklist.find(function(x){return x.id===vid;});
+      if(v){v.done=!v.done;saveData();renderViaje();}
+    });
+  });
+  var aw=$('#agenda-wrap');
+  aw.innerHTML=VJ.agenda.map(function(a){
+    var color='var(--border)';
+    if(a.type==='LLEGADA') color='var(--green)';
+    else if(a.type==='ADMIN') color='var(--blue)';
+    else if(a.type==='NETWORKING') color='var(--purple)';
+    else if(a.type==='AG + MADY') color='var(--gold)';
+    else if(a.type==='CIERRE') color='var(--accent)';
+    else if(a.type==='REGRESO') color='var(--red)';
+    return '<div class="agenda-item" style="border-left-color:'+color+'">'+
+      '<div class="agenda-header"><div class="agenda-day">'+a.day+'</div><div class="agenda-type" style="color:'+color+'">'+a.type+'</div></div>'+
+      a.tasks.map(function(t){return '<div class="agenda-task">'+t+'</div>';}).join('')+
+      '</div>';
+  }).join('');
+}
+
+/* CHAT */
+function addChatMsg(txt,cls){
+  var wrap=$('#chat-messages');
+  var div=document.createElement('div');
+  div.className='chat-msg '+cls;
+  div.textContent=txt;
+  wrap.appendChild(div);
+  wrap.scrollTop=wrap.scrollHeight;
+}
+
+async function sendChat(){
+  var input=$('#chat-input');
+  var txt=input.value.trim();
+  if(!txt)return;
+  input.value='';
+  addChatMsg(txt,'user');
+  var key=localStorage.getItem(OR_KEY_LS);
+  if(!key){addChatMsg('No tienes API Key configurada. Ve a Ajustes y configura tu key de OpenRouter.','err');return;}
+  var model=localStorage.getItem(OR_MODEL_LS)||'meta-llama/llama-3.1-8b-instruct:free';
+  addChatMsg('Pensando...','bot');
+  var thinking=wrap.lastElementChild;
+  try{
+    var res=await fetch('https://openrouter.ai/api/v1/chat/completions',{
+      method:'POST',
+      headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json','HTTP-Referer':location.href,'X-Title':'AUREA Dashboard'},
+      body:JSON.stringify({model:model,messages:[
+        {role:'system',content:'Eres el Agente AUREA, asistente ejecutivo de un holding empresarial. Ayudas con: Atlantico Growth (comunicaciones ESP-Latam), MADY (real estate Madrid), LATAM SOUL (marca cultural), GLACE (vinos premium), WO! Press (editorial IA), CONCLART (galeria arte). El usuario esta en Caracas y viaja a Madrid el 15 dic 2026. Responde en espanol, breve y ejecutivo. Fecha actual: 12 agosto 2026.'},
+        {role:'user',content:txt}
+      ]})
+    });
+    var data=await res.json();
+    wrap.removeChild(thinking);
+    if(data.error){addChatMsg('Error: '+(data.error.message||'Desconocido'),'err');return;}
+    var reply=data.choices&&data.choices[0]&&data.choices[0].message?data.choices[0].message.content:'Sin respuesta';
+    addChatMsg(reply,'bot');
+  }catch(e){
+    wrap.removeChild(thinking);
+    addChatMsg('Error de conexion: '+e.message,'err');
+  }
+}
+
+/* CONFIG */
+function renderConfig(){
+  $('#cfg-apikey').value=localStorage.getItem(OR_KEY_LS)||'';
+  var sel=$('#cfg-model');
+  var saved=localStorage.getItem(OR_MODEL_LS);
+  sel.innerHTML='<option value="">Cargando modelos...</option>';
+  fetch('https://openrouter.ai/api/v1/models').then(function(r){return r.json();}).then(function(d){
+    var free=(d.data||[]).filter(function(m){return m.id.includes('free');});
+    sel.innerHTML=free.map(function(m){return '<option value="'+m.id+'" '+(saved===m.id?'selected':'')+'>'+m.name+'</option>';}).join('');
+    if(!free.length) sel.innerHTML='<option value="meta-llama/llama-3.1-8b-instruct:free">Llama 3.1 8B (Free)</option>';
+  }).catch(function(){sel.innerHTML='<option value="meta-llama/llama-3.1-8b-instruct:free">Llama 3.1 8B (Free)</option>';});
+}
+
+/* NAV */
+function showPanel(id){
+  activePanel=id;
+  $$('.panel').forEach(function(p){p.classList.remove('active');});
+  $$('.bn-item').forEach(function(b){b.classList.remove('active');});
+  $('#panel-'+id).classList.add('active');
+  var btn=$('.bn-item[data-panel="'+id+'"]');
+  if(btn) btn.classList.add('active');
+  if(id==='empresa') renderEmpresaPanel();
+  if(id==='viaje') renderViaje();
+  if(id==='config') renderConfig();
+  window.scrollTo(0,0);
+  $('#main-content').scrollTop=0;
+}
+
+/* BUSQUEDA */
+function toggleSearch(){
+  var bar=$('#search-bar');
+  bar.classList.toggle('visible');
+  if(bar.classList.contains('visible')){$('#search-input').focus();}
+  else{searchQuery='';$('#search-input').value='';renderKanban();}
+}
+
+/* MODAL KPI */
+function openKPI(key){
+  kpiKey=key;
+  var k=KP[key];
+  var titles={ag:'Atlantico Growth',mae:'Aterrizaje Europa',efic:'Eficiencia IA',mady:'MADY Comisiones'};
+  $('#modal-kpi-title').textContent='Actualizar: '+titles[key];
+  $('#modal-kpi-label').textContent='Valor actual ('+(key==='efic'?'min':'EUR')+')';
+  $('#modal-kpi-input').value=k.v||0;
+  $('#modal-kpi-note').textContent='Meta: '+(key==='efic'?k.t+' min':fmtEUR(k.t));
+  $('#modal-kpi').classList.add('visible');
+}
+function closeKPI(){$('#modal-kpi').classList.remove('visible');kpiKey=null;}
+function saveKPI(){
+  if(!kpiKey)return;
+  var v=parseFloat($('#modal-kpi-input').value)||0;
+  KP[kpiKey].v=v;saveData();renderKPIs();closeKPI();toast('KPI actualizado','success');
+}
+
+/* EXPORT / IMPORT */
+function exportData(){
+  var data={ST:ST,VJ:VJ,KP:KP,CU:CU,GA:GA,CT:CT,exportDate:new Date().toISOString()};
+  var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='aurea-backup-'+todayStr()+'.json';
+  a.click();
+  toast('Datos exportados','success');
+}
+function importData(file){
+  var reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      var d=JSON.parse(e.target.result);
+      if(d.ST)ST=d.ST;if(d.VJ)VJ=d.VJ;if(d.KP)KP=d.KP;if(d.CU)CU=d.CU;if(d.GA)GA=d.GA;if(d.CT)CT=d.CT;
+      saveData();initData();renderAll();toast('Datos importados','success');
+    }catch(err){toast('Archivo invalido','error');}
+  };
+  reader.readAsText(file);
+}
+
+/* RENDER ALL */
+function renderAll(){
+  updateHero();updateClocks();renderKPIs();renderEmpresas();renderKanban();renderCal();
+  if(activePanel==='empresa') renderEmpresaPanel();
+  if(activePanel==='viaje') renderViaje();
+}
+/* INIT */
+document.addEventListener('DOMContentLoaded',function(){
+  var vh=window.innerHeight*0.01;document.documentElement.style.setProperty('--vh',vh+'px');
+  window.addEventListener('resize',function(){var vh=window.innerHeight*0.01;document.documentElement.style.setProperty('--vh',vh+'px');});
+
+  initData();
+  renderAll();
+  setInterval(updateHero,60000);
+  setInterval(updateClocks,1000);
+
+  /* Bottom nav */
+  $$('.bn-item').forEach(function(b){
+    b.addEventListener('click',function(){showPanel(this.dataset.panel);});
+  });
+
+  /* Search */
+  $('#btn-search').addEventListener('click',toggleSearch);
+  $('#search-input').addEventListener('input',function(){
+    searchQuery=this.value.toLowerCase().trim();renderKanban();
+  });
+
+  /* Sync */
+  $('#btn-sync').addEventListener('click',function(){saveData();renderAll();toast('Sincronizado','success');});
+
+  /* Cal nav */
+  $('#cal-prev').addEventListener('click',function(){calMonth--;if(calMonth<0){calMonth=11;calYear--;}renderCal();});
+  $('#cal-next').addEventListener('click',function(){calMonth++;if(calMonth>11){calMonth=0;calYear++;}renderCal();});
+
+  /* KPI cards */
+  $$('.kpi-card').forEach(function(c){
+    c.addEventListener('click',function(){openKPI(this.dataset.kpi);});
+  });
+
+  /* Modal KPI */
+  $('#modal-kpi-close').addEventListener('click',closeKPI);
+  $('#modal-kpi-cancel').addEventListener('click',closeKPI);
+  $('#modal-kpi-save').addEventListener('click',saveKPI);
+  $('#modal-kpi').addEventListener('click',function(e){if(e.target===this)closeKPI();});
+
+  /* Empresa tabs */
+  $$('#empresa-tabs .tab-btn').forEach(function(t){
+    t.addEventListener('click',function(){
+      $$('#empresa-tabs .tab-btn').forEach(function(x){x.classList.remove('active');});
+      this.classList.add('active');
+      updateEmpresaContent();
+    });
+  });
+
+  /* Chat */
+  $('#chat-send').addEventListener('click',sendChat);
+  $('#chat-input').addEventListener('keydown',function(e){if(e.key==='Enter')sendChat();});
+
+  /* Config */
+  $('#cfg-save').addEventListener('click',function(){
+    localStorage.setItem(OR_KEY_LS,$('#cfg-apikey').value.trim());
+    var st=$('#cfg-status');st.textContent='API Key guardada.';st.className='config-status show ok';setTimeout(function(){st.className='config-status';},3000);
+  });
+  $('#cfg-test').addEventListener('click',async function(){
+    var key=$('#cfg-apikey').value.trim();
+    if(!key){toast('Escribe una API Key primero','error');return;}
+    var st=$('#cfg-status');st.textContent='Probando...';st.className='config-status show info';
+    try{
+      var res=await fetch('https://openrouter.ai/api/v1/auth/key',{
+        headers:{'Authorization':'Bearer '+key}
+      });
+      if(res.ok){st.textContent='Key valida. Listo para usar.';st.className='config-status show ok';}
+      else{st.textContent='Key invalida. Revisa en openrouter.ai/keys';st.className='config-status show err';}
+    }catch(e){st.textContent='Error de conexion. Revisa tu internet.';st.className='config-status show err';}
+    setTimeout(function(){st.className='config-status';},5000);
+  });
+  $('#cfg-clear').addEventListener('click',function(){
+    localStorage.removeItem(OR_KEY_LS);$('#cfg-apikey').value='';
+    var st=$('#cfg-status');st.textContent='API Key eliminada.';st.className='config-status show ok';setTimeout(function(){st.className='config-status';},3000);
+  });
+  $('#cfg-refresh').addEventListener('click',renderConfig);
+  $('#cfg-export').addEventListener('click',exportData);
+  $('#cfg-import').addEventListener('click',function(){$('#cfg-import-file').click();});
+  $('#cfg-import-file').addEventListener('change',function(){if(this.files[0])importData(this.files[0]);});
+
+  /* Touch swipe nav */
+  var startX=0;
+  var mc=$('#main-content');
+  mc.addEventListener('touchstart',function(e){startX=e.changedTouches[0].screenX;},{passive:true});
+  mc.addEventListener('touchend',function(e){
+    var endX=e.changedTouches[0].screenX;
+    var diff=startX-endX;
+    var panels=['home','viaje','agente','config'];
+    var idx=panels.indexOf(activePanel);
+    if(Math.abs(diff)>80){
+      if(diff>0&&idx<panels.length-1) showPanel(panels[idx+1]);
+      else if(diff<0&&idx>0) showPanel(panels[idx-1]);
+    }
+  },{passive:true});
+
+  /* Prevent zoom on double tap */
+  var lastTouch=0;
+  document.addEventListener('touchend',function(e){
+    var now=Date.now();
+    if(now-lastTouch<300){e.preventDefault();}
+    lastTouch=now;
+  },{passive:false});
+
+  /* Auto-save every 10s */
+  setInterval(saveData,10000);
+
+  console.log('AUREA Dashboard Imperial v3.1 - Listo. Buenos dias, Emperador.');
+});
 })();
 </script>
 </body>
